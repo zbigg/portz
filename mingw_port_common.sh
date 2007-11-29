@@ -90,6 +90,7 @@ goto_srcdir()
 
 fail()
 {
+    set +x
     if [ -n "$package" ]; then
         echo "$PNAME error: $package: $*" 1>&2
     else

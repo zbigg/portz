@@ -20,7 +20,7 @@ if [ "$action" == "install" ] ; then
     inform "source url: $baseurl"
     archive=`mingw_need_source $baseurl`
     echo "got archive: $archive"
-    tmpsrcdir=`mktemp`
+    tmpsrcdir=/tmp/mingwport_build/$package
     rm -rf $tmpsrcdir
     mkdir -p $tmpsrcdir
     pushd $tmpsrcdir

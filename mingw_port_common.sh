@@ -44,14 +44,23 @@ mingw_need_source()
     archived_filename="$mingwport_archive/$filename"
     if [ ! -f $archived_filename ] ; then
         [ -d $mingwport_archive ] || mkdir -p $mingwport_archive
-        trap "rm -rf $archived_filename; exit 1"
+        #trap "rm -rf $archived_filename; exit 1"
         wget -O $archived_filename $url
-        trap
+        #trap
     fi
     echo $archived_filename
     return 0
 }
 
+mingwport_unzip()
+{
+    if which unzip ; then
+        unzip $*
+    else
+        inform "using bundled unzip"
+        $mingwport_root/tools/unzip/unzip $*
+    fi
+}
 mingwport_unarchive()
 {
     name=$1
@@ -61,7 +70,7 @@ mingwport_unarchive()
         *.tgz)     tar zxf $name ;; 
         *.tar.bz2) tar jxf $name ;;
         *.tbz)     tar jxf $name ;;
-        *.zip)     unzip $name ;;
+        *.zip)     mingwport_unzip $name ;;
         *) fail "unknown archive type: $name (supported tar (gz,bz2) and zip"        
     esac
 }

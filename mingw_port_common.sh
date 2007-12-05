@@ -45,7 +45,7 @@ mingw_need_source()
     if [ ! -f $archived_filename ] ; then
         [ -d $mingwport_archive ] || mkdir -p $mingwport_archive
         #trap "rm -rf $archived_filename; exit 1"
-        wget -O $archived_filename $url
+        mingwport_wget -O $archived_filename $url
         #trap
     fi
     echo $archived_filename
@@ -59,6 +59,15 @@ mingwport_unzip()
     else
         inform "using bundled unzip"
         $mingwport_root/tools/unzip/unzip $*
+    fi
+}
+mingwport_wget()
+{
+    if which wget ; then
+        wget $*
+    else
+        inform "using bundled wget"
+        $mingwport_root/tools/wget/wget $*
     fi
 }
 mingwport_unarchive()

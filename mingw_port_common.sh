@@ -54,7 +54,7 @@ mingw_need_source()
 
 mingwport_unzip()
 {
-    if which unzip ; then
+    if which unzip > /dev/null; then
         unzip $*
     else
         inform "using bundled unzip"
@@ -63,7 +63,7 @@ mingwport_unzip()
 }
 mingwport_wget()
 {
-    if which wget ; then
+    if which wget > /dev/null; then
         wget $*
     else
         inform "using bundled wget"

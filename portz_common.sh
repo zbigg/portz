@@ -5,6 +5,8 @@
 portz_repo=$portz_root/repo
 portz_archive=$portz_root/archive
 
+prefix=${prefix-/usr}
+
 portz_is_installed()
 {
     package=$1

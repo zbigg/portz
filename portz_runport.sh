@@ -27,7 +27,6 @@ if [ "$action" == "install" ] ; then
     portz_unarchive $archive
     goto_srcdir
     srcdir=`pwd`
-    export prefix=/usr/local
     echo "building $package in $srcdir"
     ( set -x ; install ; )
     popd

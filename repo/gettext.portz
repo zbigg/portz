@@ -1,0 +1,10 @@
+version="0.17"
+baseurl="ftp://ftp.gnu.org/pub/gnu/gettext/gettext-0.17.tar.gz"
+description="This is the GNU gettext package.  It is interesting for authors or
+maintainers of other packages or programs which they want to see
+internationalized.  As one step the handling of messages in different
+languages should be implemented.  For this task GNU gettext provides
+the needed tools and library functions."
+web="http://www.gnu.org/software/gettext"
+
+

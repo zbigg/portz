@@ -1,0 +1,18 @@
+version="2.4.0"
+baseurl="http://XXX/freeglut-${version}.tar.gz"
+description="Freeglut, the Free openGL Utility Toolkit, 
+is meant to be a free alternative to Mark Kilgard's GLUT library. 
+It is distributed under an X-Consortium style license to offer 
+you a chance to use and/or modify the source."
+
+web="http://freeglut.sourceforge.net/"
+
+install()
+{
+    if [ "$OSTYPE" == "msys" ] ; then
+        export CFLAGS="$CFLAGS -g -O2 -DFREEGLUT_EXPORTS"
+    fi
+    
+    ./configure --prefix=$prefix --disable-shared
+    make -C src install && make -C include install
+}

@@ -5,7 +5,11 @@
 portz_repo=$portz_root/repo
 portz_archive=$portz_root/archive
 
-prefix=${prefix-/usr}
+if [ "$OSTYPE" == "msys" ] ; then
+    prefix=/mingw
+else
+    prefix=${prefix-/usr}
+fi
 
 portz_is_installed()
 {

@@ -6,20 +6,20 @@ web="http://unittest-cpp.sourceforge.net/"
 
 install() {
     if [ "$OSTYPE" == "msys" ] ; then
-        make MSYSTEM=MINGW32
+        make MSYSTEM=MINGW32 libUnitTest++.a
 	PLATFORM=Win32
     else
-	make
+	make libUnitTest++.a
 	PLATFORM=Posix
     fi
-    cp libUnitTest++.a $prefix/lib
+    cp libUnitTest++.a $prefix/lib/libunittest++.a
     mkdir -p $prefix/include/unittest++
     cp src/*.h $prefix/include/unittest++
     mkdir -p $prefix/include/unittest++/$PLATFORM
-    cp src/Win32/*.h $prefix/include/unittest++/$PLATFORM
+    cp src/$PLATFORM/*.h $prefix/include/unittest++/$PLATFORM
 }
 
 uninstall() {
-    rm -rf $prefix/lib/libUnitTest++.a
+    rm -rf $prefix/lib/libunituest++.a
     rm -rf $prefix/include/unittest++
 }

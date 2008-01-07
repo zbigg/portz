@@ -5,13 +5,34 @@
 portz_repo=$portz_root/repo
 portz_archive=$portz_root/archive
 
-if [ "$OSTYPE" == "msys" ] ; then
+if [ "$OSTYPE" = "msys" ] ; then
     def_prefix=/mingw
 else
-    def_prefix=${prefix-/usr}
+    def_prefix=/usr
 fi
 
 prefix=${prefix-$def_prefix}
+
+CC=${CC-gcc}
+CXX=${CXX-g++}
+
+export CC CFLAGS
+export CXX CXXFLAGS
+
+case "$OSTYPE" in
+    *solaris*)
+        TAR=gtar
+        PATCH=gpatch
+        ;;
+    *)
+        TAR=tar
+        PATCH=patch
+        ;;
+esac
+
+export prefix
+export TAR
+export PATCH
 
 portz_is_installed()
 {
@@ -78,6 +99,7 @@ portz_wget()
         $portz_root/tools/wget/wget $*
     fi
 }
+
 portz_unarchive()
 {
     name=$1
@@ -104,7 +126,7 @@ install()
 
 goto_srcdir()
 {
-    if [ $(ls -1 | wc -l) == "1" ] ; then 
+    if [ `ls -1 | wc -l` = "1" ] ; then 
         cd `ls -1`
     else
         fail "unable to find source directory in unpacked archive, override goto_srcdir() in package def"

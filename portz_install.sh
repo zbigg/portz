@@ -9,10 +9,10 @@ portz_root=$PWD
 
 #set -x
 
-if [ "$1" == "--update" ] ; then
+if [ "$1" = "--update" ] ; then
     echo "$PNAME: updating repository"
     exit 0
-elif [ "$1" == "--install" ] ; then
+elif [ "$1" = "--install" ] ; then
     shift
 else
     echo "$PNAME: bad usage"

@@ -19,5 +19,7 @@ echo "got archive: $archive"
 tmpsrcdir=$PWD/src/$package
 [ -d $tmpsrcdir ] && rm -rf $tmpsrcdir
 mkdir -p $tmpsrcdir
-pushd $tmpsrcdir
-portz_unarchive $archive 
+(
+    cd $tmpsrcdir
+    portz_unarchive $archive 
+)

@@ -15,7 +15,7 @@ package_file=$portz_repo/${package}.portz
 
 . $package_file
 
-if [ "$action" == "install" ] ; then
+if [ "$action" = "install" ] ; then
     inform "installing version $version"
     inform "source url: $baseurl"
     archive=`portz_need_source $baseurl`
@@ -23,13 +23,14 @@ if [ "$action" == "install" ] ; then
     tmpsrcdir=/tmp/portz_build/$package
     rm -rf $tmpsrcdir
     mkdir -p $tmpsrcdir
-    pushd $tmpsrcdir
+    (
+        cd $tmpsrcdir
     portz_unarchive $archive
     goto_srcdir
     srcdir=`pwd`
     echo "building $package in $srcdir"
     ( set -x ; install ; )
-    popd
+    )
     rm -rf $tmpsrcdir
 else 
     fail "action $action unknown"

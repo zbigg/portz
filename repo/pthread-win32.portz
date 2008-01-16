@@ -6,5 +6,5 @@ install()
     make GC-inlined
     cp libpthreadGC2.a ${prefix}/lib/libpthread.a
     cp pthreadGC2.dll ${prefix}/bin
-    cp pthread.h sched.h semaphore.h ${prefix}/include/pthread.h
+    cp pthread.h sched.h semaphore.h ${prefix}/include
 }

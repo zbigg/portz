@@ -1,5 +1,5 @@
 version="2.4.0"
-baseurl="http://XXX/freeglut-${version}.tar.gz"
+baseurl="http://garr.dl.sourceforge.net/sourceforge/freeglut/freeglut-${version}.tar.gz"
 description="Freeglut, the Free openGL Utility Toolkit, 
 is meant to be a free alternative to Mark Kilgard's GLUT library. 
 It is distributed under an X-Consortium style license to offer 

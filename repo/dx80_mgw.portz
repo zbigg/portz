@@ -1,0 +1,13 @@
+version="8.0"
+baseurl="http://alleg.sourceforge.net/files/dx80_mgw.zip"
+
+goto_srcdir()
+{
+    true
+}
+
+install()
+{
+    cp -r include $prefix
+    cp -r lib $prefix
+}

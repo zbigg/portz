@@ -1,0 +1,13 @@
+version="1.2.13"
+baseurl="http://www.libsdl.org/release/SDL-${version}.tar.gz"
+description="Simple DirectMedia Layer"
+web="http://www.libsdl.org/"
+
+install()
+{
+    ./configure --prefix=$prefix
+    make
+    make install
+}
+
+

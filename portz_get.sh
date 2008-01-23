@@ -1,4 +1,13 @@
 #!/bin/sh
+#
+# This file is part of 'portz'
+#
+# Copyright (C) Zbigniew Zagorski <z.zagorski@gmail.com> and others, 
+# licensed to the public under the terms of the GNU GPL (>= 2)
+# see the file COPYING for details
+#
+# I.e., do what you like, but keep copyright and there's NO WARRANTY. 
+# 
 
 PNAME=`basename $0`
 set -e

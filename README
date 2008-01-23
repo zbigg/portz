@@ -1,0 +1,14 @@
+README for portz
+=========================
+
+portz is a simple ports system aimed to work on mingw+msys 
+environment.
+
+It's dirty hack allowing to automagically install developer 
+soft on windows machines just like FreeBSD ports do or apt 
+on Debian.
+
+It's aimed for developers.
+
+
+

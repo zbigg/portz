@@ -1,0 +1,21 @@
+version=2.8.7
+baseurl="http://prdownloads.sourceforge.net/wxwindows/wxWidgets-${version}.tar.gz"
+description="wxWidgets lets developers create applications for Win32, Mac OS X, GTK+, X11, Motif, WinCE, 
+and more  using one codebase. 
+It can be used from languages such as C++, Python, Perl, and C#/.NET. 
+Unlike other cross-platform toolkits, wxWidgets applications look and feel native. 
+This is because wxWidgets uses the platform's own native controls rather than emulating them. 
+It's also extensive, free, open-source, and mature."
+
+web="http://www.wxwidgets.org"
+
+install()
+{
+    ./configure --prefix=$prefix --disable-debug --enable-monolithic --enable-shared
+    make
+    make install
+    if [ "$OSTYPE" == "msys" ] ; then
+        # fix msw install always installs dlls in LIB_DIR instead of BIN_DIR
+        mv $prefix/lib/wxmsw28_gcc_custom.dll $prefix/bin
+    fi
+}

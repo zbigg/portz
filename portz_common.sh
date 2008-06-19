@@ -16,6 +16,9 @@ else
     def_prefix=/usr
 fi
 
+if [ ! -w $def_prefix ] ; then
+    def_prefix=$HOME
+fi
 prefix=${prefix-$def_prefix}
 
 CC=${CC-gcc}

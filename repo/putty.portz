@@ -1,0 +1,11 @@
+version="0.60"
+baseurl="http://the.earth.li/~sgtatham/putty/latest/x86/putty.zip"
+
+goto_srcdir()
+{
+    true
+}
+install()
+{
+    cp *.EXE $prefix/bin
+}

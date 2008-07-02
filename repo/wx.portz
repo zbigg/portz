@@ -1,4 +1,4 @@
-version=2.8.7
+version=2.8.8
 baseurl="http://prdownloads.sourceforge.net/wxwindows/wxWidgets-${version}.tar.gz"
 description="wxWidgets lets developers create applications for Win32, Mac OS X, GTK+, X11, Motif, WinCE, 
 and more  using one codebase. 
@@ -12,7 +12,7 @@ web="http://www.wxwidgets.org"
 install()
 {
     ./configure --prefix=$prefix --disable-debug --enable-monolithic --enable-shared
-    make
+    make -j$cpus
     make install
     if [ "$OSTYPE" == "msys" ] ; then
         # fix msw install always installs dlls in LIB_DIR instead of BIN_DIR

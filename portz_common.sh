@@ -38,6 +38,18 @@ case "$OSTYPE" in
         ;;
 esac
 
+get_cpus_count()
+{
+    if [ -f /proc/cpuinfo ] ; then
+        cpus=$(cat /proc/cpuinfo | egrep "^processor" | wc -l)
+    elif [ -n "$NUMBER_OF_PROCESSORS" ] ; then
+        cpus=$NUMBER_OF_PROCESSORS
+    else
+        cpus=1
+    fi
+        
+    inform cpu count: $cpus
+}
 export prefix
 export TAR
 export PATCH
@@ -128,7 +140,7 @@ portz_unarchive()
 install()
 {
     ./configure --prefix=$prefix $configure_options
-    make 
+    make -j$cpus
     make install
 }
 
@@ -163,3 +175,6 @@ inform()
         echo "$PNAME $*" 1>&2
     fi
 }
+
+get_cpus_count
+

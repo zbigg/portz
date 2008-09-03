@@ -4,12 +4,3 @@ description="zlib is designed to be a free, general-purpose, legally unencumbere
 lossless data-compression library for use on virtually any computer hardware and operating system."
 web="http://www.zlib.net"
 
-#install()
-#{
-#    pg_config --version || fail "PostgreSQL config tool (pg_config) not found, ensure that PostgreSQL bin directory is in PATH"
-#    ./configure --prefix=/mingw
-#    make
-#    make install
-#}
-
-

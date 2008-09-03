@@ -31,12 +31,13 @@ if [ "$action" = "install" ] ; then
     mkdir -p $tmpsrcdir
     (
         cd $tmpsrcdir
-    portz_unarchive $archive
-    goto_srcdir
-    srcdir=`pwd`
-    echo "building $package in $srcdir"
-    ( set -x ; install ; )
-    )
+        portz_unarchive $archive
+        goto_srcdir
+        srcdir=`pwd`
+        echo "building $package in $srcdir"
+        ( set -x ; install ; )
+        )
+    echo "removing temporary files"
     rm -rf $tmpsrcdir
 else 
     fail "action $action unknown"

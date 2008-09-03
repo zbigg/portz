@@ -17,15 +17,37 @@ portz_root=$PWD
 
 package=$1
 
+for x in "$@" ; do 
+    echo "$0: $x"
+    eval $x
+done
+
 portz_prompt()
 {
-    printf "%40s: " "$2" 
-    read $1
+    local x=$(eval echo \$$1)
+    if [ -n "$x" ];  then
+        printf "%35s: %s\n" "$2" "$x"
+    else
+        printf "%35s: " "$2" 
+        read $1
+    fi
 }
+
 portz_prompt name "Name of package (unix-like name)"
 portz_prompt website "WebSite"
+portz_prompt version "Version"
 portz_prompt baseurl "URL" 
 
-echo $name
-echo $website
-echo $baseurl
+portz_file=${portz_root}/repo/$name.portz
+
+if [ -f $portz_file ] ; then
+    echo "$0: $name portz already exists in repo" 1>&2
+    exit 1
+fi
+
+(
+    echo "version=$version"
+    echo baseurl="$(echo $baseurl | sed -e s,$version,\${version},)"
+    echo web="$website"
+) | tee repo/$name.portz
+

@@ -58,7 +58,7 @@ portz_is_installed()
 {
     package=$1
     shift
-    echo "$PNAME: checking if $package is installed"
+    inform "checking if $package is installed"
     return 1 # FAKE/TODO always false
 }
 
@@ -67,7 +67,7 @@ portz_check_deps()
 {
     package=$1
     shift
-    echo "$PNAME: chcking $package dependencies"
+    inform "checking $package dependencies"
     return 0 # FAKE/TODO: always ok
 }
 
@@ -76,7 +76,7 @@ portz_install()
 {
     package=$1
     shift
-    echo "$PNAME: installing $package"    
+    inform "installing"    
     $portz_root/portz_runport.sh $portz_root $package install
 }
 
@@ -94,7 +94,9 @@ portz_need_source()
     if [ ! -f $archived_filename ] ; then
         [ -d $portz_archive ] || mkdir -p $portz_archive
         #trap "rm -rf $archived_filename; exit 1"
-        portz_wget -O $archived_filename $url
+        rm -rf $archived_filename.tmp
+        portz_wget -O $archived_filename.tmp $url
+        mv $archived_filename.tmp $archived_filename
         #trap
     fi
     echo $archived_filename

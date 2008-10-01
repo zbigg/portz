@@ -17,7 +17,10 @@ package=$2
 action=$3
 
 package_file=$portz_repo/${package}.portz
-[ -f $package_file ] || fail "descriptor not found (extected $package_file), check package name or update repository"
+
+if [ ! -f $package_file ] ; then
+    fail "descriptor not found (extected $package_file), check package name or update repository"
+fi
 
 . $package_file
 
@@ -25,7 +28,7 @@ if [ "$action" = "install" ] ; then
     inform "installing version $version"
     inform "source url: $baseurl"
     archive=`portz_need_source $baseurl`
-    echo "got archive: $archive"
+    inform "local archive file: $archive"
     tmpsrcdir=/tmp/portz_build/$package
     rm -rf $tmpsrcdir
     mkdir -p $tmpsrcdir
@@ -34,11 +37,11 @@ if [ "$action" = "install" ] ; then
         portz_unarchive $archive
         goto_srcdir
         srcdir=`pwd`
-        echo "building $package in $srcdir"
+        inform "building $package in $srcdir"
         ( set -x ; install ; )
-        )
-    echo "removing temporary files"
+    )
+    inform "removing temporary files"
     rm -rf $tmpsrcdir
 else 
-    fail "action $action unknown"
+    fail "action '$action' not supported"
 fi

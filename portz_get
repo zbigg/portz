@@ -24,10 +24,11 @@ package_file=$portz_repo/${package}.portz
 
 inform "fertching source from source url: $baseurl"
 archive=`portz_need_source $baseurl`
-echo "got archive: $archive"
+inform "got archive: $archive"
 tmpsrcdir=$PWD/src/$package
 mkdir -p $tmpsrcdir
 (
     cd $tmpsrcdir
+    inform unpacking to $PWD
     portz_unarchive $archive 
 )

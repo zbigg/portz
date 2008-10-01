@@ -1,0 +1,13 @@
+version=1.7.13
+baseurl=http://files.randombit.net/botan/Botan-${version}.tgz
+web=http://botan.randombit.net/
+
+install() {
+    if [ "$OSTYPE" == "msys" ] ; then
+        ./configure.pl --os=windows --cpu=ia32 --cc=gcc
+    else
+        ./configure.pl --cc=gcc
+    fi
+    make -j$cpus
+    make INSTALLROOT=$prefix
+}

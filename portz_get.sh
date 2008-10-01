@@ -26,7 +26,6 @@ inform "fertching source from source url: $baseurl"
 archive=`portz_need_source $baseurl`
 echo "got archive: $archive"
 tmpsrcdir=$PWD/src/$package
-[ -d $tmpsrcdir ] && rm -rf $tmpsrcdir
 mkdir -p $tmpsrcdir
 (
     cd $tmpsrcdir

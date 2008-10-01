@@ -6,7 +6,7 @@ web="http://pqxx.org/"
 install()
 {
     pg_config --version || fail "PostgreSQL config tool (pg_config) not found, ensure that PostgreSQL bin directory is in PATH"
-    ./configure --prefix=/mingw
-    make
+    ./configure --prefix=$prefix
+    make -j$cpus
     make install
 }

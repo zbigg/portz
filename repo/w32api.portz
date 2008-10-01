@@ -1,5 +1,6 @@
-version="3.11"
-baseurl="http://downloads.sourceforge.net/mingw/w32api-${version}.tar.gz"
+version="3.12"
+#baseurl="http://downloads.sourceforge.net/mingw/w32api-${version}.tar.gz"
+baseurl="http://downloads.sourceforge.net/mingw/w32api-${version}-mingw32-dev.tar.gz"
 
 goto_srcdir()
 {
@@ -8,6 +9,6 @@ goto_srcdir()
 
 install()
 {
-    cp -r include $prefix
-    cp -r lib $prefix
+    cp -rpv include $prefix
+    cp -rpv lib $prefix
 }

@@ -1,0 +1,13 @@
+version=0.23-2
+baseurl=http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/pkg-config-${version}.zip
+web=http://pkg-config.freedesktop.org/
+
+goto_srcdir()
+{
+    true
+}
+
+install() {
+    mkdir -p $prefix
+    cp -rv * $prefix
+}

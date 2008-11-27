@@ -10,6 +10,7 @@
 portz_repo=$portz_root/repo
 portz_archive=$portz_root/archive
 
+
 if [ "$OSTYPE" = "msys" ] ; then
     def_prefix=/mingw
 else
@@ -19,7 +20,17 @@ fi
 if [ ! -w $def_prefix ] ; then
     def_prefix=$HOME
 fi
+
+if true ; then
+    def_exec_prefix=$def_prefix/platforms/$(uname -i)
+else
+    def_exec_prefix=$def_prefix
+fi
+
 prefix=${prefix-$def_prefix}
+exec_prefix=${exec_prefix-$def_exec_prefix}
+
+export prefix export exec_prefix
 
 CC=${CC-gcc}
 CXX=${CXX-g++}
@@ -141,7 +152,7 @@ portz_unarchive()
 #
 install()
 {
-    ./configure --prefix=$prefix $configure_options
+    ./configure --prefix=$prefix --exec_prefix=$exec_prefix $configure_options
     make -j$cpus
     make install
 }

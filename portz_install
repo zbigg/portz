@@ -16,7 +16,8 @@ portz_root=$PWD
 
 . ${portz_root}/portz_common.sh
 
-inform "prefix = $prefix"
+inform "prefix      = $prefix"
+inform "exec_prefix = $exec_prefix"
 
 #set -x
 

@@ -21,8 +21,9 @@ if [ ! -w $def_prefix ] ; then
     def_prefix=$HOME
 fi
 
-if true ; then
-    def_exec_prefix=$def_prefix/platforms/$(uname -i)
+if test "x$PORTZ_SEPARATE_EXEC" = "x1"
+then
+    def_exec_prefix=$def_prefix/platforms/$(uname -m)
 else
     def_exec_prefix=$def_prefix
 fi

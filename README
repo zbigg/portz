@@ -10,6 +10,12 @@ on Debian.
 
 It's aimed for developers.
 
+If environment variable PORTZ_SEPARATE_EXEC is equal to 1 then
+portz will automagically differentiate exec prefix for installed packages. It will be:
+    ${prefix}/platforms/$(uname -m)
+which will result in:
+    ${prefix}/platforms/{i686|x86_64|sun4u} 
+or something.
 
 Author:
 Zbigniew Zagorski <z.zagorski@gmail.com>

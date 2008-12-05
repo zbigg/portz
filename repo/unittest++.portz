@@ -123,13 +123,13 @@ diff -u -r UnitTest++-orig/src/Posix/SignalTranslator.h UnitTest++/src/Posix/Sig
 
 EOF
     if [ "$OSTYPE" = "msys" ] ; then
-        make MSYSTEM=MINGW32 libUnitTest++.a
+        make -j$cpus MSYSTEM=MINGW32 libUnitTest++.a
 	PLATFORM=Win32
     else
-	make libUnitTest++.a
+	make -j$cpus libUnitTest++.a
 	PLATFORM=Posix
     fi
-    cp libUnitTest++.a $prefix/lib/libunittest++.a
+    cp libUnitTest++.a $exec_prefix/lib/libunittest++.a
     mkdir -p $prefix/include/unittest++
     cp src/*.h $prefix/include/unittest++
     mkdir -p $prefix/include/unittest++/$PLATFORM
@@ -137,6 +137,6 @@ EOF
 }
 
 uninstall() {
-    rm -rf $prefix/lib/libunituest++.a
+    rm -rf $exec_prefix/lib/libunituest++.a
     rm -rf $prefix/include/unittest++
 }

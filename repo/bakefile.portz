@@ -2,3 +2,9 @@ name=bakefile
 version=0.2.5
 baseurl=http://prdownloads.sourceforge.net/bakefile/bakefile-${version}.tar.gz
 web=http://bakefile.org
+
+install() {
+	./configure --prefix=$exec_prefix
+	make -j$cpus
+	make -j$cpus install
+}

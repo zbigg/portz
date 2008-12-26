@@ -52,7 +52,7 @@ esac
 
 get_cpus_count()
 {
-    if [ -f /proc/cpuinfo ] ; then
+    if false ; then #[ -f /proc/cpuinfo ] ; then
         cpus=$(cat /proc/cpuinfo | egrep "^processor" | wc -l)
     elif [ -n "$NUMBER_OF_PROCESSORS" ] ; then
         cpus=$NUMBER_OF_PROCESSORS

@@ -1,0 +1,3 @@
+version=0.41
+baseurl=http://monotone.ca/downloads/${version}/monotone-0.41.tar.gz
+web=http://monotone.ca/

@@ -1,11 +1,11 @@
-version="1.3"
-baseurl="http://surfnet.dl.sourceforge.net/sourceforge/unittest-cpp/unittest-cpp-1.3.zip"
+version="1.4"
+baseurl="http://surfnet.dl.sourceforge.net/sourceforge/unittest-cpp/unittest-cpp-${version}.zip"
 description="UnitTest++ is a lightweight unit testing framework for C++.
 It was designed to do test-driven development on a wide variety of platforms. Simplicity, portability, speed, and small footprint are all very important aspects of UnitTest++."
 web="http://unittest-cpp.sourceforge.net/"
 
-install() {
-    ${PATCH} -u -p 1 <<'EOF'
+patch_13() {
+    ${PATCH} -u -p1 <<'EOF'
 diff -u -r UnitTest++-orig/Makefile UnitTest++/Makefile
 --- UnitTest++-orig/Makefile    Mon Jan  7 09:09:35 2008
 +++ UnitTest++/Makefile Mon Jan  7 09:52:41 2008
@@ -122,13 +122,18 @@ diff -u -r UnitTest++-orig/src/Posix/SignalTranslator.h UnitTest++/src/Posix/Sig
      #define UNITTEST_EXTENSION __extension__
 
 EOF
+}
+
+install() {
+    #patch_13
     if [ "$OSTYPE" = "msys" ] ; then
-        make -j$cpus MSYSTEM=MINGW32 libUnitTest++.a
+        $MAKE -j$cpus MSYSTEM=MINGW32 libUnitTest++.a
 	PLATFORM=Win32
     else
-	make -j$cpus libUnitTest++.a
+	$MAKE -j$cpus libUnitTest++.a
 	PLATFORM=Posix
     fi
+    mkdir -p $exec_prefix/lib
     cp libUnitTest++.a $exec_prefix/lib/libunittest++.a
     mkdir -p $prefix/include/unittest++
     cp src/*.h $prefix/include/unittest++

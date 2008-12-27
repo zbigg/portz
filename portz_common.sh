@@ -10,6 +10,9 @@
 portz_repo=$portz_root/repo
 portz_archive=$portz_root/archive
 
+if [ -z "$OSTYPE" ] ; then
+    OSTYPE=`uname`
+fi
 
 if [ "$OSTYPE" = "msys" ] ; then
     def_prefix=/mingw
@@ -43,12 +46,23 @@ case "$OSTYPE" in
     *solaris*)
         TAR=gtar
         PATCH=gpatch
+	MAKE=gmake
         ;;
+    *FreeBSD*)
+	MAKE=gmake
+	C_INCLUDE_PATH=$C_INCLUDE_PATH:/usr/local/include
+	CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/usr/local/include
+	LIBRARY_PATH=$LIBRARY_PATH:/usr/local/lib
+	LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib	
+	;;
     *)
         TAR=tar
         PATCH=patch
+	MAKE=make
         ;;
 esac
+
+export C_INCLUDE_PATH CPLUS_INCLUDE_PATH
 
 get_cpus_count()
 {
@@ -154,8 +168,8 @@ portz_unarchive()
 install()
 {
     ./configure --prefix=$prefix --exec_prefix=$exec_prefix $configure_options
-    make -j$cpus
-    make install
+    $MAKE -j$cpus
+    $MAKE install
 }
 
 goto_srcdir()

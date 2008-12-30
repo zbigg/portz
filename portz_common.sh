@@ -14,33 +14,21 @@ if [ -z "$OSTYPE" ] ; then
     OSTYPE=`uname`
 fi
 
-if [ "$OSTYPE" = "msys" ] ; then
-    def_prefix=/mingw
-else
-    def_prefix=/usr
-fi
-
-if [ ! -w $def_prefix ] ; then
-    def_prefix=$HOME
-fi
-
-if test "x$PORTZ_SEPARATE_EXEC" = "x1"
-then
-    def_exec_prefix=$def_prefix/platforms/$(uname -m)
-else
-    def_exec_prefix=$def_prefix
-fi
-
-prefix=${prefix-$def_prefix}
-exec_prefix=${exec_prefix-$def_exec_prefix}
-
-export prefix export exec_prefix
-
 CC=${CC-gcc}
 CXX=${CXX-g++}
 
 export CC CFLAGS
 export CXX CXXFLAGS
+
+def_prefix=/usr
+
+TAR=tar
+PATCH=patch
+MAKE=make
+
+export TAR
+export PATCH
+export MAKE
 
 case "$OSTYPE" in
     *solaris*)
@@ -54,15 +42,29 @@ case "$OSTYPE" in
 	CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/usr/local/include
 	LIBRARY_PATH=$LIBRARY_PATH:/usr/local/lib
 	LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib	
+        export C_INCLUDE_PATH CPLUS_INCLUDE_PATH
 	;;
-    *)
-        TAR=tar
-        PATCH=patch
-	MAKE=make
+    *msys*|MINGW*)
+        def_prefix=/mingw
         ;;
 esac
 
-export C_INCLUDE_PATH CPLUS_INCLUDE_PATH
+if ! [ -w $def_prefix ] ; then
+    def_prefix=$HOME
+fi
+
+if test "x$PORTZ_SEPARATE_EXEC" = "x1"
+then
+    def_exec_prefix=$def_prefix/platforms/$(uname -m)
+else
+    def_exec_prefix=$def_prefix
+fi
+
+prefix=${prefix-$def_prefix}
+exec_prefix=${exec_prefix-$def_exec_prefix}
+
+export prefix exec_prefix
+
 
 get_cpus_count()
 {
@@ -76,9 +78,7 @@ get_cpus_count()
         
     inform cpu count: $cpus
 }
-export prefix
-export TAR
-export PATCH
+
 
 portz_is_installed()
 {

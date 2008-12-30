@@ -1,3 +1,6 @@
-version=3.6.3
+version=3.6.7
 baseurl=http://sqlite.org/sqlite-${version}.tar.gz
 web=http://sqlite.org/
+
+configure_options="--disable-tcl"
+

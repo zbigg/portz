@@ -1,4 +1,4 @@
-version="3.12"
+version="3.13"
 #baseurl="http://downloads.sourceforge.net/mingw/w32api-${version}.tar.gz"
 baseurl="http://downloads.sourceforge.net/mingw/w32api-${version}-mingw32-dev.tar.gz"
 

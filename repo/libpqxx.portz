@@ -3,10 +3,5 @@ baseurl="http://pqxx.org/download/software/libpqxx/libpqxx-2.6.9.tar.gz"
 description="the C++ API to the PostgreSQL database management system. "
 web="http://pqxx.org/"
 
-install()
-{
-    pg_config --version || fail "PostgreSQL config tool (pg_config) not found, ensure that PostgreSQL bin directory is in PATH"
-    ./configure --prefix=$prefix
-    make -j$cpus
-    make install
-}
+pg_config --version || fail "PostgreSQL config tool (pg_config) not found, ensure that PostgreSQL bin directory is in PATH"
+

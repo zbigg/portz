@@ -13,7 +13,7 @@ install()
         export CFLAGS="$CFLAGS -O2 -DFREEGLUT_STATIC"
     fi
     
-    ./configure --prefix=$prefix --disable-shared --enable-static
-    make -C src install
-    make -C include install
+    ./configure --prefix=$prefix --exec-prefix=$exec_prefix --disable-shared --enable-static
+    $MAKE -C src install
+    $MAKE -C include install
 }

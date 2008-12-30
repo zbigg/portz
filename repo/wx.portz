@@ -11,11 +11,11 @@ web="http://www.wxwidgets.org"
 
 install()
 {
-    ./configure --prefix=$prefix --disable-debug --disable-monolithic --enable-shared --disable-unicode
-    make -j$cpus
-    make -j$cpus -C contrib/src/stc
-    make install
-    make -C contrib/src/stc install
+    ./configure --prefix=$prefix --exec-prefix=$exec_prefix  --disable-debug --disable-monolithic --enable-shared --disable-unicode
+    $MAKE -j$cpus
+    $MAKE -j$cpus -C contrib/src/stc
+    $MAKE install
+    $MAKE -C contrib/src/stc install
     
     if [ "$OSTYPE" == "msys" ] ; then
         # fix msw install always installs dlls in LIB_DIR instead of BIN_DIR

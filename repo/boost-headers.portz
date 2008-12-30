@@ -1,5 +1,5 @@
-version="1.35.0"
-baseurl="http://switch.dl.sourceforge.net/sourceforge/boost/boost_1_35_0.tar.gz"
+version="1.37.0"
+baseurl="http://switch.dl.sourceforge.net/sourceforge/boost/boost_1_37_0.tar.gz"
 
 description="Boost headers"
 

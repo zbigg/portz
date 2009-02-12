@@ -1,5 +1,5 @@
-version=2.6.9
-baseurl="http://pqxx.org/download/software/libpqxx/libpqxx-2.6.9.tar.gz"
+version=3.0
+baseurl="http://pqxx.org/download/software/libpqxx/libpqxx-${version}.tar.gz"
 description="the C++ API to the PostgreSQL database management system. "
 web="http://pqxx.org/"
 

@@ -1,0 +1,8 @@
+version=1.7
+baseurl=http://downloads.sourceforge.net/ltp/lcov-${version}.tar.gz
+web=http://ltp.sourceforge.net/coverage/lcov.php
+
+install()
+{
+	make install PREFIX=${prefix} BIN_DIR=${prefix}/bin MAN_DIR=${prefix}/share/man
+}

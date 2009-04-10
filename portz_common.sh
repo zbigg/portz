@@ -25,6 +25,7 @@ def_prefix=/usr
 TAR=tar
 PATCH=patch
 MAKE=make
+PYTHON=python
 
 export TAR
 export PATCH
@@ -170,6 +171,15 @@ install()
     ./configure --prefix=$prefix --exec_prefix=$exec_prefix $configure_options
     $MAKE -j$cpus
     $MAKE install
+}
+
+python_install()
+{
+    local setup_opts=""
+    if [ "$OSTYPE" != "msys" ] ; then
+        setup_opts="--prefix=$prefix --exec-prefix=$exec_prefix"
+    fi
+    $PYTHON setup.py install ${setup_opts}
 }
 
 goto_srcdir()

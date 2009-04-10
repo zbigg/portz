@@ -1,0 +1,7 @@
+version=0.5
+baseurl=http://prdownloads.sourceforge.net/docutils/docutils-${version}.tar.gz
+web=http://docutils.sourceforge.net/
+
+install() {
+    python_install
+}

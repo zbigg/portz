@@ -19,6 +19,6 @@ install()
     
     if [ "$OSTYPE" == "msys" ] ; then
         # fix msw install always installs dlls in LIB_DIR instead of BIN_DIR
-        mv $prefix/lib/wxmsw28*_gcc_custom.dll $prefix/bin
+        mv ${DESTDIR}${exec_prefix}/lib/wxmsw28*_gcc_custom.dll ${DESTDIR}${exec_prefix}/bin
     fi
 }

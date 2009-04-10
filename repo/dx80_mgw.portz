@@ -8,6 +8,7 @@ goto_srcdir()
 
 install()
 {
-    cp -r include $prefix
-    cp -r lib $prefix
+    cp -r include ${DESTDIR}${prefix}
+    cp -r lib ${DESTDIR}${prefix}
 }
+

@@ -4,5 +4,5 @@ web=http://ltp.sourceforge.net/coverage/lcov.php
 
 install()
 {
-	make install PREFIX=${prefix} BIN_DIR=${prefix}/bin MAN_DIR=${prefix}/share/man
+	make install PREFIX=${DESTDIR}${prefix} BIN_DIR=${DESTDIR}${prefix}/bin MAN_DIR=${DESTDIR}${prefix}/share/man
 }

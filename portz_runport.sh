@@ -17,6 +17,10 @@ package=$2
 action=$3
 
 package_file=$portz_repo/${package}.portz
+manifest_dir=${prefix}/lib/portz/
+manifest_file=${prefix}/lib/portz/${package}.MANIFEST
+
+mkdir -p ${manifest_dir}
 
 if [ ! -f $package_file ] ; then
     fail "descriptor not found (extected $package_file), check package name or update repository"
@@ -30,7 +34,8 @@ if [ "$action" = "install" ] ; then
     archive=`portz_need_source $baseurl`
     inform "local archive file: $archive"
     tmpsrcdir=/tmp/portz_build/$package
-    rm -rf $tmpsrcdir
+    tmpsitedir=/tmp/portz_build/site/$package
+    rm -rf $tmpsrcdir $tmpsitedir
     mkdir -p $tmpsrcdir
     (
         cd $tmpsrcdir
@@ -38,10 +43,21 @@ if [ "$action" = "install" ] ; then
         goto_srcdir
         srcdir=`pwd`
         inform "building $package in $srcdir"
-        ( set -x ; install ; )
+        ( 
+		export DESTDIR=${tmpsitedir}
+		set -x
+		install 
+	)
+	inform "updating manifest"
+	mkdir -p ${prefix}/lib/portz
+	(cd ${tmpsitedir}; find -type f) > ${manifest_file}
+	
+	inform "installing $(cat ${manifest_file} | wc -l ) files"
+	
+	(cd ${tmpsitedir} ; tar cv . ; ) | ( cd / ; tar x -m --atime-preserve ; ) 
     )
     inform "removing temporary files"
-    rm -rf $tmpsrcdir
+    rm -rf $tmpsrcdir $tmpsitedir
 else 
     fail "action '$action' not supported"
 fi

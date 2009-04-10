@@ -133,15 +133,11 @@ install() {
 	$MAKE -j$cpus libUnitTest++.a
 	PLATFORM=Posix
     fi
-    mkdir -p $exec_prefix/lib
-    cp libUnitTest++.a $exec_prefix/lib/libunittest++.a
-    mkdir -p $prefix/include/unittest++
-    cp src/*.h $prefix/include/unittest++
-    mkdir -p $prefix/include/unittest++/$PLATFORM
-    cp src/$PLATFORM/*.h $prefix/include/unittest++/$PLATFORM
+    mkdir -p $DESTDIR$exec_prefix/lib
+    cp libUnitTest++.a $DESTDIR$exec_prefix/lib/libunittest++.a
+    mkdir -p $DESTDIR$prefix/include/unittest++
+    cp src/*.h $DESTDIR$prefix/include/unittest++
+    mkdir -p $DESTDIR$prefix/include/unittest++/$PLATFORM
+    cp src/$PLATFORM/*.h $DESTDIR$prefix/include/unittest++/$PLATFORM
 }
 
-uninstall() {
-    rm -rf $exec_prefix/lib/libunituest++.a
-    rm -rf $prefix/include/unittest++
-}

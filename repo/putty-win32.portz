@@ -7,5 +7,5 @@ goto_srcdir()
 }
 install()
 {
-    cp *.EXE $prefix/bin
+    cp *.EXE ${DESTDIR}${prefix}/bin
 }

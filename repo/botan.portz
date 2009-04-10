@@ -8,3 +8,4 @@ install() {
     $MAKE -j$cpus
     $MAKE install
 }
+

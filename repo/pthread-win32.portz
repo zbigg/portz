@@ -4,7 +4,7 @@ baseurl="ftp://sourceware.org/pub/pthreads-win32/pthreads-w32-2-8-0-release.tar.
 install()
 {
     make GC-inlined
-    cp libpthreadGC2.a ${prefix}/lib/libpthread.a
-    cp pthreadGC2.dll ${prefix}/bin
-    cp pthread.h sched.h semaphore.h ${prefix}/include
+    cp libpthreadGC2.a ${DESTDIR}${prefix}/lib/libpthread.a
+    cp pthreadGC2.dll ${DESTDIR}${prefix}/bin
+    cp pthread.h sched.h semaphore.h ${DESTDIR}${prefix}/include
 }

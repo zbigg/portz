@@ -9,6 +9,6 @@ goto_srcdir()
 
 install()
 {
-    cp -rpv include $prefix
-    cp -rpv lib $prefix
+    cp -rpv include ${DESTDIR}${prefix}
+    cp -rpv lib ${DESTDIR}${prefix}
 }

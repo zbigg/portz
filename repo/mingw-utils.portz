@@ -8,5 +8,5 @@ goto_srcdir()
 
 install()
 {
-    cp -r * $prefix
+    cp -r * ${DESTDIR}${prefix}
 }

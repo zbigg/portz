@@ -8,6 +8,6 @@ goto_srcdir()
 }
 
 install() {
-    mkdir -p $prefix
-    cp -rv * $prefix
+    mkdir -p ${DESTDIR}${prefix}
+    cp -rv * ${DESTDIR}${prefix}
 }

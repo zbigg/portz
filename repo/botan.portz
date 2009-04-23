@@ -1,4 +1,4 @@
-version=1.8.1
+version=1.8.2
 baseurl=http://files.randombit.net/botan/Botan-${version}.tbz
 web=http://botan.randombit.net/
 

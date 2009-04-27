@@ -6,6 +6,6 @@ install() {
     ./configure.pl --prefix=$prefix --exec-prefix=$exec_prefix --cc=gcc
     
     $MAKE -j$cpus
-    $MAKE install
+    $MAKE install DESTDIR=${DESTDIR}$prefix
 }
 

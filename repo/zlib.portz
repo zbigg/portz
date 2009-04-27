@@ -1,6 +1,13 @@
 version=1.2.3
-baseurl="http://freshmeat.net/redir/zlib/12352/url_bz2/zlib-${version}.tar.bz2"
+baseurl="http://www.zlib.net/zlib-${version}.tar.gz"
+
 description="zlib is designed to be a free, general-purpose, legally unencumbered, 
 lossless data-compression library for use on virtually any computer hardware and operating system."
 web="http://www.zlib.net"
 
+install() {    
+    ./configure --prefix=$prefix --exec-prefix=$exec_prefix
+    
+    $MAKE -j$cpus
+    $MAKE install prefix=${DESTDIR}$prefix exec_prefix=${DESTDIR}$exec_prefix
+}

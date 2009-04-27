@@ -21,6 +21,8 @@ export CC CFLAGS
 export CXX CXXFLAGS
 
 def_prefix=/usr
+def_dist_name="$(uname -s | tr A-Z a-z)-$(uname -m)"
+
 
 TAR=tar
 PATCH=patch
@@ -47,6 +49,7 @@ case "$OSTYPE" in
 	;;
     *msys*|MINGW*)
         def_prefix=/mingw
+        def_dist_name="mingw-$(uname -m)"
         ;;
 esac
 
@@ -54,18 +57,25 @@ if ! [ -w $def_prefix ] ; then
     def_prefix=$HOME
 fi
 
-if test "x$PORTZ_SEPARATE_EXEC" = "x1"
-then
-    def_exec_prefix=$def_prefix/platforms/$(uname -m)
-else
-    def_exec_prefix=$def_prefix
-fi
 
 prefix=${prefix-$def_prefix}
+
+if test "x$PORTZ_SEPARATE_EXEC" = "x1"
+then
+    def_exec_prefix=${prefix}/platforms/$(uname -m)
+else
+    def_exec_prefix=${prefix}
+fi
+
 exec_prefix=${exec_prefix-$def_exec_prefix}
 
 export prefix exec_prefix
 
+if [ -z "${dist_name}" ]; then
+    dist_name="${def_dist_name}"
+fi
+
+dist_suffix="-${dist_name}"
 
 get_cpus_count()
 {

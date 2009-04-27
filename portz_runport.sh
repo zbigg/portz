@@ -69,6 +69,10 @@ if [ "$action" = "install" ] ; then
 	
 	inform "installing $(cat ${manifest_file} | wc -l ) files"
 	
+        # this hack is something like
+        #   cp -r --dont-create-folders-that-already exist
+        # and is implemented using 
+        # tar which unpacks in root and doesn't modify atime and modify time
 	(cd ${tmpsitedir} ; tar cv . ; ) | ( cd / ; tar x -m --atime-preserve ; ) 
     )
     
@@ -76,9 +80,14 @@ elif [ "$action" = "dist" ] ; then
     inform "BUILDING"
     
     install_in_tmpsitedir
-    
+    inform "updating manifest"
+    (
+        cd ${tmpsitedir}; 
+        mkdir -p ${tmpsitedir}${manifest_dir}
+        find -type f > ${tmpsitedir}${manifest_file}
+    )
     here=$(pwd)
-    filename=${package}-${version}.tar.gz
+    filename=${package}-${version}${dist_suffix}.tar.gz
     inform "making distribution: ${filename}"
     
     ( cd ${tmpsitedir} ; tar chozf ${here}/${filename} . ; )

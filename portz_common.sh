@@ -107,6 +107,14 @@ portz_install()
     $portz_root/portz_runport.sh $portz_root $package install
 }
 
+portz_dist()
+{
+    package=$1
+    shift
+    inform "making binary distribution"
+    $portz_root/portz_runport.sh $portz_root $package dist
+}
+
 #
 # archive management
 #

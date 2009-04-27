@@ -20,21 +20,21 @@ package_file=$portz_repo/${package}.portz
 manifest_dir=${prefix}/lib/portz/
 manifest_file=${prefix}/lib/portz/${package}.MANIFEST
 
-mkdir -p ${manifest_dir}
-
 if [ ! -f $package_file ] ; then
     fail "descriptor not found (extected $package_file), check package name or update repository"
 fi
 
 . $package_file
 
-if [ "$action" = "install" ] ; then
-    inform "installing version $version"
+tmpsrcdir=/tmp/portz_build/$package
+tmpsitedir=/tmp/portz_build/site/$package
+    
+install_in_tmpsitedir() {
+    inform "building version $version"
     inform "source url: $baseurl"
-    archive=`portz_need_source $baseurl`
+    local archive=`portz_need_source $baseurl`
     inform "local archive file: $archive"
-    tmpsrcdir=/tmp/portz_build/$package
-    tmpsitedir=/tmp/portz_build/site/$package
+    
     rm -rf $tmpsrcdir $tmpsitedir
     mkdir -p $tmpsrcdir
     (
@@ -44,20 +44,47 @@ if [ "$action" = "install" ] ; then
         srcdir=`pwd`
         inform "building $package in $srcdir"
         ( 
-		export DESTDIR=${tmpsitedir}
-		set -x
-		install 
+            export DESTDIR=${tmpsitedir}
+            set -x
+            install 
 	)
+    )
+}
+
+clean_tmpdirs()
+{
+    inform "removing temporary files"
+    rm -rf $tmpsrcdir $tmpsitedir
+}
+if [ "$action" = "install" ] ; then
+    inform "BUILD"
+    
+    install_in_tmpsitedir
+    
+    inform "INSTALLATION"
+    (
 	inform "updating manifest"
-	mkdir -p ${prefix}/lib/portz
+	mkdir -p ${manifest_dir}
 	(cd ${tmpsitedir}; find -type f) > ${manifest_file}
 	
 	inform "installing $(cat ${manifest_file} | wc -l ) files"
 	
 	(cd ${tmpsitedir} ; tar cv . ; ) | ( cd / ; tar x -m --atime-preserve ; ) 
     )
-    inform "removing temporary files"
-    rm -rf $tmpsrcdir $tmpsitedir
-else 
+    
+elif [ "$action" = "dist" ] ; then
+    inform "BUILDING"
+    
+    install_in_tmpsitedir
+    
+    here=$(pwd)
+    filename=${package}-${version}.tar.gz
+    inform "making distribution: ${filename}"
+    
+    ( cd ${tmpsitedir} ; tar chozf ${here}/${filename} . ; )
+else
     fail "action '$action' not supported"
 fi
+
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
+

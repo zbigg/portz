@@ -1,0 +1,8 @@
+version=5.1.4
+baseurl=http://www.lua.org/ftp/lua-${version}.tar.gz
+web=http://www.lua.org/
+
+install() {
+	$MAKE generic
+	$MAKE INSTALL_TOP=${DESTDIR}${exec_prefix} install
+}

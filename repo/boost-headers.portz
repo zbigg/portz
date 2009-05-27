@@ -1,5 +1,5 @@
-version="1.37.0"
-baseurl="http://switch.dl.sourceforge.net/sourceforge/boost/boost_1_37_0.tar.gz"
+version="1.39.0"
+baseurl="http://switch.dl.sourceforge.net/sourceforge/boost/boost_1_39_0.tar.gz"
 
 description="Boost headers"
 
@@ -7,6 +7,7 @@ web="http://www.boost.org"
 
 install()
 {
-    cp -r boost ${DESTDIR}${prefix}/include
+    mkdir -p $DESTDIR$prefix/include
+    cp -r boost $DESTDIR$prefix/include
 }
 

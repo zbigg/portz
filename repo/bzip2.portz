@@ -1,0 +1,14 @@
+version=1.0.5
+baseurl=http://www.bzip.org/${version}/bzip2-1.0.5.tar.gz
+web=http://www.bzip.org/
+
+install()
+{
+    make -j${cpus} libbz2.a
+    
+    mkdir -p ${DESTDIR}${prefix}/include
+    mkdir -p ${DESTDIR}${prefix}/lib
+    
+    cp -f libbz2.a ${DESTDIR}${prefix}/lib
+    cp -f bzlib.h  ${DESTDIR}${prefix}//include
+}

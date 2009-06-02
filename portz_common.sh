@@ -191,6 +191,22 @@ install()
     $MAKE install
 }
 
+oos_install() {
+    local srcdir=$(pwd)
+    mkdir ../build
+    cd ../build
+    ${srcdir}/configure --prefix=$prefix --exec_prefix=$exec_prefix $configure_options
+    $MAKE -j$cpus
+    $MAKE install
+}
+
+copy_install() {
+    local where=${1-$prefix}
+    echo "copy installing to $where"
+    mkdir -p ${DESTDIR}/${where}
+    cp -rv * ${DESTDIR}/${where}
+}
+
 python_install()
 {
     local setup_opts=""

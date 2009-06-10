@@ -11,15 +11,20 @@ web="http://www.wxwidgets.org"
 
 install()
 {
+    if [ "$OSTYPE" == "msys" ] ; then
+        cpus=1 #wx build on mingw doesn't support parallel build
+    fi
+    
     ./configure --prefix=$prefix --exec-prefix=$exec_prefix  --disable-debug --disable-monolithic --enable-shared --enable-unicode
     $MAKE -j$cpus
     $MAKE -j$cpus -C contrib/src/stc
-    $MAKE install
-    $MAKE -C contrib/src/stc install
+    
+    $MAKE install DESTDIR=${DESTDIR}
+    $MAKE -C contrib/src/stc install DESTDIR=${DESTDIR}
     
     if [ "$OSTYPE" == "msys" ] ; then
         # fix msw install always installs dlls in LIB_DIR instead of BIN_DIR
-        mv ${DESTDIR}${exec_prefix}/lib/wxmsw28*_gcc_custom.dll ${DESTDIR}${exec_prefix}/bin
+        mv ${DESTDIR}${exec_prefix}/lib/*.dll ${DESTDIR}${exec_prefix}/bin
     fi
 }
 

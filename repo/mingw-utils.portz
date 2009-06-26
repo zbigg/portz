@@ -8,5 +8,6 @@ goto_srcdir()
 
 install()
 {
+    mkdir -p ${DESTDIR}${prefix}
     cp -r * ${DESTDIR}${prefix}
 }

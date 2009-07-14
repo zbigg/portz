@@ -1,0 +1,87 @@
+version=4.1.3
+baseurl=http://sourceforge.net/projects/omniorb/files/omniORB/omniORB-${version}.tar.gz
+web=http://omniorb.sourceforge.net/
+
+install()
+{
+    if [ "$OSTYPE" == "msys" ] ; then
+        apply_mingw_patch
+        
+        make -C src/tool/omkdepend export
+        make -C src export
+        
+        mkdir -p ${DESTDIR}${prefix}/bin
+        cp bin/x86_win32/* ${DESTDIR}${prefix}/bin
+        
+        mkdir -p ${DESTDIR}${prefix}/lib
+        cp lib/x86_win32/* ${DESTDIR}${prefix}/lib
+        
+        mkdir -p ${DESTDIR}${prefix}/include
+        cp -r include/* ${DESTDIR}${prefix}/include
+        
+        mkdir -p ${DESTDIR}${prefix}/share/man
+        cp -r man/* ${DESTDIR}${prefix}/share/man
+    else
+        ./configure --prefix=$prefix --exec_prefix=$exec_prefix $configure_options
+        $MAKE -j$cpus
+        $MAKE install
+    fi
+}
+
+
+apply_mingw_patch() {
+
+    patch -p1 << 'EOF'
+diff -urN omniORB-4.1.3/config/config.mk omniORB-4.1.3-mingw-patch/config/config.mk
+--- omniORB-4.1.3/config/config.mk      Mon Mar 10 09:56:33 2008
++++ omniORB-4.1.3-mingw-patch/config/config.mk  Tue Jul 14 15:35:34 2009
+@@ -53,7 +53,7 @@
+ #platform = x86_win32_vs_7
+ #platform = x86_win32_vs_8
+ #platform = x86_win32_vs_9
+-#platform = x86_win32_mingw
++platform = x86_win32_mingw
+ #platform = x86_win32_dmc
+ #platform = sun4_sosV_5.5
+ #platform = sun4_sosV_5.6
+diff -urN omniORB-4.1.3/mk/platforms/x86_win32_mingw.mk omniORB-4.1.3-mingw-patch/mk/platforms/x86_win32_mingw.mk
+--- omniORB-4.1.3/mk/platforms/x86_win32_mingw.mk       Mon Oct 23 11:47:44 2006
++++ omniORB-4.1.3-mingw-patch/mk/platforms/x86_win32_mingw.mk   Tue Jul 14 15:06:39 2009
+@@ -21,7 +21,7 @@
+ # http://sourceforge.net/project/showfiles.php?group_id=51138
+ # In that case, uncomment the first line below.
+
+-PYTHON = $(ABSTOP)/$(BINDIR)/omnipython
++PYTHON = python
+ #PYTHON = /cygdrive/c/Python23/python
+
+
+diff -urN omniORB-4.1.3/src/lib/dir.mk omniORB-4.1.3-mingw-patch/src/lib/dir.mk
+--- omniORB-4.1.3/src/lib/dir.mk        Sun Mar 23 22:02:54 2003
++++ omniORB-4.1.3-mingw-patch/src/lib/dir.mk    Tue Jul 14 15:29:30 2009
+@@ -16,8 +16,10 @@
+
+ ifndef EmbeddedSystem
+ ifdef Win32Platform
++ifndef MinGW32Build
+ export::
+ 	(cd $(EXPORT_TREE)/$(BINDIR); rebase.exe -b 0x68000000 -d *_rt.dll; )
+ 	(cd $(EXPORT_TREE)/$(BINDIR); rebase.exe -b 0x68000000 -d *_rtd.dll; )
++endif
+ endif
+ endif
+diff -urN omniORB-4.1.3/src/lib/omniORB/connections/dir.mk omniORB-4.1.3-mingw-patch/src/lib/omniORB/connections/dir.mk
+--- omniORB-4.1.3/src/lib/omniORB/connections/dir.mk    Wed Jul 19 11:27:48 2006
++++ omniORB-4.1.3-mingw-patch/src/lib/omniORB/connections/dir.mk        Tue Jul 14 15:21:07 2009
+@@ -17,7 +17,7 @@
+   DIR_CPPFLAGS += -D"NTArchitecture"
+   vpath %.cc $(VPATH):$(VPATH:%=%/../orbcore)
+   SHARED_ONLY_OBJS = msvcdllstub.o
+-  EXTRA_LIBS    = advapi32.lib
++  EXTRA_LIBS    = $(patsubst %,$(LibNoDebugSearchPattern),advapi32)
+   MSVC_STATICLIB_CXXNODEBUGFLAGS += -D_WINSTATIC
+   MSVC_STATICLIB_CXXDEBUGFLAGS += -D_WINSTATIC
+ endif
+EOF
+
+} # end of apply_mingw_patch

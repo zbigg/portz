@@ -90,7 +90,7 @@ elif [ "$action" = "dist" ] ; then
     filename=${package}-${version}${dist_suffix}.tar.gz
     inform "making distribution: ${filename}"
     
-    ( cd ${tmpsitedir} ; tar chozf ${here}/${filename} . ; )
+    ( cd ${tmpsitedir} ; tar chozf ${here}/${filename} * ; )
 else
     fail "action '$action' not supported"
 fi

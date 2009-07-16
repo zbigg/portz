@@ -51,23 +51,31 @@ install_in_tmpsitedir() {
     )
 }
 
+create_manifest()
+{
+    mkdir -p ${tmpsitedir}${manifest_dir}
+    (
+        cd ${tmpsitedir}; 
+        find . -type f | sed -e 'sX^\./XX' > ${tmpsitedir}${manifest_file}
+    )
+}
+
 clean_tmpdirs()
 {
     inform "removing temporary files"
     rm -rf $tmpsrcdir $tmpsitedir
 }
+
 if [ "$action" = "install" ] ; then
-    inform "BUILD"
-    
+    inform "BUILDING"
     install_in_tmpsitedir
     
+    inform "updating manifest"
+    create_manifest
+        
     inform "INSTALLATION"
     (
-	inform "updating manifest"
-	mkdir -p ${manifest_dir}
-	(cd ${tmpsitedir}; find -type f) > ${manifest_file}
-	
-	inform "installing $(cat ${manifest_file} | wc -l ) files"
+	inform "installing $(cat ${tmpsitedir}${manifest_file} | wc -l ) files"
 	
         # this hack is something like
         #   cp -r --dont-create-folders-that-already exist
@@ -78,19 +86,17 @@ if [ "$action" = "install" ] ; then
     
 elif [ "$action" = "dist" ] ; then
     inform "BUILDING"
-    
     install_in_tmpsitedir
+    
     inform "updating manifest"
-    (
-        cd ${tmpsitedir}; 
-        mkdir -p ${tmpsitedir}${manifest_dir}
-        find -type f > ${tmpsitedir}${manifest_file}
-    )
+    create_manifest
+    
+    inform "DIST"
     here=$(pwd)
     filename=${package}-${version}${dist_suffix}.tar.gz
-    inform "making distribution: ${filename}"
+    inform "creating distribution archive: ${filename} ($(cat ${manifest_file} | wc -l ) files)"
     
-    ( cd ${tmpsitedir} ; tar chozf ${here}/${filename} . ; )
+    ( cd ${tmpsitedir} ; tar chozf ${here}/${filename} * ; )
 else
     fail "action '$action' not supported"
 fi

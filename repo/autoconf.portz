@@ -9,3 +9,7 @@ lists the operating system features that the package can use, in the form of M4
 macro calls."
 web="http://www.gnu.org/software/autoconf/"
 
+install() {
+	cpus=1
+	oos_install
+}

@@ -1,0 +1,18 @@
+version=1.34
+baseurl=http://downloads.sourceforge.net/sourceforge/cppcheck/cppcheck-${version}.tar.bz2
+web=http://cppcheck.wiki.sourceforge.net/
+
+goto_srcdir()
+{
+    cd cppcheck-${version}
+}
+install()
+{
+    if [ "$OSTYPE" == "msys" ] ; then
+        ${MAKE} -j$cpus LDFLAGS="-lshlwapi"
+    else
+        ${MAKE} -j$cpus 
+    fi
+    
+    ${MAKE} install BIN=${DESTDIR}${exec_prefix}/bin
+}

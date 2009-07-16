@@ -19,6 +19,8 @@ install()
     $MAKE -j$cpus
     $MAKE -j$cpus -C contrib/src/stc
     
+    patch_Makefile_for_DESTDIR_aware_install
+    
     $MAKE install DESTDIR=${DESTDIR}
     $MAKE -C contrib/src/stc install DESTDIR=${DESTDIR}
     
@@ -28,3 +30,22 @@ install()
     fi
 }
 
+#    $(INSTALL_PROGRAM) lib/wx/config/$(TOOLCHAIN_FULLNAME) $(DESTDIR)$(libdir)/wx/config
+#    (cd $(DESTDIR)$(bindir) && rm -f wx-config && $(LN_S) $(libdir)/wx/config/$(TOOLCHAIN_FULLNAME) wx-config)
+
+patch_Makefile_for_DESTDIR_aware_install() 
+{
+    patch -p0 << 'EOF'
+--- Makefile.orig       2009-07-16 11:41:32.000000000 +0200
++++ Makefile    2009-07-16 11:43:18.000000000 +0200
+@@ -12204,7 +12204,7 @@
+	$(INSTALL_DIR) $(DESTDIR)$(bindir)
+	$(INSTALL_DIR) $(DESTDIR)$(libdir)/wx/config
+	$(INSTALL_PROGRAM) lib/wx/config/$(TOOLCHAIN_FULLNAME) $(DESTDIR)$(libdir)/wx/config
+-	(cd $(DESTDIR)$(bindir) && rm -f wx-config && $(LN_S) $(libdir)/wx/config/$(TOOLCHAIN_FULLNAME) wx-config)
++	(cd $(DESTDIR)$(bindir) && rm -f wx-config && cp $(DESTDIR)$(libdir)/wx/config/$(TOOLCHAIN_FULLNAME) wx-config)
+
+ locale_install:
+	$(INSTALL_DIR) $(DESTDIR)$(datadir)/locale
+EOF
+}

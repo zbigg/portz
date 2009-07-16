@@ -7,5 +7,6 @@ goto_srcdir()
 }
 install()
 {
+    mkdir -p ${DESTDIR}${prefix}/bin
     cp *.EXE ${DESTDIR}${prefix}/bin
 }

@@ -188,7 +188,7 @@ install()
 {
     ./configure --prefix=$prefix --exec_prefix=$exec_prefix $configure_options
     $MAKE -j$cpus
-    $MAKE install
+    $MAKE install DESTDIR=${DESTDIR}
 }
 
 oos_install() {
@@ -197,7 +197,7 @@ oos_install() {
     cd ../build
     ${srcdir}/configure --prefix=$prefix --exec_prefix=$exec_prefix $configure_options
     $MAKE -j$cpus
-    $MAKE install
+    $MAKE install DESTDIR=${DESTDIR}
 }
 
 copy_install() {

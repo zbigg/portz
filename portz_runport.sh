@@ -94,7 +94,7 @@ elif [ "$action" = "dist" ] ; then
     inform "DIST"
     here=$(pwd)
     filename=${package}-${version}${dist_suffix}.tar.gz
-    inform "creating distribution archive: ${filename} ($(cat ${manifest_file} | wc -l ) files)"
+    inform "creating distribution archive: ${filename} ($(cat ${tmpsitedir}${manifest_file} | wc -l ) files)"
     
     ( cd ${tmpsitedir} ; tar chozf ${here}/${filename} * ; )
 else

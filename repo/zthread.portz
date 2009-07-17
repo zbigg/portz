@@ -1,0 +1,6 @@
+version=2.3.2
+baseurl=http://prdownloads.sourceforge.net/zthread/ZThread-${version}.tar.gz
+web=http://zthread.sourceforge.net/
+
+CXXFLAGS="-g -O2 -fpermissive"
+ 

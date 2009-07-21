@@ -7,10 +7,10 @@ web="http://unittest-cpp.sourceforge.net/"
 
 install() {
     if [ "$OSTYPE" = "msys" ] ; then
-        $MAKE -j$cpus CXXFLAGS="-O2 -g -Wall" MSYSTEM=MINGW32 libUnitTest++.a
+        ${MAKE_PARALLEL} CXXFLAGS="-O2 -g -Wall" MSYSTEM=MINGW32 libUnitTest++.a
 	PLATFORM=Win32
     else
-	$MAKE -j$cpus libUnitTest++.a
+	${MAKE_PARALLEL} libUnitTest++.a
 	PLATFORM=Posix
     fi
     mkdir -p $DESTDIR$exec_prefix/lib

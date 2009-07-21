@@ -16,8 +16,8 @@ install()
     fi
     
     ./configure --prefix=$prefix --exec-prefix=$exec_prefix  --disable-debug --disable-monolithic --enable-shared --enable-unicode
-    $MAKE -j$cpus
-    $MAKE -j$cpus -C contrib/src/stc
+    ${MAKE_PARALLEL}
+    ${MAKE_PARALLEL} -C contrib/src/stc
     
     patch_Makefile_for_DESTDIR_aware_install
     

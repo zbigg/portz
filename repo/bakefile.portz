@@ -6,6 +6,6 @@ web=http://bakefile.org
 install() {
 	# bakefile doesn't support different prefix/exec_prefix
         ./configure --prefix=$exec_prefix
-	$MAKE -j$cpus
+	${MAKE_PARALLEL}
 	$MAKE install
 }

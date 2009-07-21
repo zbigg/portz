@@ -4,6 +4,6 @@ web=http://www.stack.nl/~dimitri/doxygen/index.html
 
 install() {
 	./configure --prefix $exec_prefix
-	$MAKE -j$cpus
+	${MAKE_PARALLEL}
 	$MAKE install
 }

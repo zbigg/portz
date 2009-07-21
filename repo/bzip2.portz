@@ -4,7 +4,7 @@ web=http://www.bzip.org/
 
 install()
 {
-    make -j${cpus} libbz2.a
+    ${MAKE_PARALLEL} libbz2.a
     
     mkdir -p ${DESTDIR}${prefix}/include
     mkdir -p ${DESTDIR}${prefix}/lib

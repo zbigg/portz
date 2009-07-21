@@ -26,7 +26,7 @@ fi
 
 . $package_file
 
-tmpsrcdir=/tmp/portz_build/$package
+tmpsrcdir=/tmp/portz_build/src/$package
 tmpsitedir=/tmp/portz_build/site/$package
     
 install_in_tmpsitedir() {

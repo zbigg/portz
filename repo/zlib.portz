@@ -8,6 +8,6 @@ web="http://www.zlib.net"
 install() {    
     ./configure --prefix=$prefix --exec-prefix=$exec_prefix
     
-    $MAKE -j$cpus
+    ${MAKE_PARALLEL}
     $MAKE install prefix=${DESTDIR}$prefix exec_prefix=${DESTDIR}$exec_prefix
 }

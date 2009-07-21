@@ -5,7 +5,7 @@ web=http://botan.randombit.net/
 install() {    
     ./configure.pl --prefix=$prefix --exec-prefix=$exec_prefix --cc=gcc
     
-    $MAKE -j$cpus
+    ${MAKE_PARALLEL}
     $MAKE install DESTDIR=${DESTDIR}$prefix
 }
 

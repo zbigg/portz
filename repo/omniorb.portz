@@ -23,7 +23,7 @@ install()
         cp -r man/* ${DESTDIR}${prefix}/share/man
     else
         ./configure --prefix=$prefix --exec_prefix=$exec_prefix $configure_options
-        $MAKE -j$cpus
+        ${MAKE_PARALLEL}
         $MAKE install
     fi
 }

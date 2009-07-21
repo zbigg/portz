@@ -9,9 +9,9 @@ goto_srcdir()
 install()
 {
     if [ "$OSTYPE" == "msys" ] ; then
-        ${MAKE} -j$cpus LDFLAGS="-lshlwapi"
+        ${MAKE_PARALLEL} LDFLAGS="-lshlwapi"
     else
-        ${MAKE} -j$cpus 
+        ${MAKE_PARALLEL} 
     fi
     
     ${MAKE} install BIN=${DESTDIR}${exec_prefix}/bin

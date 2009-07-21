@@ -125,6 +125,14 @@ portz_dist()
     $portz_root/portz_runport.sh $portz_root $package dist
 }
 
+make_parallel()
+{
+    ${MAKE} -j$cpus "$@"
+    return $?
+}
+
+MAKE_PARALLEL=make_parallel
+
 #
 # archive management
 #
@@ -187,7 +195,7 @@ portz_unarchive()
 install()
 {
     ./configure --prefix=$prefix --exec_prefix=$exec_prefix $configure_options
-    $MAKE -j$cpus
+    ${MAKE_PARALLEL}
     $MAKE install DESTDIR=${DESTDIR}
 }
 
@@ -196,7 +204,7 @@ oos_install() {
     mkdir ../build
     cd ../build
     ${srcdir}/configure --prefix=$prefix --exec_prefix=$exec_prefix $configure_options
-    $MAKE -j$cpus
+    ${MAKE_PARALLEL}
     $MAKE install DESTDIR=${DESTDIR}
 }
 

@@ -1,3 +1,11 @@
 version=7.9
 baseurl=ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-${version}.tar.bz2
 web=http://www.pcre.org/
+
+configure_options="--enable-utf8"
+
+if [ "$OSTYPE" == "msys" ] ; then 
+    configure_options="$configure_options --disable-cpp --disable-shared"
+fi
+
+

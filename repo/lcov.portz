@@ -2,7 +2,90 @@ version=1.7
 baseurl=http://downloads.sourceforge.net/ltp/lcov-${version}.tar.gz
 web=http://ltp.sourceforge.net/coverage/lcov.php
 
+msys_patch() {
+    patch -p1 << 'EOF'
+diff -urN lcov-1.7/bin/genhtml lcov-1.7-msysmingw/bin/genhtml
+--- lcov-1.7/bin/genhtml	2008-11-17 13:50:26 +0000
++++ lcov-1.7-msysmingw/bin/genhtml	2009-07-23 22:33:04 +0000
+@@ -4184,6 +4184,7 @@
+ 	for ($line_number = 1; <SOURCE_HANDLE> ; $line_number++)
+ 	{
+ 		chomp($_);
++		s/\r$//;
+ 
+ 		# Source code matches coverage data?
+ 		if (defined($checkdata->{$line_number}) &&
+diff -urN lcov-1.7/bin/geninfo lcov-1.7-msysmingw/bin/geninfo
+--- lcov-1.7/bin/geninfo	2008-11-17 13:50:26 +0000
++++ lcov-1.7-msysmingw/bin/geninfo	2009-07-23 22:32:52 +0000
+@@ -681,7 +681,10 @@
+ 	}
+ 
+ 	# Collect data from resulting .gcov files and create .info file
+-	@gcov_list = glob("*.gcov");
++	my @gcov_list1 = glob("*.gcov");
++	my @gcov_list2 = glob(".*.gcov");
++	
++	@gcov_list = (@gcov_list1, @gcov_list2);
+ 
+ 	# Check for files
+ 	if (!@gcov_list)
+@@ -926,7 +929,7 @@
+ 
+ 	$result = $dir;
+ 	# Prepend path if not absolute
+-	if ($dir =~ /^[^\/]/)
++	if ($dir !~ /^([A-Za-z]:)?[\/\\]/)
+ 	{
+ 		$result = "$path/$result";
+ 	}
+@@ -963,17 +966,18 @@
+ 	my @result;
+ 
+ 	$filename =~ s/^(.*).gcov$/$1/;
+-
+-	if ($filename =~ /^\/(.*)$/)
++	my $prefix ="";
++	if ($filename =~ /^(([A-Za-z]:)?[\/\\])(.*)$/)
+ 	{
+-		$filename = "$1";
++		$prefix="$1";
++		$filename = "$3";
+ 	}
+ 
+ 	foreach (@list)
+ 	{
+-		if (/\/\Q$filename\E(.*)$/ && $1 eq "")
++		if (/\Q$prefix$filename\E(.*)$/ && $1 eq "")
+ 		{
+-			@result = (@result, $_);
++		    @result = (@result, $_);
+ 		}
+ 	}
+ 	return @result;
+@@ -1101,6 +1105,7 @@
+ 	while (<INPUT>)
+ 	{
+ 		chomp($_);
++		s/\r$//;
+ 
+ 		if (/^\s+-:\s+0:Source:(.*)$/)
+ 		{
+@@ -1164,7 +1169,7 @@
+ 		while (<INPUT>)
+ 		{
+ 			chomp($_);
+-
++			
+ 			if (/^\t\t(.*)$/)
+ 			{
+ 				# Uninstrumented line
+EOF
+}
 install()
 {
-	make install PREFIX=${DESTDIR}${prefix} BIN_DIR=${DESTDIR}${prefix}/bin MAN_DIR=${DESTDIR}${prefix}/share/man
+    if [ "$OSTYPE" == "msys" ] ; then 
+	msys_patch
+    fi
+    make install PREFIX=${DESTDIR}${prefix} BIN_DIR=${DESTDIR}${prefix}/bin MAN_DIR=${DESTDIR}${prefix}/share/man
 }

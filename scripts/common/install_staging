@@ -1,0 +1,9 @@
+#!/bin/sh
+
+. ${portz_root}/scripts/defs.sh
+
+#
+# this installs already build package to staging area ($staging_dir)
+#
+
+portz_invoke ${MAKE} install DESTDIR=${staging_dir}

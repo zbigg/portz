@@ -1,0 +1,5 @@
+#!/bin/sh
+
+. ${portz_root}/scripts/defs.sh
+
+portz_invoke ${MAKE} -j${cpus} "$@"

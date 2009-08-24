@@ -5,9 +5,8 @@ description="zlib is designed to be a free, general-purpose, legally unencumbere
 lossless data-compression library for use on virtually any computer hardware and operating system."
 web="http://www.zlib.net"
 
-install() {    
-    ./configure --prefix=$prefix --exec-prefix=$exec_prefix
-    
-    ${MAKE_PARALLEL}
+install_staging_step() {
     $MAKE install prefix=${DESTDIR}$prefix exec_prefix=${DESTDIR}$exec_prefix
 }
+
+stereotype=gnu

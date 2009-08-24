@@ -1,0 +1,6 @@
+#!/bin/sh
+
+. ${portz_root}/scripts/defs.sh
+
+${src_dir}/configure "--prefix=${prefix}" "--exec_prefix=${exec_prefix}" ${configure_options}
+

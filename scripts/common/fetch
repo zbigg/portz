@@ -1,0 +1,28 @@
+#!/bin/sh
+
+. ${portz_root}/scripts/defs.sh
+
+portz_wget()
+{
+    if which wget > /dev/null; then
+        portz_invoke_always wget $*
+    else
+        inform "using bundled wget"
+        portz_invoke_always ${portz_tools}/wget/wget $*
+    fi
+}
+
+url=$1
+shift
+filename=`basename $url`
+archived_filename="${portz_archive}/$filename"
+
+if [ ! -f $archived_filename ] ; then
+    [ -d $portz_archive ] || mkdir -p $portz_archive
+    #trap "rm -rf $archived_filename; exit 1"
+    rm -rf $archived_filename.tmp
+    portz_wget -O $archived_filename.tmp $url
+    mv $archived_filename.tmp $archived_filename
+    #trap
+fi
+echo $archived_filename

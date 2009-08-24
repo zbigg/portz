@@ -1,0 +1,28 @@
+#!/bin/sh
+
+#
+# this script unarchives package to some current directory
+#
+. ${portz_root}/scripts/defs.sh
+
+portz_unzip()
+{
+    if which unzip > /dev/null; then
+        portz_invoke_always unzip $*
+    else
+        inform "using bundled unzip"
+        portz_invoke_always $portz_tools/unzip/unzip $*
+    fi
+} 
+
+name=${1}
+case $name in
+    *.tar)     portz_invoke_always ${TAR} xf  $name ;;
+    *.tar.gz)  portz_invoke_always ${TAR} zxf $name ;; 
+    *.tgz)     portz_invoke_always ${TAR} zxf $name ;; 
+    *.tar.bz2) portz_invoke_always ${TAR} jxf $name ;;
+    *.tbz)     portz_invoke_always ${TAR} jxf $name ;;
+    *.zip)     portz_unzip $name ;;
+    # TODO, add lzma
+    *) fail "unknown archive type: $name (supported tar (gz,bz2) and zip"
+esac

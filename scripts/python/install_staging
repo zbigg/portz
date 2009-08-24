@@ -1,0 +1,5 @@
+#!/bin/sh
+
+. ${portz_root}/scripts/defs.sh
+
+python setup.py install --prefix=${prefix} --exec-prefix=${exec_prefix} --root=${DESTDIR}

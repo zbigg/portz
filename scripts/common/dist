@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#
+# this scripts creates binary distribution package (tar.gz) with
+# compiled package
+#
+
+. ${portz_root}/scripts/defs.sh
+
+here=$(pwd)
+
+filename=${package}-${version}${dist_suffix}.tar.gz
+
+inform "creating distribution archive: ${filename} ($(cat ${staging_dir}${manifest_file} | wc -l ) files)"
+
+( cd ${staging_dir} ; portz_invoke tar chozf ${here}/${filename} * ; )
+

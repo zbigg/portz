@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ `ls -1 | wc -l` = "1" ] ; then 
+    cd `ls -1`
+else
+    fail "unable to find source directory in unpacked archive, override goto_srcdir() in package def"
+fi
+
+pwd

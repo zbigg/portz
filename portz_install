@@ -9,41 +9,23 @@
 # I.e., do what you like, but keep copyright and there's NO WARRANTY. 
 # 
 
-PNAME=`basename $0`
-set -e
-portz_root=`dirname $0`
-portz_root=$PWD
+PNAME=portz_install
+export PNAME
 
-. ${portz_root}/portz_common.sh
+set -e 
+#set -x
+portz_root=$(pwd)
+
+package=$1
+
+. ${portz_root}/scripts/defs.sh
 
 inform "prefix      = $prefix"
 inform "exec_prefix = $exec_prefix"
 
-#set -x
+. ${portz_scripts}/install_staging.sh
 
-if [ "$1" = "--update" ] ; then
-    inform "updating repository"
-    exit 0
-elif [ "$1" = "--install" ] ; then
-    shift
-else
-    #fail "bad usage"
-    #exit 1
-    :
-fi
+portz_step ${staging_dir} deploy
 
-packages=$*
 
-while [ -n "$packages" ] ; do
-    for package in $packages ; do
-        inform "trying $package ..."
-        if portz_is_installed $package ; then
-            inform "already installed"
-        elif portz_check_deps $package ; then
-            portz_install $package        
-        else
-            failed_deps="$failed_deps $package"
-        fi
-    done
-    packages="$failed_deps"
-done
+

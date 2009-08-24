@@ -33,23 +33,17 @@ bld_dir=$(portz_step ${src_dir} find_bld_dir)
 inform bld_dir="$bld_dir"
 
 case "$action" in
-    build)
-        portz_step ${bld_dir} build
+    build|configure|install_staging)
+        portz_step ${bld_dir} $action
         ;;
     patch)
-        portz_step ${src_dir} patch
-        ;;
-    configure)
-        portz_step ${bld_dir} configure
-        ;;
-    install_staging)
-        portz_step ${bld_dir} install_staging
+        portz_step ${src_dir} $action
         ;;
     dist)
-        portz_step $(pwd) dist
+        portz_step $(pwd) $action
         ;;
-    deploy)
-        portz_step ${staging_dir} deploy
+    deploy|make_manifest)
+        portz_step ${staging_dir} $action
         ;;
     *)
         fail "this action can't be run from $0"

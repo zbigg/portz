@@ -1,0 +1,19 @@
+version=1.8.6
+baseurl=http://files.randombit.net/botan/Botan-${version}.tbz
+web=http://botan.randombit.net/
+
+configure_step() {
+    opts="--prefix=$exec_prefix --exec-prefix=$exec_prefix"
+    
+    
+    if [ "$OSTYPE" == "msys" ] ; then 
+        opts="$opts --disable-shared --cc=gcc --os=mingw"
+    fi
+
+    portz_invoke ./configure.py $opts
+}
+
+install_staging_step()
+{
+    portz_invoke ${MAKE} install DESTDIR=${staging_dir}${prefix}
+}

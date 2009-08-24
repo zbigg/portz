@@ -1,0 +1,8 @@
+#!/bin/sh
+
+. ${portz_root}/scripts/defs.sh
+
+if [ "$OSTYPE" == "msys" ] ; then 
+    portz_invoke "patch -p1 < ${package_folder}/gcc-no-ansi.patch"
+    portz_invoke "patch -p1 < ${package_folder}/mingw-configure.patch"
+fi

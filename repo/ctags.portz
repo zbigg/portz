@@ -1,3 +1,4 @@
 version=5.7
 baseurl=http://prdownloads.sourceforge.net/ctags/ctags-${version}.tar.gz
 web=http://ctags.sourceforge.net/
+stereotype="gnu"

@@ -9,3 +9,4 @@ if [ "$OSTYPE" == "msys" ] ; then
 fi
 
 
+stereotype="gnu"

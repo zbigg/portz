@@ -46,7 +46,7 @@ case "$action" in
         portz_step ${bld_dir} install_staging
         ;;
     dist)
-        portz_step ${staging_dir} dist
+        portz_step $(pwd) dist
         ;;
     deploy)
         portz_step ${staging_dir} deploy

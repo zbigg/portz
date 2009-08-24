@@ -1,14 +1,4 @@
 version="3.13"
 #baseurl="http://downloads.sourceforge.net/mingw/w32api-${version}.tar.gz"
 baseurl="http://downloads.sourceforge.net/mingw/w32api-${version}-mingw32-dev.tar.gz"
-
-goto_srcdir()
-{
-    true
-}
-
-install()
-{
-    cp -rpv include ${DESTDIR}${prefix}
-    cp -rpv lib ${DESTDIR}${prefix}
-}
+stereotype=verbatim

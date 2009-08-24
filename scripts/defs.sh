@@ -106,7 +106,16 @@ elif [ -n "$NUMBER_OF_PROCESSORS" ] ; then
 else
     cpus=1
 fi
-    
+
+portz_make_parallel()
+{
+    ${MAKE} -j$cpus "$@"
+}
+MAKE_PARALLEL=portz_make_parallel
+#
+# read package config
+#
+
 if [ -n "$package" ] ; then
     manifest_file=${exec_prefix}/lib/portz/${package}.MANIFEST
     staging_dir=${TMP}/portz/${package}/staging

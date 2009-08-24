@@ -7,13 +7,26 @@ you a chance to use and/or modify the source."
 
 web="http://freeglut.sourceforge.net/"
 
-install()
+stereotype="gnu"
+
+configure_step()
 {
     if [ "$OSTYPE" == "msys" ] ; then
         export CFLAGS="$CFLAGS -O2 -DFREEGLUT_STATIC"
     fi
     
     ./configure --prefix=$prefix --exec-prefix=$exec_prefix --disable-shared --enable-static
+}
+
+build_step()
+{
+    ${MAKE_PARALLEL} -C src install
+    ${MAKE_PARALLEL} -C include install
+}
+
+install_staging_step()
+{
     $MAKE -C src install
     $MAKE -C include install
 }
+

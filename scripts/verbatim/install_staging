@@ -1,0 +1,9 @@
+#!/bin/sh
+
+. ${portz_root}/scripts/defs.sh 
+
+where=${prefix}
+
+mkdir -p ${DESTDIR}/${where}
+cp -rv * ${DESTDIR}/${where}
+

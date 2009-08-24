@@ -3,9 +3,10 @@ version=0.2.5
 baseurl=http://prdownloads.sourceforge.net/bakefile/bakefile-${version}.tar.gz
 web=http://bakefile.org
 
-install() {
+stereotype="gnu"
+
+configure_step()
+{
 	# bakefile doesn't support different prefix/exec_prefix
-        ./configure --prefix=$exec_prefix
-	${MAKE_PARALLEL}
-	$MAKE install
+	./configure --prefix=$exec_prefix
 }

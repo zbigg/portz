@@ -4,4 +4,5 @@ web=http://www.python.org/
 
 configure_options="--enable-shared --disable-debug"
 
+stereotype="gnu"
 

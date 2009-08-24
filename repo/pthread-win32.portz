@@ -1,9 +1,13 @@
 version="2.8.0"
 baseurl="ftp://sourceware.org/pub/pthreads-win32/pthreads-w32-2-8-0-release.tar.gz"
 
-install()
+build_step()
 {
-    make GC-inlined
+    ${MAKE} -j$cpus GC-inlined
+}
+
+install_staging_step()
+{
     mkdir -p ${DESTDIR}${prefix}/bin
     mkdir -p ${DESTDIR}${prefix}/lib
     mkdir -p ${DESTDIR}${prefix}/include

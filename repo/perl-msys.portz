@@ -1,12 +1,6 @@
 version=5.6.1
 baseurl=http://sunet.dl.sourceforge.net/sourceforge/mingw/perl-5.6.1-MSYS-1.0.11-1.tar.bz2
 web=http://www.perl.org
-
-goto_srcdir()
-{
-    true
-}
-
-install() {
-    copy_install /
-}
+prefix=/
+exec_prefix=/
+stereotype=verbatim

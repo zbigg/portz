@@ -4,20 +4,29 @@ description="UnitTest++ is a lightweight unit testing framework for C++.
 It was designed to do test-driven development on a wide variety of platforms. Simplicity, portability, speed, and small footprint are all very important aspects of UnitTest++."
 web="http://unittest-cpp.sourceforge.net/"
 
+if [ "$OSTYPE" = "msys" ] ; then
+    utpp_platform=Win32
+else
+    utpp_platform=Posix
+fi
 
-install() {
+build_step()
+{
     if [ "$OSTYPE" = "msys" ] ; then
         ${MAKE_PARALLEL} CXXFLAGS="-O2 -g -Wall" MSYSTEM=MINGW32 libUnitTest++.a
-	PLATFORM=Win32
     else
 	${MAKE_PARALLEL} libUnitTest++.a
-	PLATFORM=Posix
     fi
+}
+
+install_staging_step() {
     mkdir -p $DESTDIR$exec_prefix/lib
     cp libUnitTest++.a $DESTDIR$exec_prefix/lib/libunittest++.a
+    
     mkdir -p $DESTDIR$prefix/include/unittest++
     cp src/*.h $DESTDIR$prefix/include/unittest++
-    mkdir -p $DESTDIR$prefix/include/unittest++/$PLATFORM
-    cp src/$PLATFORM/*.h $DESTDIR$prefix/include/unittest++/$PLATFORM
+    
+    mkdir -p $DESTDIR$prefix/include/unittest++/${utpp_platform}
+    cp src/${utpp_platform}/*.h $DESTDIR$prefix/include/unittest++/${utpp_platform}
 }
 

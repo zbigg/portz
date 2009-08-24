@@ -2,8 +2,6 @@ version=1.5.8
 baseurl=http://ftp.stack.nl/pub/users/dimitri/doxygen-${version}.src.tar.gz
 web=http://www.stack.nl/~dimitri/doxygen/index.html
 
-install() {
+configure_step() {
 	./configure --prefix $exec_prefix
-	${MAKE_PARALLEL}
-	$MAKE install
 }

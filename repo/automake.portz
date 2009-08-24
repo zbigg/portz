@@ -4,3 +4,5 @@ baseurl="http://ftp.gnu.org/gnu/automake/automake-${version}.tar.bz2"
 description="..."
 
 web="http://www.gnu.org/software/automake/"
+
+stereotype="gnu"

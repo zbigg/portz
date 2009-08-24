@@ -5,4 +5,4 @@ It is a stream oriented parser that requires setting handlers to deal
 with the structure that the parser discovers in the document."
 web="http://expat.sourceforge.net/"
 
-
+stereotype="gnu"

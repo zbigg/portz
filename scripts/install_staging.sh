@@ -6,6 +6,7 @@
 
 archive_file=$(portz_step $(pwd) fetch ${baseurl})
 inform archive_file="$archive_file"
+rm -rf ${TMP}/portz/${package}/src
 portz_step ${TMP}/portz/${package}/src unarchive ${archive_file}
 
 # find dirs
@@ -28,6 +29,7 @@ portz_optional_step ${bld_dir} patch_after_conf
 portz_step ${bld_dir} build
 
 # and staging install
+rm -rf ${staging_dir}
 portz_step ${bld_dir} install_staging 
 
 # update manifest

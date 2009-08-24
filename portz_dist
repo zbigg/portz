@@ -9,19 +9,23 @@
 # I.e., do what you like, but keep copyright and there's NO WARRANTY. 
 # 
 
-PNAME=`basename $0`
-set -e
-portz_root=`dirname $0`
-portz_root=$PWD
+PNAME=portz_install
+export PNAME
 
-. ${portz_root}/portz_common.sh
+set -e 
+#set -x
+portz_root=$(pwd)
+
+package=$1
+
+. ${portz_root}/scripts/defs.sh
 
 inform "prefix      = $prefix"
 inform "exec_prefix = $exec_prefix"
 
-packages=$*
+. ${portz_scripts}/install_staging.sh
 
-for package in $packages ; do
-    portz_dist $package
-done        
-    
+portz_step $(pwd) dist
+
+
+

@@ -144,7 +144,7 @@ portz_do_invoke_step()
     fi
     (
         if [ "$(pwd)" != "$folder" ] ; then
-            portz_invoke_always cd ${folder}
+            cd ${folder}
         fi
         portz_root=${portz_root} package="$package" $script "$@"
         exit $?
@@ -162,6 +162,7 @@ portz_step()
     step_function_name="${action}_step"
     if declare -F ${step_function_name} ; then
         (cd $folder ; eval $step_function_name "$@" )
+        return $?
     fi
     
     for SP in ${portz_step_path} ; do
@@ -182,14 +183,18 @@ portz_optional_step()
     shift
     shift
 
+    step_function_name="${action}_step"
     if declare -F ${step_function_name} ; then
         (cd $folder ; eval $step_function_name "$@" )
+        return $?
     fi
     
     for SP in ${portz_step_path} ; do
         local script="$SP/$action"
         if [ -f "${script}" ] ; then
             portz_do_invoke_step $folder $script "$@"
+            return "$?"
         fi
     done
+    inform "${action} step skipped"
 }

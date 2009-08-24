@@ -13,22 +13,11 @@ PNAME=`basename $0`
 set -e
 portz_root=$PWD
 
-. ${portz_root}/portz_common.sh
-
 package=$1
 
-package_file=$portz_repo/${package}.portz
-[ -f $package_file ] || fail "descriptor not found (extected $package_file), check package name or update repository"
+. ${portz_root}/scripts/defs.sh
 
-. $package_file 
 
-inform "fertching source from source url: $baseurl"
-archive=`portz_need_source $baseurl`
-inform "got archive: $archive"
-tmpsrcdir=$PWD/src/$package
-mkdir -p $tmpsrcdir
-(
-    cd $tmpsrcdir
-    inform unpacking to $PWD
-    portz_unarchive $archive 
-)
+archive_file=$(portz_step $(pwd) fetch ${baseurl})
+inform archive_file="$archive_file"
+portz_step src/${package} unarchive ${archive_file}

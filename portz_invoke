@@ -20,6 +20,7 @@ portz_root=$(pwd)
 package=$1
 action=$2
 . ${portz_root}/scripts/defs.sh
+portz_assert_know_package
 
 inform "prefix      = $prefix"
 inform "exec_prefix = $exec_prefix"

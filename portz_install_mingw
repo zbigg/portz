@@ -1,0 +1,53 @@
+#!/bin/sh
+#
+# This file is part of 'portz'
+#
+# Copyright (C) Zbigniew Zagorski <z.zagorski@gmail.com> and others, 
+# licensed to the public under the terms of the GNU GPL (>= 2)
+# see the file COPYING for details
+#
+# I.e., do what you like, but keep copyright and there's NO WARRANTY. 
+# 
+
+PNAME=portz_mingw_install
+export PNAME
+
+set -e 
+#set -x
+portz_root=$(pwd)
+
+stereotype=verbatim
+. ${portz_root}/scripts/defs.sh
+
+package=$1
+shift
+
+staging_dir=${TMP}/portz/${package}/staging
+src_dir=${TMP}/portz/${package}/src
+
+inform "prefix      = $prefix"
+inform "exec_prefix = $exec_prefix"
+
+rm -rf ${staging_dir}
+rm -rf ${src_dir}
+
+while [ -n "$1" ] ; do
+    filename=$1
+    shift
+    baseurl=http://prdownloads.sf.net/mingw/${filename}
+
+    archive_file=$(portz_step $(pwd) fetch ${baseurl})
+    inform archive_file="$archive_file"
+    
+    portz_step ${src_dir} unarchive ${archive_file}
+done
+portz_step ${src_dir}     install_staging
+portz_step ${staging_dir} make_manifest
+
+portz_step ${staging_dir} deploy
+
+rm -rf ${TMP}/portz/${package}
+
+
+
+

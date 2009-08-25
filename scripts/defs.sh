@@ -67,7 +67,7 @@ esac
 # 
 #
 
-stereotype="auto"
+stereotype="${stereotype-auto}"
 
 #
 # prefix and exec_prefix 
@@ -130,9 +130,12 @@ if [ -n "$package" ] ; then
     elif [ -f "${portz_repo}/${package}" ] ; then
         package_def_file="${portz_repo}/${package}"
     else
-        fail "unknown package (not found in ${portz_repo}"
+        #inform "unknown package (not found in ${portz_repo}"
+        unknown_package=1
     fi
-    . ${package_def_file}
+    if [ -z "${unknown_package}" ] ; then
+        . ${package_def_file}
+    fi
 fi
 
 #

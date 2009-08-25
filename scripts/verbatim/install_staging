@@ -4,6 +4,6 @@
 
 where=${prefix}
 
-mkdir -p ${DESTDIR}/${where}
-cp -rv * ${DESTDIR}/${where}
+portz_invoke mkdir -p ${DESTDIR}${where}
+portz_invoke cp -rv * ${DESTDIR}${where}
 

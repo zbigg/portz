@@ -33,3 +33,8 @@ portz_invoke_always()
     inform "[!] $@"
     eval "$@"
 }
+
+portz_assert_know_package()
+{
+    [ -n "$unknown_package" ] && fail "unknown package (descriptor not found in ${portz_repo})"
+}

@@ -13,9 +13,7 @@ PNAME=`basename $0`
 set -e
 portz_root=$PWD
 
-. ${portz_root}/portz_common.sh
-
-package=$1
+. ${portz_root}/scripts/defs.sh
 
 for x in "$@" ; do 
     echo "$0: $x"
@@ -49,5 +47,6 @@ fi
     echo "version=$version"
     echo baseurl="$(echo $baseurl | sed -e s,$version,\${version},)"
     echo web="$website"
+    echo stereotype="$stereotype"
 ) | tee repo/$name.portz
 

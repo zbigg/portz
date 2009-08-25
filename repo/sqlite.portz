@@ -1,4 +1,4 @@
-version=3.6.7
+version=3.6.17
 baseurl=http://sqlite.org/sqlite-${version}.tar.gz
 web=http://sqlite.org/
 

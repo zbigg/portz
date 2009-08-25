@@ -1,5 +1,5 @@
-version=5.6.1
-baseurl=http://sunet.dl.sourceforge.net/sourceforge/mingw/perl-5.6.1-MSYS-1.0.11-1.tar.bz2
+version=5.6.1_2.1-1
+baseurl=http://downloads.sourceforge.net/project/mingw/MSYS%20perl/perl-5.6.1_2-1/perl-5.6.1_2-1-msys-1.0.11-bin.tar.lzma
 web=http://www.perl.org
 prefix=/
 exec_prefix=/

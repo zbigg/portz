@@ -1,0 +1,32 @@
+#!/bin/sh
+#
+# This file is part of 'portz'
+#
+# Copyright (C) Zbigniew Zagorski <z.zagorski@gmail.com> and others, 
+# licensed to the public under the terms of the GNU GPL (>= 2)
+# see the file COPYING for details
+#
+# I.e., do what you like, but keep copyright and there's NO WARRANTY. 
+# 
+
+PNAME=`basename $0`
+set -e
+portz_root=$PWD
+
+package=$1
+
+. ${portz_root}/scripts/defs.sh
+
+if [ ! -f ${manifest_file} ] ; then
+    fail "manifest file not found (expecting ${manifest_file}"
+fi
+
+filename=${package}-${version}${dist_suffix}.tar.gz
+
+filename2="$(pwd)/$filename"
+
+cd / 
+cat ${manifest_file}  | xargs tar chofz ${filename2}
+
+inform "created ${filename}"
+

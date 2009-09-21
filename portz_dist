@@ -9,7 +9,7 @@
 # I.e., do what you like, but keep copyright and there's NO WARRANTY. 
 # 
 
-PNAME=portz_install
+PNAME=portz_dist
 export PNAME
 
 set -e 

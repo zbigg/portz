@@ -36,5 +36,7 @@ portz_invoke_always()
 
 portz_assert_know_package()
 {
-    [ -n "$unknown_package" ] && fail "unknown package (descriptor not found in ${portz_repo})"
+    if [ -n "$unknown_package" ] ; then
+        fail "unknown package (descriptor not found in ${portz_repo})"
+    fi
 }

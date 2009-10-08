@@ -1,0 +1,9 @@
+version=1.4.1
+baseurl=http://downloads.sourceforge.net/sourceforge/asio/asio-1.4.1.tar.bz2
+web=http://think-async.com/Asio/
+stereotype=gnu
+
+build_step()
+{
+    true
+}

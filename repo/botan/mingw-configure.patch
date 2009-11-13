@@ -1,6 +1,5 @@
-diff -ur Botan-1.8.6/configure.py Botan-1.8.6-mingw-gcc44/configure.py
---- Botan-1.8.6/configure.py	2009-08-13 08:54:02 +0000
-+++ Botan-1.8.6-mingw-gcc44/configure.py	2009-08-24 21:20:00 +0000
+--- /d/oss/portz2/src/botan/Botan-1.8.8/configure.py	2009-11-03 19:02:16 +0100
++++ configure.py	2009-11-13 12:38:36 +0100
 @@ -30,6 +30,10 @@
  from optparse import (OptionParser, OptionGroup,
                        IndentedHelpFormatter, SUPPRESS_HELP)
@@ -53,7 +52,7 @@ diff -ur Botan-1.8.6/configure.py Botan-1.8.6-mingw-gcc44/configure.py
              if os.access(filename, os.R_OK):
                  docs.append(filename)
          return docs
-@@ -263,7 +267,7 @@
+@@ -265,7 +269,7 @@
      to_obj.lives_in = dirname
      if basename == 'info.txt':
          (obj_dir,to_obj.basename) = os.path.split(dirname)
@@ -62,7 +61,7 @@ diff -ur Botan-1.8.6/configure.py Botan-1.8.6-mingw-gcc44/configure.py
              to_obj.parent_module = os.path.basename(obj_dir)
          else:
              to_obj.parent_module = None
-@@ -337,13 +341,13 @@
+@@ -339,13 +343,13 @@
  
          def add_dir_name(filename):
              if filename.count(':') == 0:
@@ -78,7 +77,7 @@ diff -ur Botan-1.8.6/configure.py Botan-1.8.6-mingw-gcc44/configure.py
                                  *filename.split(':'))
  
          self.add = map(add_dir_name, self.add)
-@@ -629,7 +633,7 @@
+@@ -631,7 +635,7 @@
                  basename = basename.replace(src_suffix,
                                              '.' + osinfo.obj_suffix)
  
@@ -87,7 +86,7 @@ diff -ur Botan-1.8.6/configure.py Botan-1.8.6-mingw-gcc44/configure.py
  
  
      def choose_mp_bits():
-@@ -665,7 +669,7 @@
+@@ -667,7 +671,7 @@
  
      def prefix_with_build_dir(path):
          if options.with_build_dir != None:
@@ -96,7 +95,7 @@ diff -ur Botan-1.8.6/configure.py Botan-1.8.6-mingw-gcc44/configure.py
          return path
  
      return {
-@@ -755,9 +759,9 @@
+@@ -757,9 +761,9 @@
          'so_suffix': osinfo.so_suffix,
  
          'botan_config': prefix_with_build_dir(
@@ -108,7 +107,7 @@ diff -ur Botan-1.8.6/configure.py Botan-1.8.6-mingw-gcc44/configure.py
                           build_config.pkg_config_file())),
  
          'doc_files': makefile_list(build_config.doc_files()),
-@@ -857,7 +861,7 @@
+@@ -873,7 +877,7 @@
      def find_files_named(desired_name, in_path):
          for (dirpath, dirnames, filenames) in os.walk(in_path):
              if desired_name in filenames:
@@ -117,19 +116,20 @@ diff -ur Botan-1.8.6/configure.py Botan-1.8.6-mingw-gcc44/configure.py
  
      modules = dict([(mod.basename, mod) for mod in
                      [ModuleInfo(info) for info in
-@@ -865,9 +869,9 @@
+@@ -881,10 +885,10 @@
  
      def list_files_in_build_data(subdir):
          for (dirpath, dirnames, filenames) in \
 -                os.walk(os.path.join(options.build_data, subdir)):
 +                os.walk(os_path_join(options.build_data, subdir)):
              for filename in filenames:
--                yield os.path.join(dirpath, filename)
-+                yield os_path_join(dirpath, filename)
+                 if filename.endswith('.txt'):
+-                    yield os.path.join(dirpath, filename)
++                    yield os_path_join(dirpath, filename)
  
-     archinfo = dict([(os.path.basename(info), ArchInfo(info))
-                      for info in list_files_in_build_data('arch')])
-@@ -905,16 +909,16 @@
+     def form_name(filepath):
+         return os.path.basename(filepath).replace('.txt', '')
+@@ -926,16 +930,16 @@
  
              dirs_up = count_dirs(target_dir)
  
@@ -149,7 +149,7 @@ diff -ur Botan-1.8.6/configure.py Botan-1.8.6-mingw-gcc44/configure.py
  
          else:
              shutil.copy(filename, target_dir)
-@@ -941,7 +945,7 @@
+@@ -962,7 +966,7 @@
                   build_config.full_include_dir]:
          os.makedirs(dirs)
  
@@ -158,7 +158,7 @@ diff -ur Botan-1.8.6/configure.py Botan-1.8.6-mingw-gcc44/configure.py
          options.makefile_dir,
          choose_makefile_template(template_vars['makefile_style']))
  
-@@ -955,8 +959,8 @@
+@@ -976,8 +980,8 @@
                               ('botan-config.in', 'botan-config'),
                               ('botan.pc.in', build_config.pkg_config_file()),
                               ('botan.doxy.in', 'botan.doxy')]:
@@ -169,7 +169,7 @@ diff -ur Botan-1.8.6/configure.py Botan-1.8.6-mingw-gcc44/configure.py
  
      for (template, sink) in templates_to_proc.items():
          try:
-@@ -994,10 +998,10 @@
+@@ -1015,10 +1019,10 @@
          raise Exception("Jython detected: need --os and --cpu to set target")
  
      options.base_dir = os.path.dirname(argv[0])
@@ -183,7 +183,7 @@ diff -ur Botan-1.8.6/configure.py Botan-1.8.6-mingw-gcc44/configure.py
  
      (modules, archinfo, ccinfo, osinfo) = load_info_files(options)
  
-@@ -1076,7 +1080,7 @@
+@@ -1097,7 +1101,7 @@
  
      build_config = BuildConfigurationInformation(options, modules_to_use)
      build_config.headers.append(
@@ -192,7 +192,7 @@ diff -ur Botan-1.8.6/configure.py Botan-1.8.6-mingw-gcc44/configure.py
  
      template_vars = create_template_vars(build_config, options,
                                           modules_to_use,
-@@ -1094,6 +1098,7 @@
+@@ -1115,6 +1119,7 @@
      try:
          main()
      except Exception, e:

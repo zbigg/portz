@@ -1,6 +1,6 @@
-diff -ur Botan-1.8.6/src/build-data/cc/gcc Botan-1.8.6-mingw-gcc44/src/build-data/cc/gcc
---- Botan-1.8.6/src/build-data/cc/gcc	2009-08-13 08:54:04 +0000
-+++ Botan-1.8.6-mingw-gcc44/src/build-data/cc/gcc	2009-08-24 18:47:22 +0000
+diff -ur Botan-1.8.6/src/build-data/cc/gcc.txt Botan-1.8.6-mingw-gcc44/src/build-data/cc/gcc.txt
+--- Botan-1.8.6/src/build-data/cc/gcc.txt	2009-08-13 08:54:04 +0000
++++ Botan-1.8.6-mingw-gcc44/src/build-data/cc/gcc.txt	2009-08-24 18:47:22 +0000
 @@ -10,7 +10,7 @@
  add_lib_dir_option "-L"
  add_lib_option "-l"

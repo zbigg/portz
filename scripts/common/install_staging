@@ -6,4 +6,10 @@
 # this installs already build package to staging area ($staging_dir)
 #
 
-portz_invoke ${MAKE} install DESTDIR=${staging_dir}
+if [ "$make_install_no_destdir" = "1" ] ;then
+	MAKE_ARGS="prefix=${DESTDIR}/$prefix exec_prefix=${DESTDIR}/${exec_prefix} "
+else
+	MAKE_ARGS="DESTDIR=${staging_dir}"
+fi
+
+portz_invoke ${MAKE} install ${MAKE_ARGS}

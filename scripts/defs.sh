@@ -116,6 +116,8 @@ MAKE_PARALLEL=portz_make_parallel
 # read package config
 #
 
+[ -z "${TMP}" ] && TMP=/tmp
+
 if [ -n "$package" ] ; then
     manifest_file=${exec_prefix}/lib/portz/${package}.MANIFEST
     staging_dir=${TMP}/portz/${package}/staging

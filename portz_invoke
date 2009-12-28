@@ -37,7 +37,7 @@ case "$action" in
     build|configure|install_staging)
         portz_step ${bld_dir} $action
         ;;
-    patch)
+    patch|patch_after_conf)
         portz_step ${src_dir} $action
         ;;
     dist)

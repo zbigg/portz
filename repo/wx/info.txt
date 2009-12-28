@@ -1,0 +1,44 @@
+version=2.8.10
+baseurl="http://prdownloads.sourceforge.net/wxwindows/wxWidgets-${version}.tar.gz"
+description="wxWidgets lets developers create applications for Win32, Mac OS X, GTK+, X11, Motif, WinCE, 
+and more  using one codebase. 
+It can be used from languages such as C++, Python, Perl, and C#/.NET. 
+Unlike other cross-platform toolkits, wxWidgets applications look and feel native. 
+This is because wxWidgets uses the platform's own native controls rather than emulating them. 
+It's also extensive, free, open-source, and mature."
+
+web="http://www.wxwidgets.org"
+
+sterotype=gnu
+    
+configure_step()
+{
+    portz_invoke ./configure --prefix=$prefix --exec-prefix=$exec_prefix  \
+        --disable-debug --disable-monolithic --enable-shared --enable-unicode
+        
+    if [ "$OSTYPE" == "msys" ] ; then 
+        portz_invoke "patch -p0 < ${package_folder}/patch_Makefile_for_DESTDIR_aware_install.patch"
+    fi
+}
+
+build_step() 
+{
+    #if [ "$OSTYPE" == "msys" ] ; then
+    #    cpus=1 #wx build on mingw doesn't support parallel build
+    #fi
+    
+    portz_invoke ${MAKE_PARALLEL}
+    portz_invoke ${MAKE_PARALLEL} -C contrib/src/stc
+}
+
+install_staging_step() 
+{    
+    portz_invoke $MAKE install DESTDIR=${DESTDIR}
+    portz_invoke $MAKE -C contrib/src/stc install DESTDIR=${DESTDIR}
+    
+    if [ "$OSTYPE" == "msys" ] ; then
+        # fix msw install always installs dlls in LIB_DIR instead of BIN_DIR
+        portz_invoke mv ${DESTDIR}${exec_prefix}/lib/*.dll ${DESTDIR}${exec_prefix}/bin
+    fi
+}
+

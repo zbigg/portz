@@ -1,4 +1,6 @@
-version=5.7
+version=5.8
 baseurl=http://prdownloads.sourceforge.net/ctags/ctags-${version}.tar.gz
 web=http://ctags.sourceforge.net/
 stereotype="gnu"
+make_install_no_destdir=1
+

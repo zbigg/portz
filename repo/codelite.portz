@@ -1,0 +1,9 @@
+version=2.0.3365
+baseurl=http://downloads.sourceforge.net/project/codelite/Releases/codelite-${version}/codelite-2.0.3365.tar.gz
+web=http://codelite.org/
+stereotype=gnu
+
+configure_step()
+{
+	portz_invoke ./configure --prefix=$exec_prefix --plugins-dir=$exec_prefix/lib/codelite
+}

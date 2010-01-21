@@ -47,6 +47,7 @@ build_step() {
 install_staging_step()
 {
     if [ "$OSTYPE" == "msys" ] ; then
+        set -x
         export ACE_ROOT=$(pwd)
         export TAO_ROOT=${ACE_ROOT}/TAO
 
@@ -55,7 +56,7 @@ install_staging_step()
         for X in $(find . -name "*.h" | xargs -n 1 dirname | sort -u ) ; do
             T=${DESTDIR}${prefix}/include/ace/${X}
             mkdir -p ${T}
-            cp ${X}/*.h ${T}
+            cp  -vf ${X}/*.h ${T}
         done
 
         for X in $(find . -name "*.h" | xargs -n 10 egrep -l '#(.*)include(.+)\.cpp' | sed -e 's/\.h$/.cpp/')
@@ -63,7 +64,7 @@ install_staging_step()
            T=${DESTDIR}${prefix}/include/ace/${X}
            D=$(dirname $T)
             mkdir -p ${D}
-            cp ${X} ${D}
+            cp  -vf ${X} ${D}
         done
         popd
 
@@ -71,7 +72,7 @@ install_staging_step()
         pushd ace
         for X in $(find . -name "*.inl" | xargs -n 1 dirname | sort -u ) ; do
             mkdir -p ${DESTDIR}${prefix}/include/ace/${X}
-            cp ${X}/*.inl ${DESTDIR}${prefix}/include/ace/${X}
+            cp  -vf ${X}/*.inl ${DESTDIR}${prefix}/include/ace/${X}
         done
         popd
 
@@ -80,7 +81,7 @@ install_staging_step()
         for X in $(find . -name "*.h" | xargs -n 1 dirname | sort -u ) ; do
             T=${DESTDIR}${prefix}/include/tao/${X}
             mkdir -p ${T}
-            cp ${X}/*.h ${T}
+            cp  -vf ${X}/*.h ${T}
 
         done
         for X in $(find . -name "*.h" | xargs -n 10 egrep -l '#(.*)include(.+)\.cpp' | sed -e 's/\.h$/.cpp/')
@@ -88,7 +89,7 @@ install_staging_step()
            T=${DESTDIR}${prefix}/include/tao/${X}
            D=$(dirname $T)
             mkdir -p ${D}
-            cp ${X} ${D}
+            cp  -vf ${X} ${D}
         done
         popd
 
@@ -96,24 +97,27 @@ install_staging_step()
         pushd TAO/tao
         for X in $(find . -name "*.inl" | xargs -n 1 dirname | sort -u ) ; do
             mkdir -p ${DESTDIR}${prefix}/include/tao/${X}
-            cp ${X}/*.inl ${DESTDIR}${prefix}/include/tao/${X}
+            cp  -vf ${X}/*.inl ${DESTDIR}${prefix}/include/tao/${X}
         done
         popd
 
         # bin
         mkdir -p ${DESTDIR}${exec_prefix}/bin
-        cp bin/*.exe ${DESTDIR}${exec_prefix}/bin
+        cp -vf bin/*.exe ${DESTDIR}${exec_prefix}/bin
 
         # dlls
-        cp ace/*.dll ${DESTDIR}${exec_prefix}/bin
-        cp TAO/tao/*.dll ${DESTDIR}${exec_prefix}/bin
-        cp TAO/TAO_IDL/*.dll ${DESTDIR}${exec_prefix}/bin
+        cp -vf ace/*.dll ${DESTDIR}${exec_prefix}/bin
+        cp -vf TAO/tao/*.dll ${DESTDIR}${exec_prefix}/bin
+        cp -vf TAO/TAO_IDL/*.dll ${DESTDIR}${exec_prefix}/bin
+        cp -vf apps/gperf/src/*.dll ${DESTDIR}${exec_prefix}/bin
+        
+        strip ${DESTDIR}${exec_prefix}/bin/*.{dll,exe}
 
         # link libraries
         mkdir -p ${DESTDIR}${exec_prefix}/lib
-        cp ace/*.a     ${DESTDIR}${exec_prefix}/lib
-        cp TAO/tao/*.a ${DESTDIR}${exec_prefix}/lib
-        cp ace/*.a     ${DESTDIR}${exec_prefix}/lib
+        cp -vf ace/*.a     ${DESTDIR}${exec_prefix}/lib
+        cp -vf TAO/tao/*.a ${DESTDIR}${exec_prefix}/lib
+        cp -vf ace/*.a     ${DESTDIR}${exec_prefix}/lib
 
     else
         (cd  build ; ${MAKE} install DESTDIR=${DESTDIR} )

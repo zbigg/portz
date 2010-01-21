@@ -1,6 +1,6 @@
 #!/bin/sh
 
-version=5.7.1
+version=5.7.5
 baseurl=http://download.dre.vanderbilt.edu/previous_versions/ACE+TAO-${version}.tar.gz
 web=http://www.cs.wustl.edu/~schmidt/ACE.html
 
@@ -17,33 +17,20 @@ endif # threads
 EOF
 }
 
-mingw_patch() {
-    patch -p0 << 'EOF'
---- ace/OS_NS_stdio.h.old      Tue Jul 21 15:29:22 2009
-+++ ace/OS_NS_stdio.h  Tue Jul 21 15:36:34 2009
-@@ -117,7 +117,7 @@
- #if defined (fileno) && !defined (ACE_WIN32)
-   return fileno (fp);
- #elif defined (ACE_WIN32) && !defined (ACE_HAS_WINCE)
--  return (ACE_HANDLE)_get_osfhandle (ACE_STD_NAMESPACE::fileno (fp));
-+  return (ACE_HANDLE)_get_osfhandle (fileno (fp));
- #else
-   return ACE_STD_NAMESPACE::fileno (fp);
- #endif /* defined (fileno) */
-EOF
-}
 
-install() {
-    # configure
+configure_step()
+{
+    set -x
     if [ "$OSTYPE" == "msys" ] ; then
         mingw_configure
-        mingw_patch
     else
         mkdir -p build
         (cd build ; ../configure --prefix=${prefix} --exec_prefix=${exec_prefix} ${configure_options} )
     fi
+}
 
-    # build
+build_step() {
+    set -x
     if [ "$OSTYPE" == "msys" ] ; then
         export ACE_ROOT=$(pwd)
         export TAO_ROOT=${ACE_ROOT}/TAO
@@ -55,9 +42,10 @@ install() {
     else
         (cd  build ; ${MAKE_PARALLEL} )
     fi
+}
 
-    # install
-
+install_staging_step()
+{
     if [ "$OSTYPE" == "msys" ] ; then
         export ACE_ROOT=$(pwd)
         export TAO_ROOT=${ACE_ROOT}/TAO
@@ -130,8 +118,6 @@ install() {
     else
         (cd  build ; ${MAKE} install DESTDIR=${DESTDIR} )
     fi
-
-
 }
 
 # jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:

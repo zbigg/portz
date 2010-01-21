@@ -34,6 +34,9 @@ bld_dir=$(portz_step ${src_dir} find_bld_dir)
 inform bld_dir="$bld_dir"
 
 case "$action" in
+    fetch_src):
+        . ${portz_root}/scripts/fetch_src.sh
+        ;;
     build|configure|install_staging)
         portz_step ${bld_dir} $action
         ;;

@@ -1,0 +1,33 @@
+#!/bin/sh
+#
+# This file is part of 'portz'
+#
+# Copyright (C) Zbigniew Zagorski <z.zagorski@gmail.com> and others, 
+# licensed to the public under the terms of the GNU GPL (>= 2)
+# see the file COPYING for details
+#
+# I.e., do what you like, but keep copyright and there's NO WARRANTY. 
+# 
+
+PNAME=`basename $0`
+set -e
+portz_root=$PWD
+
+action=$1
+package=$2
+
+. ${portz_root}/scripts/defs.sh
+
+if [ "$action" = "list" ] ; then
+    ls -1 ${exec_prefix}/lib/portz/ | sed -e 's@.MANIFEST@@'
+elif [ "$action" = "files" ] ; then
+    if [ -z ${package} ] ; then
+        fail "need package name"
+    fi
+    if [ ! -f ${manifest_file} ] ; then
+        fail "package '$package' not installed (failed to read ${manifest_file})"
+    fi
+    cat ${manifest_file} | sed -e 'sX^X/X'
+else
+    fail "bad usage"
+fi

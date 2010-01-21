@@ -1,0 +1,29 @@
+#!/bin/sh
+#
+# This file is part of 'portz'
+#
+# Copyright (C) Zbigniew Zagorski <z.zagorski@gmail.com> and others, 
+# licensed to the public under the terms of the GNU GPL (>= 2)
+# see the file COPYING for details
+#
+# I.e., do what you like, but keep copyright and there's NO WARRANTY. 
+# 
+
+PNAME=`basename $0`
+set -e
+portz_root=$PWD
+
+package=$1
+
+. ${portz_root}/scripts/defs.sh
+if [ -z ${package} ] ; then
+    fail "need package name"
+fi
+if [ ! -f ${manifest_file} ] ; then
+    fail "package '$package' not installed (failed to read ${manifest_file})"
+fi
+
+XXX=/tmp/XXX
+cp ${manifest_file} $XXX
+(cd / ; cat $XXX | xargs -n 20 rm -rvf ;)
+rm $XXX

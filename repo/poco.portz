@@ -1,0 +1,10 @@
+version=1.3.6p2
+baseurl=http://downloads.sourceforge.net/sourceforge/poco//poco-1.3.6/poco-${version}.tar.gz
+#http://downloads.sourceforge.net/sourceforge/asio/asio-1.4.1.tar.bz2
+web=http://pocoproject.org/
+stereotype=gnu
+
+configure_step()
+{
+    ./configure --prefix=${exec_prefix} --no-samples
+}

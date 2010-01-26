@@ -1,0 +1,20 @@
+version=1.0.0-beta5
+baseurl=http://www.openssl.org/source/openssl-${version}.tar.gz
+web=http://www.openssl.org/
+stereotype=auto
+
+configure_step()
+{
+    portz_invoke "./config" no-capi shared -DOPENSSL_NO_CAPIENG "--prefix=${prefix}" ${configure_options}
+    portz_invoke make depend
+}
+
+build_step()
+{
+    ${MAKE}
+}
+
+install_staging_step()
+{
+    ${MAKE} install_sw INSTALL_PREFIX=${DESTDIR} INSTALLTOP=${prefix}
+}

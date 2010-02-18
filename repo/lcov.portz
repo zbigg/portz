@@ -1,0 +1,13 @@
+version=1.8
+baseurl=http://downloads.sourceforge.net/ltp/lcov-${version}.tar.gz
+web=http://ltp.sourceforge.net/coverage/lcov.php
+
+build_step()
+{
+    true
+}
+
+install_staging_step()
+{
+    portz_invoke make install PREFIX=${DESTDIR}${prefix} BIN_DIR=${DESTDIR}${prefix}/bin MAN_DIR=${DESTDIR}${prefix}/share/man
+}

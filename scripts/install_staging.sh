@@ -1,10 +1,8 @@
 #!/bin/sh
 
-. ${portz_root}/scripts/defs.sh
-
 # fetch and unarchive
 
-${portz_root}/scripts/fetch_src.sh
+. ${portz_root}/scripts/fetch_src.sh
 
 # find dirs
 

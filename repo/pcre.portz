@@ -1,4 +1,4 @@
-version=7.9
+version=8.01
 baseurl=ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-${version}.tar.bz2
 web=http://www.pcre.org/
 

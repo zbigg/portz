@@ -13,7 +13,6 @@ PNAME=portz_install
 export PNAME
 
 set -e 
-set -x
 portz_root=$(pwd)
 export portz_root
 package=$1

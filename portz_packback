@@ -25,7 +25,7 @@ filename=${package}-${version}${dist_suffix}.tar.gz
 
 filename2="$(pwd)/$filename"
 
-cd / 
+cd ${prefix}
 cat ${manifest_file}  | xargs tar chofz ${filename2}
 
 inform "created ${filename}"

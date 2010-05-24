@@ -13,5 +13,5 @@ filename=${package}-${version}${dist_suffix}.tar.gz
 
 inform "creating distribution archive: ${filename} ($(cat ${staging_dir}${manifest_file} | wc -l ) files)"
 
-( cd ${staging_dir} ; portz_invoke tar chozf ${here}/${filename} * ; )
+( cd ${staging_dir}/${prefix} ; portz_invoke tar chozf ${here}/${filename} * ; )
 

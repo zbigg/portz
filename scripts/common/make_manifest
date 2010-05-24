@@ -6,7 +6,7 @@ mkdir -p ${staging_dir}${manifest_dir}
 
 (
     cd ${staging_dir}
-    find . -type f | sed -e 'sX^\./XX' > ${staging_dir}${manifest_file}
+    find . -type f | sed -e "sX^\.${prefix}/XX" > ${staging_dir}${manifest_file}
 )
 
 inform "package $package-$version installation consists of $(wc -l < ${staging_dir}${manifest_file}) files"

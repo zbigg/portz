@@ -25,5 +25,5 @@ fi
 
 XXX=/tmp/XXX
 cp ${manifest_file} $XXX
-(cd / ; cat $XXX | xargs -n 20 rm -rvf ;)
+(cd $prefix ; cat $XXX | xargs -n 20 rm -rvf ;)
 rm $XXX

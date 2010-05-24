@@ -2,5 +2,5 @@
 
 . ${portz_root}/scripts/defs.sh
 
-portz_invoke "./configure" "--prefix=${prefix}" "--exec_prefix=${exec_prefix}" ${configure_options}
+portz_invoke "./configure" "--prefix=${prefix}" "--exec-prefix=${exec_prefix}" ${configure_options}
 

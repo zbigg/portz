@@ -15,13 +15,14 @@ portz_unzip()
     fi
 } 
 
+TAR_COMMON_OPTIONS="--no-same-owner "
 name=${1}
 case $name in
-    *.tar)     portz_invoke_always ${TAR} xf  $name ;;
-    *.tar.gz)  portz_invoke_always ${TAR} zxf $name ;; 
-    *.tgz)     portz_invoke_always ${TAR} zxf $name ;; 
-    *.tar.bz2) portz_invoke_always ${TAR} jxf $name ;;
-    *.tbz)     portz_invoke_always ${TAR} jxf $name ;;
+    *.tar)     portz_invoke_always ${TAR} x ${TAR_COMMON_OPTIONS} -f $name ;;
+    *.tar.gz)  portz_invoke_always ${TAR} zx ${TAR_COMMON_OPTIONS} -f $name ;; 
+    *.tgz)     portz_invoke_always ${TAR} zx ${TAR_COMMON_OPTIONS} -f $name ;; 
+    *.tar.bz2) portz_invoke_always ${TAR} jx ${TAR_COMMON_OPTIONS} -f $name ;;
+    *.tbz)     portz_invoke_always ${TAR} jx ${TAR_COMMON_OPTIONS} -f $name ;;
     *.zip)     portz_unzip $name ;;
     *.tar.lzma) portz_invoke_always ${TAR} x --lzma -f $name ;;
     # TODO, add lzma

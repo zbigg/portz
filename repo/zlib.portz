@@ -1,12 +1,24 @@
-version=1.2.3
+version=1.2.5
 baseurl="http://www.zlib.net/zlib-${version}.tar.gz"
 
 description="zlib is designed to be a free, general-purpose, legally unencumbered, 
 lossless data-compression library for use on virtually any computer hardware and operating system."
 web="http://www.zlib.net"
 
+configure_step() {
+    if [ "$OSTYPE" == "msys" ] ; then
+        cp win32/Makefile.gcc Makefile
+    else
+        ./configure --prefix=${exec_prefix}
+    fi
+}
+
 install_staging_step() {
-    $MAKE install prefix=${DESTDIR}$prefix exec_prefix=${DESTDIR}$exec_prefix
+    if [ "$OSTYPE" == "msys" ] ; then
+        ${MAKE} install BINARY_PATH=${DESTDIR}${exec_prefix}/bin LIBRARY_PATH=${DESTDIR}${exec_prefix}/lib INCLUDE_PATH=${DESTDIR}${prefix}/include SHARED_MODE=1
+    else
+        ${MAKE} install DESTDIR=${DESTDIR}
+    fi
 }
 
 stereotype=gnu

@@ -1,8 +1,6 @@
-version=3.6.17
-baseurl=http://sqlite.org/sqlite-${version}.tar.gz
+version=3.6.23.1
+baseurl=http://www.sqlite.org/sqlite-amalgamation-${version}.tar.gz
 web=http://sqlite.org/
-
-configure_options="--disable-tcl"
 
 stereotype="gnu"
 

@@ -143,7 +143,6 @@ fi
 #
 # portz_step
 #
-portz_step_path="${package_folder} ${portz_scripts}/${stereotype} ${portz_scripts}/common"
 
 portz_do_invoke_step()
 {
@@ -173,6 +172,8 @@ portz_step()
     
     shift
     shift    
+    portz_step_path="${package_folder} ${portz_scripts}/${stereotype} ${portz_scripts}/common"
+
     step_function_name="${action}_step"
     if declare -F ${step_function_name} ; then
         (cd $folder ; eval $step_function_name "$@" )
@@ -203,6 +204,8 @@ portz_optional_step()
         return $?
     fi
     
+    portz_step_path="${package_folder} ${portz_scripts}/${stereotype} ${portz_scripts}/common"
+
     for SP in ${portz_step_path} ; do
         local script="$SP/$action"
         if [ -f "${script}" ] ; then

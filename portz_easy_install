@@ -1,0 +1,46 @@
+#!/bin/sh
+#
+# This file is part of 'portz'
+#
+# Copyright (C) Zbigniew Zagorski <z.zagorski@gmail.com> and others, 
+# licensed to the public under the terms of the GNU GPL (>= 2)
+# see the file COPYING for details
+#
+# I.e., do what you like, but keep copyright and there's NO WARRANTY. 
+# 
+
+
+PNAME=portz_easy_install
+export PNAME
+
+set -e 
+#set -x
+portz_root=$(pwd)
+
+while [ -n "$1" ]; do
+    if echo $1 | egrep -q '^[A-Za-z]+=' ; then
+    	echo "$0: $1"
+    	eval export $1
+    else
+    	baseurl=$1
+    fi
+    shift
+done
+
+export package=$name
+
+. ${portz_root}/scripts/defs.sh
+
+if [ -z "$name" -o -z "$baseurl" ] ; then
+	fail "usage: $0 name=<package_name> URL"
+fi
+
+inform "prefix      = $prefix"
+inform "exec_prefix = $exec_prefix"
+
+. ${portz_scripts}/install_staging.sh
+
+portz_step ${staging_dir} deploy
+
+
+

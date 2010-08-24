@@ -18,7 +18,7 @@ portz_root=$(pwd)
 
 
 package=$1
-action=$2
+shift
 . ${portz_root}/scripts/defs.sh
 portz_assert_know_package
 
@@ -33,23 +33,29 @@ inform src_dir="$src_dir"
 bld_dir=$(portz_step ${src_dir} find_bld_dir)
 inform bld_dir="$bld_dir"
 
-case "$action" in
-    fetch_src):
-        . ${portz_root}/scripts/fetch_src.sh
-        ;;
-    build|configure|install_staging)
-        portz_step ${bld_dir} $action
-        ;;
-    patch|patch_after_conf)
-        portz_step ${src_dir} $action
-        ;;
-    dist)
-        portz_step $(pwd) $action
-        ;;
-    deploy|make_manifest)
-        portz_step ${staging_dir} $action
-        ;;
-    *)
-        fail "this action can't be run from $0"
-        ;;
-esac
+while [ -n "$1" ] ; do
+
+    action=$1
+
+    case "$action" in
+        fetch_src):
+            . ${portz_root}/scripts/fetch_src.sh
+            ;;
+        build|configure|install_staging)
+            portz_step ${bld_dir} $action
+            ;;
+        patch|patch_after_conf)
+            portz_step ${src_dir} $action
+            ;;
+        dist)
+            portz_step $(pwd) $action
+            ;;
+        deploy|make_manifest)
+            portz_step ${staging_dir} $action
+            ;;
+        *)
+            fail "this action can't be run from $0"
+            ;;
+    esac
+    shift
+done

@@ -1,4 +1,4 @@
-version=3.6.23.1
+version=3.7.3
 baseurl=http://www.sqlite.org/sqlite-amalgamation-${version}.tar.gz
 web=http://sqlite.org/
 

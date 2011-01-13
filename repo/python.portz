@@ -1,5 +1,5 @@
-version=2.6.1
-baseurl=http://www.python.org/ftp/python/${version}/Python-2.6.1.tar.bz2
+version=2.6.5
+baseurl=http://www.python.org/ftp/python/${version}/Python-${version}.tar.bz2
 web=http://www.python.org/
 
 configure_options="--enable-shared --disable-debug"

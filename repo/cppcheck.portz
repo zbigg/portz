@@ -1,4 +1,4 @@
-version=1.34
+version=1.47
 baseurl=http://downloads.sourceforge.net/sourceforge/cppcheck/cppcheck-${version}.tar.bz2
 web=http://cppcheck.wiki.sourceforge.net/
 
@@ -6,7 +6,8 @@ goto_srcdir()
 {
     cd cppcheck-${version}
 }
-install()
+
+install_staging_step()
 {
     if [ "$OSTYPE" == "msys" ] ; then
         ${MAKE_PARALLEL} LDFLAGS="-lshlwapi"

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ `ls -1 | wc -l` = "1" ] ; then 
     cd `ls -1`

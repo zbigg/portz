@@ -1,4 +1,4 @@
-version=1.34
+version=1.47
 baseurl=http://downloads.sourceforge.net/sourceforge/cppcheck/cppcheck-${version}.tar.bz2
 web=http://cppcheck.wiki.sourceforge.net/
 
@@ -6,13 +6,19 @@ goto_srcdir()
 {
     cd cppcheck-${version}
 }
-install()
+
+build_step()
 {
     if [ "$OSTYPE" == "msys" ] ; then
-        ${MAKE_PARALLEL} LDFLAGS="-lshlwapi"
+        portz_invoke ${MAKE_PARALLEL} LDFLAGS="-lshlwapi"
     else
-        ${MAKE_PARALLEL} 
+        portz_invoke ${MAKE_PARALLEL} 
     fi
-    
-    ${MAKE} install BIN=${DESTDIR}${exec_prefix}/bin
+ 
+}
+
+install_staging_step()
+{
+   
+   portz_invoke ${MAKE} install PREFIX=${DESTDIR}${exec_prefix}
 }

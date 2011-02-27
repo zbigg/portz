@@ -9,5 +9,7 @@
 # TODO, invent more intelligent way of
 # moving whole directory tree
 
-(cd ${staging_dir} ; portz_invoke ${TAR} c . ; ) | ( cd / ; portz_invoke ${TAR} xv -m --atime-preserve ; )
+TAR_FLAGS="--no-overwrite-dir --atime-preserve -m"
+(cd ${staging_dir} ; portz_invoke ${TAR} c . ; ) | ( cd / ; portz_invoke ${TAR} xv ${TAR_FLAGS}; )
+
 

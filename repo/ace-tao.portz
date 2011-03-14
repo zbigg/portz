@@ -1,6 +1,6 @@
 #!/bin/sh
 
-version=5.7.5
+version=6.0.1
 baseurl=http://download.dre.vanderbilt.edu/previous_versions/ACE+TAO-${version}.tar.gz
 web=http://www.cs.wustl.edu/~schmidt/ACE.html
 
@@ -106,19 +106,12 @@ install_staging_step()
         cp -vf bin/*.exe ${DESTDIR}${exec_prefix}/bin
 
         # dlls
-        cp -vf ace/*.dll ${DESTDIR}${exec_prefix}/bin
-        cp -vf TAO/tao/*.dll ${DESTDIR}${exec_prefix}/bin
-        cp -vf TAO/TAO_IDL/*.dll ${DESTDIR}${exec_prefix}/bin
-        cp -vf apps/gperf/src/*.dll ${DESTDIR}${exec_prefix}/bin
-        
+        find ace TAO -name "*.dll" | xargs cp -vf --target-directory=${DESTDIR}${exec_prefix}/bin
         strip ${DESTDIR}${exec_prefix}/bin/*.{dll,exe}
 
         # link libraries
         mkdir -p ${DESTDIR}${exec_prefix}/lib
-        cp -vf ace/*.a     ${DESTDIR}${exec_prefix}/lib
-        cp -vf TAO/tao/*.a ${DESTDIR}${exec_prefix}/lib
-        cp -vf ace/*.a     ${DESTDIR}${exec_prefix}/lib
-
+        find ace TAO -name "*.a" | xargs cp -vf --target-directory=${DESTDIR}${exec_prefix}/lib
     else
         (cd  build ; ${MAKE} install DESTDIR=${DESTDIR} )
     fi

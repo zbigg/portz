@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #
 # this script unarchives package to some current directory
@@ -28,3 +28,4 @@ case $name in
     # TODO, add lzma
     *) fail "unknown archive type: $name (supported tar (gz,bz2) and zip"
 esac
+

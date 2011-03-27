@@ -1,5 +1,5 @@
-version=2.8.10
-baseurl="http://prdownloads.sourceforge.net/wxwindows/wxWidgets-${version}.tar.gz"
+version=2.9.1
+baseurl="ftp://ftp.wxwidgets.org/pub/${version}/wxWidgets-${version}.tar.bz2"
 description="wxWidgets lets developers create applications for Win32, Mac OS X, GTK+, X11, Motif, WinCE, 
 and more  using one codebase. 
 It can be used from languages such as C++, Python, Perl, and C#/.NET. 
@@ -28,13 +28,11 @@ build_step()
     #fi
     
     portz_invoke ${MAKE_PARALLEL}
-    portz_invoke ${MAKE_PARALLEL} -C contrib/src/stc
 }
 
 install_staging_step() 
 {    
     portz_invoke $MAKE install DESTDIR=${DESTDIR}
-    portz_invoke $MAKE -C contrib/src/stc install DESTDIR=${DESTDIR}
     
     if [ "$OSTYPE" == "msys" ] ; then
         # fix msw install always installs dlls in LIB_DIR instead of BIN_DIR

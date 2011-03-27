@@ -7,13 +7,18 @@ goto_srcdir()
     cd cppcheck-${version}
 }
 
-install_staging_step()
+build_step()
 {
     if [ "$OSTYPE" == "msys" ] ; then
-        ${MAKE_PARALLEL} LDFLAGS="-lshlwapi"
+        portz_invoke ${MAKE_PARALLEL} LDFLAGS="-lshlwapi"
     else
-        ${MAKE_PARALLEL} 
+        portz_invoke ${MAKE_PARALLEL} 
     fi
-    
-    ${MAKE} install BIN=${DESTDIR}${exec_prefix}/bin
+ 
+}
+
+install_staging_step()
+{
+   
+   portz_invoke ${MAKE} install PREFIX=${DESTDIR}${exec_prefix}
 }

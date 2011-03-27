@@ -31,7 +31,7 @@ CXX=${CXX-g++}
 export CC CFLAGS
 export CXX CXXFLAGS
 
-def_dist_name="$(uname -s | tr A-Z a-z)-$(uname -m)" 
+def_dist_name="$(uname -s | tr A-Z a-z)-$(uname -m)"
 def_prefix=/usr
 
 TAR=tar
@@ -111,7 +111,8 @@ portz_make_parallel()
 {
     ${MAKE} -j$cpus "$@"
 }
-MAKE_PARALLEL=portz_make_parallel
+
+MAKE_PARALLEL="${MAKE} -j$cpus"
 #
 # read package config
 #
@@ -165,6 +166,12 @@ portz_do_invoke_step()
     return $?
 }
 
+function_exists()
+{
+	declare -F $1 2> /dev/null
+	return $?
+}
+
 portz_step()
 {
     folder=$1
@@ -175,7 +182,7 @@ portz_step()
     portz_step_path="${package_folder} ${portz_scripts}/${stereotype} ${portz_scripts}/common"
 
     step_function_name="${action}_step"
-    if declare -F ${step_function_name} ; then
+    if function_exists ${step_function_name} ; then
         (cd $folder ; eval $step_function_name "$@" )
         return $?
     fi

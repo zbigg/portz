@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #
 # this scripts creates binary distribution package (tar.gz) with

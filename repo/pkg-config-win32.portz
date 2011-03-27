@@ -1,4 +1,4 @@
-version=0.23-2
-baseurl=http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/pkg-config-${version}.zip
+version=0.23-3
+baseurl=http://ftp.acc.umu.se/pub/gnome/binaries/win32/dependencies/pkg-config_${version}_win32.zip
 web=http://pkg-config.freedesktop.org/
 stereotype=verbatim

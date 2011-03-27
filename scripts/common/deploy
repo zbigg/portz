@@ -9,7 +9,7 @@
 # TODO, invent more intelligent way of
 # moving whole directory tree
 
-TAR_FLAGS="--no-overwrite-dir --atime-preserve -m"
+TAR_FLAGS="--no-overwrite-dir --atime-preserve -m --no-same-owner --no-same-permissions"
 (cd ${staging_dir} ; portz_invoke ${TAR} c . ; ) | ( cd / ; portz_invoke ${TAR} xv ${TAR_FLAGS}; )
 
 

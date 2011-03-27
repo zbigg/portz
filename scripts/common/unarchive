@@ -15,7 +15,7 @@ portz_unzip()
     fi
 } 
 
-TAR_COMMON_OPTIONS="--no-same-owner "
+TAR_COMMON_OPTIONS="--no-overwrite-dir --atime-preserve -m --no-same-owner --no-same-permissions"
 name=${1}
 case $name in
     *.tar)     portz_invoke_always ${TAR} x ${TAR_COMMON_OPTIONS} -f $name ;;

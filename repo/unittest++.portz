@@ -13,9 +13,9 @@ fi
 build_step()
 {
     if [ "$OSTYPE" = "msys" ] ; then
-        ${MAKE_PARALLEL} CXXFLAGS="-O2 -g -Wall" MSYSTEM=MINGW32 libUnitTest++.a
+        portz_invoke ${MAKE_PARALLEL} CXXFLAGS="-O2 -g -Wall" MSYSTEM=MINGW32 libUnitTest++.a
     else
-	${MAKE_PARALLEL} libUnitTest++.a
+	portz_invoke ${MAKE_PARALLEL} libUnitTest++.a
     fi
 }
 

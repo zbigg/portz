@@ -33,6 +33,8 @@ inform src_dir="$src_dir"
 bld_dir=$(portz_step ${src_dir} find_bld_dir)
 inform bld_dir="$bld_dir"
 
+maybe_detect_stereotype
+
 while [ -n "$1" ] ; do
 
     action=$1

@@ -222,3 +222,17 @@ portz_optional_step()
     done
     inform "${action} step skipped"
 }
+
+maybe_detect_stereotype()
+{
+	if [ "$stereotype" = "auto" ] ; then
+        	inform "detecting stereotype"
+        	if [ -f "${src_dir}/configure" ] ; then
+                	inform "stereotype=gnu"
+                	export stereotype=gnu
+        	else
+                	inform "unknown stereotype, assuming make works"
+        	fi
+	fi
+}
+

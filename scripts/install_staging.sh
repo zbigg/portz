@@ -14,15 +14,8 @@ inform bld_dir="$bld_dir"
 
 export src_dir bld_dir
 
-if [ "$stereotype" = "auto" ] ; then
-	inform "detecting stereotype"
-	if [ -f "${src_dir}/configure" ] ; then
-		inform "stereotype=gnu"
-		export stereotype=gnu
-	else
-		inform "unknown stereotype, assuming make works"
-	fi
-fi
+maybe_detect_stereotype
+
 # preparation
 
 portz_optional_step ${src_dir} patch

@@ -70,13 +70,29 @@ esac
 stereotype="${stereotype-auto}"
 
 #
+# archiecture
+#
+
+config-guess()
+{
+    sh ${portz_scripts}/config.guess
+}
+
+current_arch=$(config-guess)
+target_arch=${arch-$current_arch}
+
+if [ "$current_arch" != "$target_arch" ] ; then
+        PORTZ_SEPARATE_EXEC=1
+fi
+
+#
 # prefix and exec_prefix 
 # 
 prefix=${prefix-$def_prefix}
 
 if test "x$PORTZ_SEPARATE_EXEC" = "x1"
 then
-    def_exec_prefix=${prefix}/platforms/$(uname -m)
+    def_exec_prefix=${prefix}/platforms/${target_arch}
 else
     def_exec_prefix=${prefix}
 fi
@@ -88,6 +104,60 @@ export prefix exec_prefix
 if [ -z "${dist_name}" ]; then
     dist_name="${def_dist_name}"
 fi
+
+#
+# now when arch & directories are known,
+# prepare default C/C++ compile and linking flags
+#
+#
+
+C_INCLUDE_PATH=${prefix}/include:$C_INCLUDE_PATH
+CPLUS_INCLUDE_PATH=${prefix}/include:$CPLUS_INCLUDE_PATH
+LD_LIBRARY_PATH=${exec_prefix}/lib:$CPLUS_INCLUDE_PATH
+
+export C_INCLUDE_PATH CPLUS_INCLUDE_PATH LD_LIBRARY_PATH
+
+if [ "$current_arch" != "$target_arch" ] ; then
+        cross_configure_options="--host=$target_arch"
+        case $target_arch in
+            *i*86-*linux*)
+                CROSS_CFLAGS="-m32"
+                CROSS_CXXFLAGS="-m32"
+                CROSS_LDFLAGS="-m32"
+                ;;
+            x86_64*linux*)
+                CROSS_CFLAGS="-m64"
+                CROSS_CXXFLAGS="-m64"
+                CROSS_LDFLAGS="-m64"
+                ;;
+            default)
+                # no universal special handling
+                true
+                ;;
+        esac
+        
+        CROSS_CC=${target_arch}-cc
+        CROSS_CXX=${target_arch}-c++
+        
+        if which $CROSS_CC > /dev/null; then
+            CC=$CROSS_CC
+            export CC
+        fi
+        if which $CROSS_CXX > /dev/null ; then
+            CXX=$CROSS_CXX
+            export CXX
+        fi 
+fi
+
+STD_CFLAGS="-g -O2"
+STD_CXXFLAGS="-g -O2"
+STD_LDFLAGS="-g"
+
+CFLAGS="$STD_CFLAGS $CROSS_CFLAGS"
+CXXFLAGS="$STD_CXXFLAGS $CROSS_CXXFLAGS"
+LDFLAGS="$STD_LDFLAGS $CROSS_LDFLAGS"
+
+export CFLAGS CXXFLAGS LDFLAGS
 
 #
 # dist platform suffix

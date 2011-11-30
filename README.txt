@@ -1,0 +1,113 @@
+PORTZ - native libraries/tools port system by zbigg
+===================
+
+    Well, next tool like mingw-port, homebrew, easy_install. That is just tailored to my needs:
+
+     - works on MSys/Mingw32, Linux and FreeBSD
+     - have ports for packages i use :)
+     - supports basic cross compilation env (work in progress)
+    
+    It's dirty hack allowing to automagically install developer 
+    soft on windows machines just like FreeBSD ports do or apt 
+    on Debian.
+    
+    It's aimed for developers.
+    
+    
+    Author:
+    Zbigniew Zagorski <z.zagorski@gmail.com>
+    
+How to use
+========================
+
+    Easy install sample usage:
+
+        prefix=$HOME/foo ./portz_easy_install name=wget http://ftp.gnu.org/gnu/wget/wget-1.13.tar.xz
+     
+    Installs:
+
+        ./home/zbigg/foo/lib/portz/wget.MANIFEST
+        (...)
+        ./home/zbigg/foo/share/locale/be/LC_MESSAGES/wget.mo
+        (...)
+        ./home/zbigg/foo/share/locale/pt_BR/LC_MESSAGES/wget.mo
+        (...)
+        ./home/zbigg/foo/share/man/man1/wget.1
+        ./home/zbigg/foo/share/info/wget.info
+        ./home/zbigg/foo/share/info/dir
+        ./home/zbigg/foo/etc/wgetrc
+        ./home/zbigg/foo/bin/wget
+
+    Prepared packages usage:
+        ./portz_install pcre
+        
+    See repo/pcre.portz for package definition.
+    
+    Supported parameters, passed via environment:
+       - prefix      - prefix for noarch files
+       - exec_prefix - prefix for arch specific files, eg. binaries
+       - arch        - autoconf style arch name (x86_64-unknown-linux-gnu, i586-mingw32msvc)
+
+     
+    If environment variable PORTZ_SEPARATE_EXEC is equal to 1 then
+    portz will automagically differentiate exec prefix for installed packages. It will be:
+        ${prefix}/platforms/$(uname -m)
+    which will result in:
+        ${prefix}/platforms/{i686|x86_64|sun4u} 
+    or something.
+    (setting arch, implictly enables PORTZ_SEPARATE_EXEC)
+
+CROSS COMPILATION                             
+=====================
+
+    Install i386-libs/headers of expat x86_64 linux:
+
+        arch=i386-unknown-linux-gnu prefix=$HOME/s2 ./portz_install expat
+        
+    installs:
+        ./home/zbigg/s2/include/expat.h
+        ./home/zbigg/s2/include/expat_external.h
+        (...)
+        ./home/zbigg/s2/platforms/i386-unknown-linux-gnu/lib/libexpat.so
+        ./home/zbigg/s2/platforms/i386-unknown-linux-gnu/lib/libexpat.so.1
+        ./home/zbigg/s2/platforms/i386-unknown-linux-gnu/lib/libexpat.a
+        (...)
+        ./home/zbigg/s2/platforms/i386-unknown-linux-gnu/bin/xmlwf
+
+    Same works with portz_easy_install, i386-tinfra installed on x86_64 linux:
+        
+        arch=i386-unknown-linux-gnu prefix=$HOME/s2 ./portz_easy_install \
+            name=tinfra http://idf.hotpo.pl/index.php/p/tinfra/downloads/get/tinfra-dev-0.0.2.zip
+
+    Real cross compilation, also works (tested @Linux, builf for mingw32) 
+    
+    (REQUIRES mingw32 installed, i.e i586-mingw32msvc-gcc and friends)
+        
+        $ arch=i586-mingw32msvc prefix=$HOME/s2 ./portz_install expat
+        (...)
+        portz_install expat: [!] ./configure --prefix=/home/zbigg/s2 --exec-prefix=/home/zbigg/s2/platforms/i586-mingw32msvc --host=i586-mingw32msvc
+            configure: WARNING: If you wanted to set the --build type, don't use --host.
+        If a cross compiler is detected then cross compile mode will be used.
+        checking build system type... x86_64-unknown-linux-gnu
+        checking host system type... i586-pc-mingw32msvc
+        (...)
+        portz_install expat: [!] make
+        /bin/bash ./libtool --silent --mode=compile i586-mingw32msvc-cc -I./lib -I. -g -O2  -Wall -Wmissing-prototypes -Wstrict-prototypes -fexceptions  -DHAVE_EXPAT_CONFIG_H -o lib/xmlparse.lo -c lib/xmlparse.c
+        /bin/bash ./libtool --silent --mode=compile i586-mingw32msvc-cc -I./lib -I. -g -O2  -Wall -Wmissing-prototypes -Wstrict-prototypes -fexceptions  -DHAVE_EXPAT_CONFIG_H -o lib/xmltok.lo -c lib/xmltok.c
+        (...)
+        /home/zbigg/s2/platforms/i586-mingw32msvc/lib/libexpat.dll.a
+        /home/zbigg/s2/platforms/i586-mingw32msvc/lib/libexpat.a
+        /home/zbigg/s2/platforms/i586-mingw32msvc/lib/portz/expat.MANIFEST
+        /home/zbigg/s2/platforms/i586-mingw32msvc/bin/xmlwf
+        /home/zbigg/s2/platforms/i586-mingw32msvc/bin/libexpat-1.dll
+        
+        $ file /home/zbigg/s2/platforms/i586-mingw32msvc/bin/libexpat-1.dll
+        /home/zbigg/s2/platforms/i586-mingw32msvc/bin/libexpat-1.dll: PE32 executable for MS Windows (DLL) (console) Intel 80386 32-bit
+        
+        $ file /home/zbigg/s2/platforms/i586-mingw32msvc/bin/xmlwf
+        /home/zbigg/s2/platforms/i586-mingw32msvc/bin/xmlwf: PE32 executable for MS Windows (console) Intel 80386 32-bit
+        
+        $ wine /home/zbigg/s2/platforms/i586-mingw32msvc/bin/xmlwf -h
+        usage: Z:\home\zbigg\s2\platforms\i586-mingw32msvc\bin\xmlwf [-n] [-p] [-r] [-s] [-w] [-x] [-d output-dir] [-e encoding] file ...
+|
+

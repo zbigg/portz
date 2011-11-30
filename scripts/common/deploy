@@ -9,7 +9,12 @@
 # TODO, invent more intelligent way of
 # moving whole directory tree
 
+if [ ! -w $prefix ] ; then
+	echo "$PNAME: must escalate priviledges to root"
+	MAYBE_SUDO=sudo
+fi
+
 TAR_FLAGS="--no-overwrite-dir --atime-preserve -m --no-same-owner --no-same-permissions"
-(cd ${staging_dir} ; portz_invoke ${TAR} c . ; ) | ( cd / ; portz_invoke ${TAR} xv ${TAR_FLAGS}; )
+(cd ${staging_dir} ; portz_invoke ${TAR} c . ; ) | ( cd / ; portz_invoke ${MAYBE_SUDO} ${TAR} xv ${TAR_FLAGS}; )
 
 

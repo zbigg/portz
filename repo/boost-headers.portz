@@ -1,5 +1,5 @@
-version="1.46.1"
-baseurl="http://switch.dl.sourceforge.net/sourceforge/boost/boost_1_46_1.tar.gz"
+version="1.48.0"
+baseurl="http://switch.dl.sourceforge.net/sourceforge/boost/boost_1_48_0.tar.gz"
 description="Boost headers"
 web="http://www.boost.org"
 
@@ -13,3 +13,4 @@ install_staging_step()
     mkdir -p ${DESTDIR}${prefix}/include
     cp -r boost ${DESTDIR}${prefix}/include
 }
+

@@ -1,5 +1,8 @@
-version=2.9.1
-baseurl="ftp://ftp.wxwidgets.org/pub/${version}/wxWidgets-${version}.tar.bz2"
+version=2.9.3
+#baseurl="ftp://ftp.wxwidgets.org/pub/${version}/wxWidgets-${version}.tar.bz2"
+
+baseurl="http://sourceforge.net/projects/wxwindows/files/2.9.3/wxWidgets-${version}.tar.bz2"
+
 description="wxWidgets lets developers create applications for Win32, Mac OS X, GTK+, X11, Motif, WinCE, 
 and more  using one codebase. 
 It can be used from languages such as C++, Python, Perl, and C#/.NET. 
@@ -14,18 +17,19 @@ sterotype=gnu
 configure_step()
 {
     portz_invoke ./configure --prefix=$prefix --exec-prefix=$exec_prefix  \
-        --disable-debug --disable-monolithic --enable-shared --enable-unicode
+        --disable-debug --disable-monolithic --enable-shared --enable-unicode --disable-debug
         
     if [ "$OSTYPE" == "msys" ] ; then 
         portz_invoke "patch -p0 < ${package_folder}/patch_Makefile_for_DESTDIR_aware_install.patch"
     fi
 }
 
+if [ "$OSTYPE" == "msys" ] ; then
+    cpus=1 #wx build on mingw doesn't support parallel build
+fi
+
 build_step() 
 {
-    #if [ "$OSTYPE" == "msys" ] ; then
-    #    cpus=1 #wx build on mingw doesn't support parallel build
-    #fi
     
     portz_invoke ${MAKE_PARALLEL}
 }

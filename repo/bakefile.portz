@@ -1,5 +1,5 @@
 name=bakefile
-version=0.2.8
+version=0.2.9
 baseurl=http://prdownloads.sourceforge.net/bakefile/bakefile-${version}.tar.gz
 web=http://bakefile.org
 

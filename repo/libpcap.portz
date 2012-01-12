@@ -1,0 +1,4 @@
+version=1.2.1
+baseurl=http://www.tcpdump.org/release/libpcap-${version}.tar.gz
+web=http://www.tcpdump.org/
+stereotype=auto

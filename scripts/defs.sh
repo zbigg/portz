@@ -78,11 +78,62 @@ config-guess()
     sh ${portz_scripts}/config.guess
 }
 
+addpath() {
+        name=$1 ; shift
+        eval "current=\"\$$name\""
+        if [ -z "$current" ] ; then
+                D=""
+        else
+                D=":"
+        fi
+        for path in $* ; do
+                if [ -d $path ] ; then
+                        current="${path}${D}${current}"
+                        D=":"
+                fi
+        done
+        eval "$name=\"$current\""
+        export $name
+
+        unset name first current D
+}
+
+
 current_arch=$(config-guess)
+
+#
+# site
+#
+if [ -n "$site" ] ; then
+	#echo "$0: using site settings from $site"
+	prefix="$site"
+	exec_prefix="${prefix}"
+
+	# other defaults
+        addpath LIBRARY_PATH       $site/lib
+        addpath PKG_CONFIG_PATH    $site/lib/pkgconfig
+	
+	# noarch paths
+        addpath C_INCLUDE_PATH     $base/include
+        addpath CPLUS_INCLUDE_PATH $base/include
+        addpath MANPATH            $base/share/man
+        addpath PYTHONPATH         $base/lib/python{2.3,2.4,2.5,2.6,2.7,3.0}/site-packages
+
+	PORTZ_SEPARATE_EXEC=0
+	if [ -f "$site/.portz.conf" ] ; then
+		. "$site/.portz.conf"
+	fi
+
+	if [ -z "$arch" -o "$current_arch" = "$arch" ] ; then
+		addpath PATH $site/bin
+		addpath LD_LIBRARY_PATH $site/lib
+	fi
+fi
+
 target_arch=${arch-$current_arch}
 
 if [ "$current_arch" != "$target_arch" ] ; then
-        PORTZ_SEPARATE_EXEC=1
+        PORTZ_SEPARATE_EXEC=${PORTZ_SEPARATE_EXEC-1}
 fi
 
 #
@@ -149,9 +200,9 @@ if [ "$current_arch" != "$target_arch" ] ; then
         fi 
 fi
 
-STD_CFLAGS="-g -O2"
-STD_CXXFLAGS="-g -O2"
-STD_LDFLAGS="-g"
+STD_CFLAGS="${CFLAGS--g -O2}"
+STD_CXXFLAGS="${CXXFLAGS--g -O2}"
+STD_LDFLAGS="${LDFLAGS--g}"
 
 CFLAGS="$STD_CFLAGS $CROSS_CFLAGS"
 CXXFLAGS="$STD_CXXFLAGS $CROSS_CXXFLAGS"

@@ -57,6 +57,26 @@ How to use
     or something.
     (setting arch, implictly enables PORTZ_SEPARATE_EXEC)
 
+SITE DEFAULTS
+=====================
+
+    If one wishes to have whole "site" of software compiled in particular way, then <site>
+    feature can be used.
+
+    When portz script is executed with site=FOLDER variable set, then
+    it reads defaults from $site/.portz.conf. This file can/should contains defaults
+    like specification of compiler, compilation flags etc.
+    
+    site=XXX implies following:
+      - inclusion of $site/bin in $PATH (not in cross-compilation mode)
+      - inclusion of $site/lib in $LD_LIBRARY_PATH( not in cross-comp)
+      - inclusion of $site/lib in $LIBRARY_PATH
+      - ... $site/include in C_INCLUDE_PATH and CPLUS_INCLUDE_PATH
+      - ... $site/lib/pkgconfig in PKG_CONFIG_PATH
+      - ... $site/lib/pythhon{X.Y}/site-packages in PYTHON_PATH
+    
+    
+    
 CROSS COMPILATION                             
 =====================
 

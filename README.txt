@@ -75,7 +75,41 @@ SITE DEFAULTS
       - ... $site/lib/pkgconfig in PKG_CONFIG_PATH
       - ... $site/lib/pythhon{X.Y}/site-packages in PYTHON_PATH
     
-    
+    Example:
+      Site for cross-compilation to mingw32:
+
+	|x86_64| zbigg@hunter:/home/zbigg/site/mingw32
+	$ cat .portz.conf
+	CC=i586-mingw32msvc-cc
+	CXX=i586-mingw32msvc-c++
+	
+	arch=i586-mingw32msvc
+
+      Usage:
+
+	$ site=/home/zbigg/site/mingw32 ./portz_install pcre
+	portz_install pcre: prefix      = /home/zbigg/site/mingw32
+	portz_install pcre: exec_prefix = /home/zbigg/site/mingw32
+	(...)
+	portz_install pcre: [!] ./configure --prefix=/home/zbigg/site/mingw32 --exec-prefix=/home/zbigg/site/mingw32 --host=i586-mingw32msvc --enable-utf8 --disable-cpp
+	configure: WARNING: if you wanted to set the --build type, don't use --host.
+	    If a cross compiler is detected then cross compile mode will be used
+	checking for a BSD-compatible install... /usr/bin/install -c
+	checking whether build environment is sane... yes
+	checking for i586-mingw32msvc-strip... i586-mingw32msvc-strip
+	(...) -- installed files
+	./home/zbigg/site/mingw32/include/pcreposix.h
+	./home/zbigg/site/mingw32/bin/
+	./home/zbigg/site/mingw32/bin/pcretest.exe
+	./home/zbigg/site/mingw32/bin/pcre-config
+	./home/zbigg/site/mingw32/bin/pcregrep.exe
+	$
+
+
+	
+
+
+ 
     
 CROSS COMPILATION                             
 =====================

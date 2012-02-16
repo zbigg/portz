@@ -9,7 +9,7 @@
 #                      which are not portable (like __longjmp_chk)
 
 export CFLAGS="-g -O2 -U_FORTIFY_SOURCE"
-export CXXFLAGS="-f -O2 -U_FORTIFY_SOURCE"
+export CXXFLAGS="-g -O2 -U_FORTIFY_SOURCE"
 
 portz_invoke "./configure" "--prefix=${prefix}" "--exec-prefix=${exec_prefix}" ${cross_configure_options} ${configure_options} 
 

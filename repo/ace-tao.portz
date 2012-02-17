@@ -6,14 +6,22 @@ web=http://www.cs.wustl.edu/~schmidt/ACE.html
 
 mingw_configure() {
     export ACE_ROOT=$(pwd)
-    
-    echo '#include "ace/config-win32.h"' > ${ACE_ROOT}/ace/config.h
-    
-    cat << 'EOF' > ${ACE_ROOT}/include/makeinclude/platform_macros.GNU
-include $(ACE_ROOT)/include/makeinclude/platform_mingw32.GNU
+
+    cat << 'EOF' >> ${ACE_ROOT}/include/makeinclude/platform_macros.GNU
 ifeq ($(threads),1)
   LDFLAGS += -mthreads
 endif # threads
+EOF
+
+}
+
+acetao_configure() {
+    export ACE_ROOT=$(pwd)
+    
+    echo "#include \"ace/config-$1.h\"" > ${ACE_ROOT}/ace/config.h
+    
+    cat << EOF > ${ACE_ROOT}/include/makeinclude/platform_macros.GNU
+include \$(ACE_ROOT)/include/makeinclude/platform_$2.GNU
 EOF
 }
 
@@ -21,100 +29,108 @@ EOF
 configure_step()
 {
     set -x
-    if [ "$OSTYPE" == "msys" ] ; then
+    case "$OSTYPE" in
+    msys)
+        acetao_configure win32 mingw32
         mingw_configure
-    else
-        mkdir -p build
-        (cd build ; ../configure --prefix=${prefix} --exec_prefix=${exec_prefix} ${configure_options} )
-    fi
+        ;;
+    linux-*)
+        acetao_configure linux linux        
+        ;;
+    *)
+        echo "not supported platform $OSTYPE"
+        exit 1
+        ;;
+    esac
+
+    #(cd build ; ../configure --prefix=${prefix} --exec_prefix=${exec_prefix} ${configure_options} )
 }
 
 build_step() {
     set -x
-    if [ "$OSTYPE" == "msys" ] ; then
-        export ACE_ROOT=$(pwd)
-        export TAO_ROOT=${ACE_ROOT}/TAO
-
-        (cd ace ; ${MAKE_PARALLEL})
-        (cd apps/gperf; ${MAKE_PARALLEL})
-        (cd TAO/TAO_IDL ; ${MAKE_PARALLEL})
-        (cd TAO/tao ; ${MAKE_PARALLEL})
-    else
-        (cd  build ; ${MAKE_PARALLEL} )
-    fi
+    export ACE_ROOT=$(pwd)
+    export TAO_ROOT=${ACE_ROOT}/TAO
+    
+    (cd ace ; ${MAKE_PARALLEL})
+    (cd apps/gperf; ${MAKE_PARALLEL})
+    (cd TAO/TAO_IDL ; ${MAKE_PARALLEL})
+    (cd TAO/tao ; ${MAKE_PARALLEL})
 }
 
 install_staging_step()
 {
+    set -x
+    
     if [ "$OSTYPE" == "msys" ] ; then
-        set -x
-        export ACE_ROOT=$(pwd)
-        export TAO_ROOT=${ACE_ROOT}/TAO
-
-        # ace includes
-        pushd ace
-        for X in $(find . -name "*.h" | xargs -n 1 dirname | sort -u ) ; do
-            T=${DESTDIR}${prefix}/include/ace/${X}
-            mkdir -p ${T}
-            cp  -vf ${X}/*.h ${T}
-        done
-
-        for X in $(find . -name "*.h" | xargs -n 10 egrep -l '#(.*)include(.+)\.cpp' | sed -e 's/\.h$/.cpp/')
-        do
-           T=${DESTDIR}${prefix}/include/ace/${X}
-           D=$(dirname $T)
-            mkdir -p ${D}
-            cp  -vf ${X} ${D}
-        done
-        popd
-
-        # ace inlines
-        pushd ace
-        for X in $(find . -name "*.inl" | xargs -n 1 dirname | sort -u ) ; do
-            mkdir -p ${DESTDIR}${prefix}/include/ace/${X}
-            cp  -vf ${X}/*.inl ${DESTDIR}${prefix}/include/ace/${X}
-        done
-        popd
-
-        # tao includes
-        pushd TAO/tao
-        for X in $(find . -name "*.h" | xargs -n 1 dirname | sort -u ) ; do
-            T=${DESTDIR}${prefix}/include/tao/${X}
-            mkdir -p ${T}
-            cp  -vf ${X}/*.h ${T}
-
-        done
-        for X in $(find . -name "*.h" | xargs -n 10 egrep -l '#(.*)include(.+)\.cpp' | sed -e 's/\.h$/.cpp/')
-        do
-           T=${DESTDIR}${prefix}/include/tao/${X}
-           D=$(dirname $T)
-            mkdir -p ${D}
-            cp  -vf ${X} ${D}
-        done
-        popd
-
-        # tao inlines
-        pushd TAO/tao
-        for X in $(find . -name "*.inl" | xargs -n 1 dirname | sort -u ) ; do
-            mkdir -p ${DESTDIR}${prefix}/include/tao/${X}
-            cp  -vf ${X}/*.inl ${DESTDIR}${prefix}/include/tao/${X}
-        done
-        popd
-
-        # bin
-        mkdir -p ${DESTDIR}${exec_prefix}/bin
-        cp -vf bin/*.exe ${DESTDIR}${exec_prefix}/bin
-
-        # dlls
-        find ace TAO -name "*.dll" | xargs cp -vf --target-directory=${DESTDIR}${exec_prefix}/bin
-        strip ${DESTDIR}${exec_prefix}/bin/*.{dll,exe}
-
-        # link libraries
-        mkdir -p ${DESTDIR}${exec_prefix}/lib
-        find ace TAO -name "*.a" | xargs cp -vf --target-directory=${DESTDIR}${exec_prefix}/lib
-    else
-        (cd  build ; ${MAKE} install DESTDIR=${DESTDIR} )
+        EXE=.exe
     fi
+    
+    export ACE_ROOT=$(pwd)
+    export TAO_ROOT=${ACE_ROOT}/TAO
+
+    # ace includes
+    pushd ace
+    for X in $(find . -name "*.h" | xargs -n 1 dirname | sort -u ) ; do
+        T=${DESTDIR}${prefix}/include/ace/${X}
+        mkdir -p ${T}
+        cp  -vf ${X}/*.h ${T}
+    done
+
+    for X in $(find . -name "*.h" | xargs -n 10 egrep -l '#(.*)include(.+)\.cpp' | sed -e 's/\.h$/.cpp/')
+    do
+       T=${DESTDIR}${prefix}/include/ace/${X}
+       D=$(dirname $T)
+        mkdir -p ${D}
+        cp  -vf ${X} ${D}
+    done
+    popd
+
+    # ace inlines
+    pushd ace
+    for X in $(find . -name "*.inl" | xargs -n 1 dirname | sort -u ) ; do
+        mkdir -p ${DESTDIR}${prefix}/include/ace/${X}
+        cp  -vf ${X}/*.inl ${DESTDIR}${prefix}/include/ace/${X}
+    done
+    popd
+
+    # tao includes
+    pushd TAO/tao
+    for X in $(find . -name "*.h" | xargs -n 1 dirname | sort -u ) ; do
+        T=${DESTDIR}${prefix}/include/tao/${X}
+        mkdir -p ${T}
+        cp  -vf ${X}/*.h ${T}
+
+    done
+    for X in $(find . -name "*.h" | xargs -n 10 egrep -l '#(.*)include(.+)\.cpp' | sed -e 's/\.h$/.cpp/')
+    do
+       T=${DESTDIR}${prefix}/include/tao/${X}
+       D=$(dirname $T)
+        mkdir -p ${D}
+        cp  -vf ${X} ${D}
+    done
+    popd
+
+    # tao inlines
+    pushd TAO/tao
+    for X in $(find . -name "*.inl" | xargs -n 1 dirname | sort -u ) ; do
+        mkdir -p ${DESTDIR}${prefix}/include/tao/${X}
+        cp  -vf ${X}/*.inl ${DESTDIR}${prefix}/include/tao/${X}
+    done
+    popd
+
+    # bin
+    mkdir -p ${DESTDIR}${exec_prefix}/bin
+    mkdir -p ${DESTDIR}${exec_prefix}/lib
+    cp -vf TAO/TAO_IDL/tao_idl$(EXE) ${DESTDIR}${exec_prefix}/bin
+    cp -vf apps/gperf/src/ace_gperf$(EXE) ${DESTDIR}${exec_prefix}/bin
+
+    # libs
+    find ace TAO -name "*.dll" | xargs -r cp -vPf --target-directory=${DESTDIR}${exec_prefix}/bin
+    find ace TAO -name "*.so*" | xargs -r cp -vPf --target-directory=${DESTDIR}${exec_prefix}/lib
+    find ace TAO -name "*.a" | xargs -r cp -vPf --target-directory=${DESTDIR}${exec_prefix}/lib
+    
+    mkdir -p ${DESTDIR}${exec_prefix}/share/man
+    cp -vf TAO/TAO_IDL/tao_idl.1 ${DESTDIR}${exec_prefix}/share/man
 }
 
 # jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-version=6.0.1
+version=6.0.8
 baseurl=http://download.dre.vanderbilt.edu/previous_versions/ACE+TAO-${version}.tar.gz
 web=http://www.cs.wustl.edu/~schmidt/ACE.html
 
@@ -121,8 +121,8 @@ install_staging_step()
     # bin
     mkdir -p ${DESTDIR}${exec_prefix}/bin
     mkdir -p ${DESTDIR}${exec_prefix}/lib
-    cp -vf TAO/TAO_IDL/tao_idl$(EXE) ${DESTDIR}${exec_prefix}/bin
-    cp -vf apps/gperf/src/ace_gperf$(EXE) ${DESTDIR}${exec_prefix}/bin
+    cp -vf TAO/TAO_IDL/tao_idl${EXE} ${DESTDIR}${exec_prefix}/bin
+    cp -vf apps/gperf/src/ace_gperf${EXE} ${DESTDIR}${exec_prefix}/bin
 
     # libs
     find ace TAO -name "*.dll" | xargs -r cp -vPf --target-directory=${DESTDIR}${exec_prefix}/bin

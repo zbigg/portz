@@ -129,8 +129,8 @@ install_staging_step()
     find ace TAO -name "*.so*" | xargs -r cp -vPf --target-directory=${DESTDIR}${exec_prefix}/lib
     find ace TAO -name "*.a" | xargs -r cp -vPf --target-directory=${DESTDIR}${exec_prefix}/lib
     
-    mkdir -p ${DESTDIR}${exec_prefix}/share/man
-    cp -vf TAO/TAO_IDL/tao_idl.1 ${DESTDIR}${exec_prefix}/share/man
+    mkdir -p ${DESTDIR}${exec_prefix}/share/man/man1
+    cp -vf TAO/TAO_IDL/tao_idl.1 ${DESTDIR}${exec_prefix}/share/man/man1
 }
 
 # jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:

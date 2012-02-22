@@ -9,6 +9,10 @@
 # TODO, invent more intelligent way of
 # moving whole directory tree
 
+if [ ! -d $prefix ] ; then
+	mkdir $prefix
+fi
+
 if [ ! -w $prefix ] ; then
 	echo "$PNAME: must escalate priviledges to root"
 	MAYBE_SUDO=sudo

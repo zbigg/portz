@@ -73,7 +73,7 @@ stereotype="${stereotype-auto}"
 # archiecture
 #
 
-config-guess()
+config_guess()
 {
     sh ${portz_scripts}/config.guess
 }
@@ -99,7 +99,7 @@ addpath() {
 }
 
 
-current_arch=$(config-guess)
+current_arch=$(config_guess)
 
 #
 # site

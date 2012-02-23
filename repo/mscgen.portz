@@ -1,0 +1,4 @@
+version=0.20
+baseurl=http://www.mcternan.me.uk/mscgen/software/mscgen-src-${version}.tar.gz
+web=http://www.mcternan.me.uk/mscgen/
+stereotype=auto

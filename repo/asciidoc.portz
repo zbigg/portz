@@ -1,0 +1,4 @@
+version=8.6.6
+baseurl=http://downloads.sourceforge.net/project/asciidoc/asciidoc/${version}/asciidoc-8.6.6.tar.gz
+web=http://www.methods.co.nz/asciidoc/index.html
+stereotype=auto

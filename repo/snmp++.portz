@@ -1,0 +1,24 @@
+version=3.2.25
+baseurl=http://www.agentpp.com/snmp++v${version}.tar.gz
+web=http://www.agentpp.com/snmp_pp3_x/snmp_pp3_x.html
+stereotype=auto
+
+configure_step()
+{
+    sed -i -e 'sX// #define _USE_OPENSSLX#define _USE_OPENSSLX' \
+    	include/snmp_pp/config_snmp_pp.h
+
+}
+build_step()
+{
+    ${MAKE_PARALLEL} -C src/ -f Makefile.linux USEROPTS="${CXXFLAGS}"
+}
+
+install_staging_step()
+{
+    ${MAKE}  -C src/ -f Makefile.linux install DESTDIR=${DESTDIR} INSTPREFIX=${exec_prefix}
+    ( 
+    	cd ${DESTDIR}${exec_prefix}/lib
+	ln -s libsnmp++.so.2.0.0 libsnmp++.so
+    )
+}

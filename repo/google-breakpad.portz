@@ -23,7 +23,7 @@ install_staging_step()
         fi
         portz_invoke cp -vf "${FILE}" "${gpi}/${DIR}"
     done
-    pc_file="${DESTDIR}${exec_prefix}/lib/pkg-config/google-breakpad.pc"
+    pc_file="${DESTDIR}${exec_prefix}/lib/pkgconfig/google-breakpad.pc"
     pc_dir=`dirname ${pc_file}`
     mkdir -p "${pc_dir}"
     cat > ${pc_file} << EOF 

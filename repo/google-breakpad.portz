@@ -14,7 +14,7 @@ install_staging_step()
     gpi="${DESTDIR}${prefix}/include/google-breakpad"
     portz_invoke mkdir -p "${gpi}"
     cd src
-    for FILE in `find client/ google_breakpad/ -name "*.h"` ; do
+    for FILE in `find client/ google_breakpad/ processor/ -name "*.h"` ; do
         
         DIR=`dirname $FILE`
         echo $FILE ${gpi}/$DIR

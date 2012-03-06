@@ -1,4 +1,4 @@
-version=8.21
+version=8.30
 baseurl=ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-${version}.tar.bz2
 web=http://www.pcre.org/
 
@@ -9,12 +9,5 @@ configure_options="--enable-utf8"
 #if [ "$OSTYPE" == "msys" ] ; then 
     configure_options="$configure_options --disable-cpp"
 #fi
-
-
-patch_step()
-{
-	portz_invoke mkdir m4
-	portz_invoke autoreconf -i -f || true
-}
 
 stereotype="gnu"

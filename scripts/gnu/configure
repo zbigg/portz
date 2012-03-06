@@ -8,8 +8,12 @@
 #                     and thus binaries use fancy features of glibc
 #                      which are not portable (like __longjmp_chk)
 
-export CFLAGS="-g -O2 -U_FORTIFY_SOURCE"
-export CXXFLAGS="-g -O2 -U_FORTIFY_SOURCE"
+if [ -z "$CFLAGS" ] ; then
+	export CFLAGS="-g -O2 -U_FORTIFY_SOURCE"
+fi
+if [ -z "$CXXFLAGS" ] ; then
+	export CXXFLAGS="-g -O2 -U_FORTIFY_SOURCE"
+fi
 
 portz_invoke "./configure" "--prefix=${prefix}" "--exec-prefix=${exec_prefix}" ${cross_configure_options} ${configure_options} 
 

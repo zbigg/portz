@@ -10,7 +10,7 @@
 # moving whole directory tree
 
 if [ ! -d $prefix ] ; then
-	mkdir $prefix
+	mkdir -p $prefix
 fi
 
 if [ ! -w $prefix ] ; then

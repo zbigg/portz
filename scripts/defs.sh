@@ -351,7 +351,10 @@ maybe_detect_stereotype()
         	if [ -f "${src_dir}/configure" ] ; then
                 	inform "stereotype=gnu"
                 	export stereotype=gnu
-        	else
+            elif [ -f "${src_dir}/setup.py" ]; then
+                    inform "stereotype=python"
+                	export stereotype=python
+            else
                 	inform "unknown stereotype, assuming make works"
         	fi
 	fi

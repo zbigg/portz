@@ -1,0 +1,11 @@
+kinda functional changelog
+
+* version 0.0.1, not released yet
+
+    very personal set of scripts, not yet ready for release
+    * portz_install -> install prepared package
+    * portz_easy_install -> auto-install package from network (supports, 
+      configure/make, setup.py modes)
+    * portz_dist -> make distribution
+    * portz_get  -> get_sources
+

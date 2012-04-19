@@ -1,0 +1,6 @@
+kinda issue, feature, wish list tracking
+
+1) --help for all commands
+2) cleanup of /tmp folder
+3) installation of package version, so we know what is installed
+4) version override ./portz_install pcre version=8.29 

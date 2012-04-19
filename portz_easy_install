@@ -7,7 +7,48 @@
 # see the file COPYING for details
 #
 # I.e., do what you like, but keep copyright and there's NO WARRANTY. 
-# 
+#
+
+## portz_easy_install - automagic installer of packages
+##
+## Usage:
+##   ./portz_easy_install name=PACKAGE URL
+##
+## portz_easy_install downloads, configures, builds and install package PACKAGE 
+## given by URL.
+## 
+## The "way of build is automaticaly detected.
+## * autoconf style: When configure script exists, it is executed to configure 
+##                   packagge and then make ; make install
+## * python/distutils: when setup.py exists, then it used to install package
+## * bare Makefile:  just make is invoked install, prefix and DESTDIR are expected to
+##                   work (TBD) really??
+##
+## Example:
+##
+##   $ prefix=$HOME/foo ./portz_easy_install name=wget http://ftp.gnu.org/gnu/wget/wget-1.13.tar.xz
+##
+## Builds and Installs wget-1.13 :
+##   
+##     ./home/zbigg/foo/lib/portz/wget.MANIFEST
+##     (...)
+##     ./home/zbigg/foo/share/locale/be/LC_MESSAGES/wget.mo
+##     (...)
+##     ./home/zbigg/foo/share/locale/pt_BR/LC_MESSAGES/wget.mo
+##     (...)
+##     ./home/zbigg/foo/share/man/man1/wget.1
+##     ./home/zbigg/foo/share/info/wget.info
+##     ./home/zbigg/foo/share/info/dir
+##     ./home/zbigg/foo/etc/wgetrc
+##     ./home/zbigg/foo/bin/wget
+##
+## Author Zbigniew Zagorski <zbigniew.zagorski@tieto.com>
+##
+
+if [ "$1" = "-h" -o "$1" = "--help" -o "$1" = "help" ] ; then
+    cat $0 | egrep '^##( |$)' | cut -c3-
+    exit 
+fi
 
 
 PNAME=portz_easy_install

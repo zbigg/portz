@@ -2,13 +2,15 @@
 
 . ${portz_root}/scripts/defs.sh
 
-portz_wget()
+portz_download()
 {
     if which wget > /dev/null; then
-        portz_invoke_always wget $*
+        portz_invoke_always wget -O $1 $2
+    elif which curl > /dev/null ; then
+        portz_invoke_always curl --location --output $1 $2
     else
         inform "using bundled wget"
-        portz_invoke_always ${portz_tools}/wget/wget $*
+        portz_invoke_always ${portz_tools}/wget/wget -O $1 $*
     fi
 }
 
@@ -21,7 +23,7 @@ if [ ! -f $archived_filename ] ; then
     [ -d $portz_archive ] || mkdir -p $portz_archive
     #trap "rm -rf $archived_filename; exit 1"
     rm -rf $archived_filename.tmp
-    portz_wget -O $archived_filename.tmp $url
+    portz_download ${archived_filename}.tmp $url
     mv $archived_filename.tmp $archived_filename
     #trap
 fi

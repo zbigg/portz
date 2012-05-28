@@ -1,0 +1,7 @@
+#note about version,
+# the latest known version that builds without glib is 0.23
+# don't upgrade unless know what you're doing
+version=0.23
+baseurl=http://pkgconfig.freedesktop.org/releases/pkg-config-${version}.tar.gz
+web=http://www.freedesktop.org/wiki/Software/pkg-config
+stereotype=auto

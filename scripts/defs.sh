@@ -251,8 +251,10 @@ if [ -n "$package" ] ; then
         package_folder="${portz_repo}/${package}"
     elif [ -f "${portz_repo}/${package}.portz" ] ; then
         package_def_file="${portz_repo}/${package}.portz"
+	package_folder="${portz_repo}"
     elif [ -f "${portz_repo}/${package}" ] ; then
         package_def_file="${portz_repo}/${package}"
+	package_folder="${portz_repo}"
     else
         #inform "unknown package (not found in ${portz_repo}"
         unknown_package=1

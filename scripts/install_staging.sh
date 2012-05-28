@@ -32,4 +32,5 @@ portz_step ${bld_dir} install_staging
 # update manifest
 
 portz_step ${staging_dir} make_manifest
+portz_step ${staging_dir} make_pkginfo
 

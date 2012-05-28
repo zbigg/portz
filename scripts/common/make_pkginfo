@@ -1,0 +1,49 @@
+#!/bin/bash
+
+. ${portz_root}/scripts/defs.sh
+
+inform "creating package info ($package.PKGINFO)"
+pkginfo_dir=$(dirname $manifest_file)
+pkginfo_file=${pkginfo_dir}/${package}.PKGINFO
+mkdir -p ${staging_dir}${manifest_dir}
+
+foobar()
+{
+	local V="$(eval echo "\$$1")"
+	if [ -n "$V" ] ; then
+		echo -n "$1=\"$V\" "
+	fi
+}
+influential_args()
+{
+	foobar prefix
+	foobar exec_prefix
+	foobar arch
+	foobar CC
+	foobar CXX
+	foobar LD
+	foobar CFLAGS
+	foobar CXXFLAGS
+	foobar LFFLAGS
+	foobar LDLIBS
+}
+
+(
+	echo "name=$package"
+	echo "version=$version"
+	if [ -n "$baseurl" ] ; then
+		echo "baseurl=$baseurl"
+	elif [ -n "${svn_path}" ] ; then
+		echo "svn_path=$svn_path"
+		echo "svn_revision=$(cd $src_dir ; svnversion ; )"
+	fi
+	if [ -n "$build_command" ] ; then
+		echo "build_command=$(influential_args) $build_command"
+	else
+		echo "build_command=$(influential_args) portz_install ${package}"
+	fi
+) > ${staging_dir}${pkginfo_file}
+
+inform "package info"
+cat "${staging_dir}${pkginfo_file}"
+

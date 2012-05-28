@@ -52,7 +52,7 @@ while [ -n "$1" ] ; do
         dist)
             portz_step $(pwd) $action
             ;;
-        deploy|make_manifest)
+        deploy|make_manifest|make_pkginfo)
             portz_step ${staging_dir} $action
             ;;
         *)

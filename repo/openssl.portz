@@ -1,4 +1,4 @@
-version=1.0.0b
+version=1.0.1c
 baseurl=http://www.openssl.org/source/openssl-${version}.tar.gz
 web=http://www.openssl.org/
 stereotype=auto

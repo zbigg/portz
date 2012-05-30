@@ -67,8 +67,11 @@ while [ -n "$1" ]; do
     fi
     shift
 done
-
+export baseurl
 export package=$name
+
+build_command="$0 name=$name $baseurl"
+export build_command
 
 . ${portz_root}/scripts/defs.sh
 

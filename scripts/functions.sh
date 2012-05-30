@@ -21,7 +21,7 @@ inform()
 portz_invoke()
 {
     inform "[!] $@"
-    eval "$@"
+    "$@"
     if [ "$?" != "0" ] ; then
         "[!] failed with error code $?"
         exit $?

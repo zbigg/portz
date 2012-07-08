@@ -245,8 +245,10 @@ if [ -n "$package" ] ; then
     staging_dir=${TMP}/portz/${package}/staging
     DESTDIR=${staging_dir}
     # read package configuration from repo
-    
-    if [ -d "${portz_repo}/${package}" ] ; then
+   
+    if [ -n "$portz_easy_install" ] ; then
+    	unknown_package=1
+    elif [ -d "${portz_repo}/${package}" ] ; then
         package_def_file="${portz_repo}/${package}/info.txt"
         package_folder="${portz_repo}/${package}"
     elif [ -f "${portz_repo}/${package}.portz" ] ; then

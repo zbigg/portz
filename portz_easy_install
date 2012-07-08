@@ -67,6 +67,8 @@ while [ -n "$1" ]; do
     fi
     shift
 done
+
+export portz_easy_install=1
 export baseurl
 export package=$name
 

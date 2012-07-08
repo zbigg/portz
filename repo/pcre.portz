@@ -1,4 +1,4 @@
-version=8.30
+version=8.31
 baseurl=ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-${version}.tar.bz2
 web=http://www.pcre.org/
 
@@ -9,11 +9,11 @@ configure_options="--enable-utf8"
 #if [ "$OSTYPE" == "msys" ] ; then 
     configure_options="$configure_options --disable-cpp"
 #fi
+
 patch_step()
 {
-	portz_invoke "patch -p1 < ${package_folder}/pcre_8.30_build.patch"
-	libtoolize || mkdir -p m4
-	portz_invoke autoreconf -i -f || true
+       libtoolize || mkdir -p m4
+       portz_invoke autoreconf -i -f || true
 }
 
 stereotype="gnu"

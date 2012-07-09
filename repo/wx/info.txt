@@ -1,7 +1,6 @@
-version=2.9.3
+version=2.9.4
 #baseurl="ftp://ftp.wxwidgets.org/pub/${version}/wxWidgets-${version}.tar.bz2"
-
-baseurl="http://sourceforge.net/projects/wxwindows/files/2.9.3/wxWidgets-${version}.tar.bz2"
+baseurl=http://sourceforge.net/projects/wxwindows/files/${version}/wxWidgets-${version}.tar.bz2
 
 description="wxWidgets lets developers create applications for Win32, Mac OS X, GTK+, X11, Motif, WinCE, 
 and more  using one codebase. 

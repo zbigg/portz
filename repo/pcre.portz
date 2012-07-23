@@ -2,7 +2,7 @@ version=8.31
 baseurl=ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-${version}.tar.bz2
 web=http://www.pcre.org/
 
-configure_options="--enable-utf8"
+configure_options="--enable-utf8 --enable-unicode-properties"
 
 #8.21 can't reliably build cpp unittests also on ubuntu in lsb env, so remove
 # it from all builds

@@ -105,8 +105,44 @@ SITE DEFAULTS
 	./home/zbigg/site/mingw32/bin/pcregrep.exe
 	$
 
+PACKAGE FILE FORMAT
 
-	
+Currently package file format is just a shell script with some key
+variable settings.
+
+Canonical example:
+  # repo/pcre.portz
+  version=8.31
+  baseurl=ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-${version}.tar.bz2
+  web=http://www.pcre.org/
+  configure_options="--enable-utf8 --enable-unicode-properties"
+  stereotype="gnu"
+
+It described pcre (http://pcre.org) in version 8.31 and download URL. It tells
+also that it's a 'gnu' type of package, so portz will expect canonical
+configure & make & make install DESTDIR=xxx working.
+
+(Sterotype is autodetected in configure & Makefile.in exists, so stereotype
+ settings is redundant here)
+
+So, basically portz supports out-of-the-box following "steretypes":
+ - gnu (configure&make packages)
+ - python (featuring distutils compatible setup.py)
+
+Portz can fetch source from using:
+ - baseurl, it just fetched tgz,tbz2,zip etc
+ - svn url & revision
+ - monotone url & revision
+
+Definitions:
+ - downloaded packages:
+   - baseurl -> from where wget or curl shall fetch source package
+ - sources from svn:
+   - svn_path - SVN url
+   - revision - optional, HEAD is the default
+ - sources from monotone:
+   - mtn_url - monotone database pull URL
+   - revision - mandatory, a monotone selector: h:branch, t:tag, HASH
 
 
  

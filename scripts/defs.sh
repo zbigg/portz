@@ -49,7 +49,7 @@ case "$OSTYPE" in
         PATCH=gpatch
 	MAKE=gmake
         ;;
-    *FreeBSD*)
+    *freebsd*|*FreeBSD*)
 	MAKE=gmake
 	C_INCLUDE_PATH=$C_INCLUDE_PATH:/usr/local/include
 	CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/usr/local/include
@@ -352,7 +352,7 @@ maybe_detect_stereotype()
 {
 	if [ "$stereotype" = "auto" ] ; then
         	inform "detecting stereotype"
-        	if [ -f "${src_dir}/configure" ] ; then
+        	if [ -f "${src_dir}/configure" -o -f "${src_dir}/configure.ac" -o -f "${src_dir}/configure.in" ] ; then
                 	inform "stereotype=gnu"
                 	export stereotype=gnu
             elif [ -f "${src_dir}/setup.py" ]; then

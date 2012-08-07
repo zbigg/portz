@@ -16,9 +16,41 @@ fi
 if [ ! -w $prefix ] ; then
 	echo "$PNAME: must escalate priviledges to root"
 	MAYBE_SUDO=sudo
-fi
+	fi
+	
+gnu_tar_deploy()
+{
+    TAR_FLAGS="--no-overwrite-dir --atime-preserve -m --no-same-owner --no-same-permissions"
+    (
+        cd ${staging_dir}
+        portz_invoke ${TAR} c .
+    ) | ( 
+        cd / 
+        portz_invoke ${MAYBE_SUDO} ${TAR} xv ${TAR_FLAGS} 
+    )
+}
 
-TAR_FLAGS="--no-overwrite-dir --atime-preserve -m --no-same-owner --no-same-permissions"
-(cd ${staging_dir} ; portz_invoke ${TAR} c . ; ) | ( cd / ; portz_invoke ${MAYBE_SUDO} ${TAR} xv ${TAR_FLAGS}; )
+freebsd_cp_deploy()
+{
+    (
+        cd ${staging_dir}
+        # verbose, recursive cp with, no overwrite existing
+        portz_invoke cp -v -R -n * /
+    )
+}
 
+case "$OSTYPE" in
+*freebsd*|*FreeBSD*)
+    freebsd_cp_deploy
+    ;;
+*linux*|*Linux*)
+    gnu_tar_deploy
+    ;;
+*)
+    if [ -f gtar ] ; then
+        TAR=gtar
+    fi
+    gnu_tar_deploy
+    ;;
+esac
 

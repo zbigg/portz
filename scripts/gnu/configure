@@ -15,5 +15,20 @@ if [ -z "$CXXFLAGS" ] ; then
 	export CXXFLAGS="-g -O2 -U_FORTIFY_SOURCE"
 fi
 
+# support bakefile generated makefiles
+if [ ! -f Makefile.in ] ; then
+    if [ -f Bakefile.bkgen ] ; then
+        portz_invoke bakefile_gen -f autoconf
+    fi
+fi
+
+# support autoconf-based packages without compiled configure script
+if [ ! -f configure ] ; then
+    if [ -f configure.ac -o -f configure.in ] ; then
+        portz_invoke autoreconf -i
+    fi
+fi
+
+# and finally configure
 portz_invoke "./configure" "--prefix=${prefix}" "--exec-prefix=${exec_prefix}" ${cross_configure_options} ${configure_options} 
 

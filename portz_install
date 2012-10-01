@@ -15,7 +15,7 @@ export PNAME
 set -e 
 portz_root=$(pwd)
 export portz_root
-package=$1
+package_param=$1
 
 build_command="$0 $@"
 export build_command

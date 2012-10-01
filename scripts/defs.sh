@@ -240,32 +240,52 @@ MAKE_PARALLEL="${MAKE} -j$cpus"
 
 [ -z "${TMP}" ] && TMP=/tmp
 
-if [ -n "$package" ] ; then
-    manifest_file=${exec_prefix}/lib/portz/${package}.MANIFEST
-    staging_dir=${TMP}/portz/${package}/staging
-    DESTDIR=${staging_dir}
-    # read package configuration from repo
-   
-    if [ -n "$portz_easy_install" ] ; then
-    	unknown_package=1
-    elif [ -d "${portz_repo}/${package}" ] ; then
-        package_def_file="${portz_repo}/${package}/info.txt"
+#set -x
+if [ -z "$package_param" -a -n "$package" ] ; then # hack for old scripts
+    package_param="$package"
+fi
+
+if [ -n "$package_param" ] ; then
+    # check if package param points directly at file
+    if [ -f "$package_param" ] ; then
+        package_def_file="${package_param}"
+        package_folder=$(readlink -f $(dirname ${package_def_file}))
+    elif [ -d "$package_param" -a -f "$package_param/info.txt" ] ; then
+        package_def_file="${package_param}/info.txt"
+        package_folder="$package_param"
+    elif [ -n "$portz_easy_install" ] ; then
+        unknown_package=1    	
+    # now try the portz repo
+    elif [ -d "${portz_repo}/${package_param}" ] ; then
+        package_def_file="${portz_repo}/${package_param}/info.txt"
         package_folder="${portz_repo}/${package}"
-    elif [ -f "${portz_repo}/${package}.portz" ] ; then
-        package_def_file="${portz_repo}/${package}.portz"
-	package_folder="${portz_repo}"
-    elif [ -f "${portz_repo}/${package}" ] ; then
-        package_def_file="${portz_repo}/${package}"
-	package_folder="${portz_repo}"
+    elif [ -f "${portz_repo}/${package_param}.portz" ] ; then
+        package_def_file="${portz_repo}/${package_param}.portz"
+        package_folder="${portz_repo}"
+    elif [ -f "${portz_repo}/${package_param}" ] ; then
+        package_def_file="${portz_repo}/${package_param}"
+        package_folder="${portz_repo}"
     else
         #inform "unknown package (not found in ${portz_repo}"
         unknown_package=1
     fi
-    if [ -z "${unknown_package}" ] ; then
+    
+    if [ -n "$package_def_file" ] ; then
         . ${package_def_file}
+        
+        if [ -z "$package" -a -n "$name" ] ; then
+            package="$name"
+        fi
     fi
 fi
 
+if [ -n "$package" ] ; then
+    manifest_file=${exec_prefix}/lib/portz/${package}.MANIFEST
+    staging_dir=${TMP}/portz/${package}/staging
+    DESTDIR="${staging_dir}"
+fi
+
+#set -x
 #
 # portz_step
 #

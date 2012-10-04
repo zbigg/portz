@@ -17,7 +17,7 @@ set -e
 portz_root=$(pwd)
 
 
-package=$1
+package_param=$1
 shift
 . ${portz_root}/scripts/defs.sh
 portz_assert_know_package

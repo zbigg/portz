@@ -79,7 +79,7 @@ config_guess()
 }
 
 addpath() {
-        name=$1 ; shift
+        local name=$1 ; shift
         eval "current=\"\$$name\""
         if [ -z "$current" ] ; then
                 D=""
@@ -240,12 +240,12 @@ MAKE_PARALLEL="${MAKE} -j$cpus"
 
 [ -z "${TMP}" ] && TMP=/tmp
 
-#set -x
 if [ -z "$package_param" -a -n "$package" ] ; then # hack for old scripts
     package_param="$package"
 fi
 
 if [ -n "$package_param" ] ; then
+    export package_param
     # check if package param points directly at file
     if [ -f "$package_param" ] ; then
         package_def_file="${package_param}"
@@ -272,10 +272,20 @@ if [ -n "$package_param" ] ; then
     
     if [ -n "$package_def_file" ] ; then
         . ${package_def_file}
-        
+    	
+	if [ -z "$name" ] ; then
+		package_def_file_basename="$(basename "$package_def_file")"
+		if [ "$package_def_file_basename" = "info.txt" ] ; then
+			name="$(basename $(dirname "$package_def_file"))"
+		else
+			name="$(basename "$package_def_file" | sed -e 's/\.portz//')"
+		fi
+	fi
+	export name
         if [ -z "$package" -a -n "$name" ] ; then
             package="$name"
         fi
+	export package
     fi
 fi
 
@@ -328,6 +338,7 @@ portz_step()
 
     step_function_name="${action}_step"
     if function_exists ${step_function_name} ; then
+    	inform "$action (in $folder)"
         (cd $folder ; eval $step_function_name "$@" )
         return $?
     fi
@@ -335,6 +346,7 @@ portz_step()
     for SP in ${portz_step_path} ; do
         local script="$SP/$action"
         if [ -f "${script}" ] ; then
+    	    inform "$action (in $folder)"
             portz_do_invoke_step $folder $script "$@"
             return $?
         fi
@@ -351,7 +363,8 @@ portz_optional_step()
     shift
 
     step_function_name="${action}_step"
-    if declare -F ${step_function_name} ; then
+    if declare -F ${step_function_name} >/dev/null; then
+    	inform "$action (in $folder)"
         (cd $folder ; eval $step_function_name "$@" )
         return $?
     fi
@@ -361,6 +374,7 @@ portz_optional_step()
     for SP in ${portz_step_path} ; do
         local script="$SP/$action"
         if [ -f "${script}" ] ; then
+    	    inform "$action (in $folder)"
             portz_do_invoke_step $folder $script "$@"
             return "$?"
         fi

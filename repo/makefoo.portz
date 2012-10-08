@@ -1,0 +1,7 @@
+name=makefoo
+version="0.0.1-dev"
+website="http://idf2.hotpo.pl/makefoo"
+
+mtn_url="mtn://mtn.hotpo.pl/zbigg?pl.hotpo.makefoo"
+revision="h:pl.hotpo.makefoo"
+

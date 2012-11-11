@@ -36,6 +36,9 @@ influential_args()
 	elif [ -n "${svn_path}" ] ; then
 		echo "svn_path=$svn_path"
 		echo "svn_revision=$(cd $src_dir ; svnversion ; )"
+	elif [ -n "${mtn_url}" ] ; then
+		echo mtn_url="$mtn_url"
+		echo mtn_revision="$(cd $src_dir ; mtn automate get_base_revision_id)"
 	fi
 	if [ -n "$build_command" ] ; then
 		echo "build_command=$(influential_args) $build_command"

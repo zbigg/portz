@@ -28,7 +28,7 @@ elif [ -n "${mtn_url}" ] ; then
 	if [ ! -f "$db" ] ; then
 		portz_invoke mtn -d $db db init 
 	fi
-	portz_invoke mtn -d "$db" $mtn_options pull -k ""  "$mtn_url"
+	portz_invoke mtn -d "$db" $mtn_options pull "$mtn_url"
 	(
 		cd "${src_dir}"
 		portz_invoke mtn -d "${db}" checkout -r$revision ${dir}

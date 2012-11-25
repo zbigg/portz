@@ -61,6 +61,9 @@ case "$OSTYPE" in
         def_prefix=/mingw
         def_dist_name="mingw-$(uname -m)"
         ;;
+    *darwin*)
+        is_macosx=1
+    	;;
 esac
 
 #
@@ -224,6 +227,8 @@ if [ -f /proc/cpuinfo ] ; then
     cpus=$(cat /proc/cpuinfo | egrep "^processor" | wc -l)
 elif [ -n "$NUMBER_OF_PROCESSORS" ] ; then
     cpus=$NUMBER_OF_PROCESSORS
+elif [ -n "$is_macosx" ] ; then
+    cpus="$(sysctl -n hw.ncpu)"
 else
     cpus=1
 fi

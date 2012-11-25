@@ -40,7 +40,7 @@ freebsd_cp_deploy()
 }
 
 case "$OSTYPE" in
-*freebsd*|*FreeBSD*)
+*darwin*|*freebsd*|*FreeBSD*)
     freebsd_cp_deploy
     ;;
 *linux*|*Linux*)

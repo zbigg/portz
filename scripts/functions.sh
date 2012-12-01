@@ -17,6 +17,19 @@ inform()
     fi
 }
 
+realpath()
+(
+    if [ -d "$1" ] ; then
+        cd $1
+        pwd
+    else
+        f="$(basename $1)"
+        d="$(dirname $1)"
+        cd $d
+        echo "$(pwd)/$f"
+    fi
+)
+
 portz_invoke()
 {
     inform "[!] $@"
@@ -39,3 +52,6 @@ portz_assert_know_package()
         fail "unknown package (descriptor not found in ${portz_repo})"
     fi
 }
+
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
+

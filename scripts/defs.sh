@@ -254,7 +254,7 @@ if [ -n "$package_param" ] ; then
     # check if package param points directly at file
     if [ -f "$package_param" ] ; then
         package_def_file="${package_param}"
-        package_folder=$(readlink -f $(dirname ${package_def_file}))
+        package_folder=$(realpath $(dirname ${package_def_file}))
     elif [ -d "$package_param" -a -f "$package_param/info.txt" ] ; then
         package_def_file="${package_param}/info.txt"
         package_folder="$package_param"

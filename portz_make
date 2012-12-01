@@ -50,3 +50,5 @@ fi
     echo stereotype="$stereotype"
 ) | tee repo/$name.portz
 
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
+

@@ -34,3 +34,5 @@ portz_step ${bld_dir} install_staging
 portz_step ${staging_dir} make_manifest
 portz_step ${staging_dir} make_pkginfo
 
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
+

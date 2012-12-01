@@ -31,3 +31,6 @@ elif [ "$action" = "files" ] ; then
 else
     fail "bad usage"
 fi
+
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
+

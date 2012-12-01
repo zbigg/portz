@@ -7,3 +7,5 @@ where=${prefix}
 portz_invoke mkdir -p ${DESTDIR}${where}
 portz_invoke cp -rv * ${DESTDIR}${where}
 
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
+

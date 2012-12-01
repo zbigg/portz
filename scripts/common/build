@@ -7,3 +7,6 @@ if [ -z "$portz_no_parallel_build" ] ; then
     make_flags="${make_flags} -j${cpus}"
 fi
 portz_invoke ${MAKE} ${make_flags} "$@"
+
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
+

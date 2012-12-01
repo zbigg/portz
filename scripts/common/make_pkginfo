@@ -50,3 +50,5 @@ influential_args()
 inform "package info"
 cat "${staging_dir}${pkginfo_file}"
 
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
+

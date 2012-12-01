@@ -32,3 +32,5 @@ fi
 # and finally configure
 portz_invoke "./configure" "--prefix=${prefix}" "--exec-prefix=${exec_prefix}" ${cross_configure_options} ${configure_options} 
 
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
+

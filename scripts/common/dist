@@ -15,3 +15,5 @@ inform "creating distribution archive: ${filename} ($(cat ${staging_dir}${manife
 
 ( cd ${staging_dir}/${prefix} ; portz_invoke tar chozf ${here}/${filename} * ; )
 
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
+

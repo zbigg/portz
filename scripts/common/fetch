@@ -28,3 +28,6 @@ if [ ! -f $archived_filename ] ; then
     #trap
 fi
 echo $archived_filename
+
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
+

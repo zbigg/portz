@@ -48,6 +48,7 @@ portz_step ${staging_dir} deploy
 
 rm -rf ${TMP}/portz/${package}
 
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
 
 
 

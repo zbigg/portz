@@ -88,5 +88,6 @@ inform "exec_prefix = $exec_prefix"
 
 portz_step ${staging_dir} deploy
 
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
 
 

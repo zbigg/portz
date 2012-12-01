@@ -27,3 +27,6 @@ XXX=/tmp/XXX
 cp ${manifest_file} $XXX
 (cd $prefix ; cat $XXX | xargs -n 20 rm -rvf ;)
 rm $XXX
+
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
+

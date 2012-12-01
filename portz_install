@@ -21,7 +21,7 @@ build_command="$0 $@"
 export build_command
 
 . ${portz_root}/scripts/defs.sh
-
+	
 portz_assert_know_package
 
 inform "prefix      = $prefix"
@@ -32,4 +32,5 @@ inform "exec_prefix = $exec_prefix"
 portz_step ${staging_dir} deploy
 
 
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
 

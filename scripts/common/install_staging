@@ -13,3 +13,6 @@ else
 fi
 
 portz_invoke ${MAKE} install ${MAKE_ARGS}
+
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
+

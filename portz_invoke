@@ -61,3 +61,6 @@ while [ -n "$1" ] ; do
     esac
     shift
 done
+
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
+

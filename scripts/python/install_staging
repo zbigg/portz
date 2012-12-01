@@ -3,3 +3,5 @@
 . ${portz_root}/scripts/defs.sh
 
 python setup.py install --prefix=${prefix} --exec-prefix=${exec_prefix} --root=${DESTDIR}
+
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:

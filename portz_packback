@@ -30,3 +30,5 @@ cat ${manifest_file}  | xargs tar chofz ${filename2}
 
 inform "created ${filename}"
 
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
+

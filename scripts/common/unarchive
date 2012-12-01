@@ -32,3 +32,5 @@ case ${archive_file} in
     *) fail "unknown archive type: ${archive_file} (supported tar (gz,bz2) and zip"
 esac
 
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
+

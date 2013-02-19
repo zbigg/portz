@@ -19,7 +19,7 @@ package=$2
 . ${portz_root}/scripts/defs.sh
 
 if [ "$action" = "list" ] ; then
-    ls -1 ${exec_prefix}/lib/portz/ | sed -e 's@.MANIFEST@@'
+    ls -1 ${exec_prefix}/lib/portz/ | grep -v PKGINFO | sed -e 's@.MANIFEST@@'
 elif [ "$action" = "files" ] ; then
     if [ -z ${package} ] ; then
         fail "need package name"
@@ -27,7 +27,7 @@ elif [ "$action" = "files" ] ; then
     if [ ! -f ${manifest_file} ] ; then
         fail "package '$package' not installed (failed to read ${manifest_file})"
     fi
-    cat ${manifest_file} | sed -e 'sX^X/X'
+    cat ${manifest_file} | sed -e "sX^X${prefix}/X"
 else
     fail "bad usage"
 fi

@@ -9,9 +9,9 @@
 # I.e., do what you like, but keep copyright and there's NO WARRANTY. 
 # 
 
-PNAME=`basename $0`
+PNAME=portz-make
 set -e
-portz_root=$PWD
+portz_root=${portz_libdir-`pwd`}
 
 . ${portz_root}/scripts/defs.sh
 

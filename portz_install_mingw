@@ -9,12 +9,12 @@
 # I.e., do what you like, but keep copyright and there's NO WARRANTY. 
 # 
 
-PNAME=portz_mingw_install
+PNAME=portz-install-mingw
 export PNAME
 
 set -e 
 #set -x
-portz_root=$(pwd)
+portz_root=${portz_libdir-`pwd`}
 
 stereotype=verbatim
 . ${portz_root}/scripts/defs.sh

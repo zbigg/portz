@@ -9,12 +9,12 @@
 # I.e., do what you like, but keep copyright and there's NO WARRANTY. 
 # 
 
-PNAME=portz_invoke
+PNAME=portz-invoke
 export PNAME
 
 set -e 
 #set -x
-portz_root=$(pwd)
+portz_root=${portz_libdir-`pwd`}
 
 
 package_param=$1

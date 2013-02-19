@@ -9,11 +9,11 @@
 # I.e., do what you like, but keep copyright and there's NO WARRANTY. 
 # 
 
-PNAME=portz_install
+PNAME=portz-install
 export PNAME
 
 set -e 
-portz_root=$(pwd)
+portz_root=${portz_libdir-`pwd`}
 export portz_root
 package_param=$1
 

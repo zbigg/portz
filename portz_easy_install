@@ -51,12 +51,12 @@ if [ "$1" = "-h" -o "$1" = "--help" -o "$1" = "help" ] ; then
 fi
 
 
-PNAME=portz_easy_install
+PNAME=portz-easy-install
 export PNAME
 
 set -e 
 #set -x
-portz_root=$(pwd)
+portz_root=${portz_libdir-`pwd`}
 
 while [ -n "$1" ]; do
     if echo $1 | egrep -q '^[A-Za-z]+=' ; then

@@ -28,7 +28,7 @@ portz_bindir=$(dirname $BASH_SOURCE)
 if   [ -x "$portz_bindir/portz_install" ] ; then
     portz_libdir="$portz_bindir"
 elif [ -x "$portz_bindir/../lib/portz/portz_install" ] ; then
-    portz_libdir="$portz_bindir/../lib/portz/portz_install"
+    portz_libdir="$portz_bindir/../lib/portz"
 else
     log_error "unable to find 'portz_libdir', tried $portz_bindir and $portz_bindir/../lib/portz" 
 fi

@@ -34,8 +34,9 @@ portz_invoke()
 {
     inform "[!] $@"
     "$@"
-    if [ "$?" != "0" ] ; then
-        "[!] failed with error code $?"
+    r=$?
+    if [ "$r" != "0" ] ; then
+        echo "[!] failed with error code $r" 1>&2
         exit $?
     fi
 }

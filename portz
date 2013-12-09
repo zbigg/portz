@@ -20,11 +20,11 @@
 eval `bashfoo --eval-out`
 
 bashfoo_require auto_usage
-
+bashfoo_require path
 #
 # find portz_libdir, our library
 #
-portz_bindir=$(dirname $BASH_SOURCE)
+portz_bindir=$(abspath $(dirname $BASH_SOURCE))
 if   [ -x "$portz_bindir/portz_install" ] ; then
     portz_libdir="$portz_bindir"
 elif [ -x "$portz_bindir/../lib/portz/portz_install" ] ; then
@@ -65,6 +65,8 @@ while [ -n "$1" ] ; do
 done
 
 [ -z "$action" ] && fail_on_bad_usage "action required"
+
+export portz_libdir
 
 log_debug "action=$action"
 log_debug "portz_libdir=$portz_libdir"

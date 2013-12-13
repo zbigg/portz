@@ -1,9 +1,9 @@
 fail()
 {
     if [ -n "$name" ]; then
-        echo "$PNAME($name), error: $*" 1>&2
+        echo "$PNAME($name): error: $*" 1>&2
     else
-        echo "$PNAME, error: $*" 1>&2
+        echo "$PNAME: error: $*" 1>&2
     fi
     exit 1
 }
@@ -32,11 +32,11 @@ realpath()
 
 portz_invoke()
 {
-    inform "[!] $@"
+    inform "executing: $@"
     "$@"
     r=$?
     if [ "$r" != "0" ] ; then
-        echo "[!] failed with error code $r" 1>&2
+        echo "'$@' failed with error code $r" 1>&2
         exit $?
     fi
 }
@@ -50,7 +50,7 @@ portz_invoke_always()
 portz_assert_know_package()
 {
     if [ -n "$unknown_package" ] ; then
-        fail "unknown package (descriptor not found in ${portz_repo})"
+        fail "unknown package '$package' (descriptor not found in ${portz_repo})"
     fi
 }
 

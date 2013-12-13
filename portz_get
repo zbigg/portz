@@ -16,8 +16,10 @@ portz_root=${portz_libdir-`pwd`}
 package=$1
 
 . ${portz_root}/scripts/defs.sh
+
 portz_assert_know_package
 
-archive_file=$(portz_step $(pwd) fetch ${baseurl})
+archive_file="$(portz_step $(pwd) fetch ${baseurl})"
+
 inform archive_file="$archive_file"
 portz_step src/${package} unarchive ${archive_file}

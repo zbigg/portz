@@ -21,7 +21,7 @@ build_command="$0 $@"
 export build_command
 
 . ${portz_root}/scripts/defs.sh
-	
+
 portz_assert_know_package
 
 inform "prefix      = $prefix"

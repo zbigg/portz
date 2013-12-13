@@ -3,6 +3,8 @@ eval `bashfoo --eval-out`
 bashfoo_require run
 bashfoo_require log
 
+set -e
+
 if [ -z "${portz_root}" ] ; then
     fail "portz_root not set, report it as a portz bug"
 fi
@@ -279,26 +281,33 @@ if [ -n "$package_param" ] ; then
         #inform "unknown package (not found in ${portz_repo}"
         unknown_package=1
     fi
+
+    if [ -z "$first_name" -a -z "$name" ] ;then
+        first_name=1
+    fi
     
     if [ -n "$package_def_file" ] ; then
         . ${package_def_file}
-    	
-	if [ -z "$name" ] ; then
-		package_def_file_basename="$(basename "$package_def_file")"
-		if [ "$package_def_file_basename" = "info.txt" ] ; then
-			name="$(basename $(dirname "$package_def_file"))"
-		else
-			name="$(basename "$package_def_file" | sed -e 's/\.portz//')"
-		fi
-		if [ -n "$name" ] ; then
-		    PNAME="$PNAME($name)"
+
+        if [ -z "$name" ] ; then
+            package_def_file_basename="$(basename "$package_def_file")"
+            if [ "$package_def_file_basename" = "info.txt" ] ; then
+                name="$(basename $(dirname "$package_def_file"))"
+            else
+                name="$(basename "$package_def_file" | sed -e 's/\.portz//')"
+            fi
         fi
-	fi
-	export name
+        
+        if [ -n "$name" -a "$first_name" = 1 ] ; then
+            PNAME="$PNAME($name)"
+            export first_name=0
+        fi
+    
+        export name
         if [ -z "$package" -a -n "$name" ] ; then
             package="$name"
         fi
-	export package
+        export package
     fi
 fi
 

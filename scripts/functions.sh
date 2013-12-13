@@ -44,6 +44,7 @@ portz_invoke_always()
 
 portz_assert_know_package()
 {
+    local package="${package-$package_param}"
     if [ -n "$unknown_package" ] ; then
         fail "unknown package '$package' (descriptor not found in ${portz_repo})"
     fi

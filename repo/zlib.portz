@@ -1,4 +1,4 @@
-version=1.2.7
+version=1.2.8
 baseurl="http://www.zlib.net/zlib-${version}.tar.gz"
 
 description="zlib is designed to be a free, general-purpose, legally unencumbered, 

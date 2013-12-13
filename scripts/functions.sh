@@ -29,9 +29,10 @@ portz_invoke()
 {
     inform "executing: $@"
     quiet_if_success "$@"
+    #"$@"
     r=$?
     if [ "$r" != "0" ] ; then
-        echo "'$@' failed with error code $r" 1>&2
+        log_error "'$@' failed with error code $r" 1>&2
         exit $?
     fi
 }
@@ -46,6 +47,17 @@ portz_assert_know_package()
     if [ -n "$unknown_package" ] ; then
         fail "unknown package '$package' (descriptor not found in ${portz_repo})"
     fi
+}
+
+portz_check_installed()
+{
+    dep_pkginfo="$prefix/lib/portz/$1.PKGINFO"
+    if [ -f "$dep_pkginfo" ] ; then
+        inform "$1 is installed:"
+        cat $dep_pkginfo
+        return 0
+    fi
+    return 1
 }
 
 # jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:

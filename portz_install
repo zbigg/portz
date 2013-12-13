@@ -12,7 +12,7 @@
 PNAME=portz-install
 export PNAME
 
-set -e 
+set -e
 portz_root=${portz_libdir-`pwd`}
 export portz_root
 package_param=$1
@@ -26,6 +26,24 @@ portz_assert_know_package
 
 inform "prefix      = $prefix"
 inform "exec_prefix = $exec_prefix"
+
+if [ -n "$depends" ] ; then 
+    inform "DEPENDS: $depends"
+
+    for dep in $depends ; do
+        if portz_check_installed $dep ; then
+            inform "$dep -> already available"
+        else
+            inform "$dep -> not installed, installing"
+            (
+                unset first_name
+                unset name
+                unset package
+                ${portz_root}/portz_install $dep
+            )
+        fi
+    done
+fi
 
 . ${portz_scripts}/install_staging.sh
 

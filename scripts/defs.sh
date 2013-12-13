@@ -175,8 +175,9 @@ fi
 C_INCLUDE_PATH=${prefix}/include:$C_INCLUDE_PATH
 CPLUS_INCLUDE_PATH=${prefix}/include:$CPLUS_INCLUDE_PATH
 LD_LIBRARY_PATH=${exec_prefix}/lib:$CPLUS_INCLUDE_PATH
+PKG_CONFIG_PATH=${exec_prefix}/lib/pkgconfig:${prefix}/lib/pkgconfig:PKG_CONFIG_PATH
 
-export C_INCLUDE_PATH CPLUS_INCLUDE_PATH LD_LIBRARY_PATH
+export C_INCLUDE_PATH CPLUS_INCLUDE_PATH LD_LIBRARY_PATH PKG_CONFIG_PATH
 
 if [ "$current_arch" != "$target_arch" ] ; then
         cross_configure_options="--host=$target_arch"

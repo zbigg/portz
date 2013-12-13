@@ -1,0 +1,9 @@
+name="tinfra-regexp"
+version="0.0.3-dev"
+website="http://idf2.hotpo.pl/tinfra"
+
+mtn_url="mtn://mtn.hotpo.pl/tinfra?pl.reddix.tinfra-regexp"
+revision="h:pl.reddix.tinfra-regexp"
+
+depends="makefoo tinfra pcre"
+

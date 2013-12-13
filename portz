@@ -33,6 +33,8 @@ else
     log_error "unable to find 'portz_libdir', tried $portz_bindir and $portz_bindir/../lib/portz" 
 fi
 
+portz_quiet=${portz_quiet-1}
+
 while [ -n "$1" ] ; do
     maybe_show_auto_help
     if log_process_options "$1"; then

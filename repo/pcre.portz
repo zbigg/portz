@@ -1,4 +1,4 @@
-version=8.31
+version=8.33
 baseurl=ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-${version}.tar.bz2
 web=http://www.pcre.org/
 
@@ -12,7 +12,7 @@ configure_options="--enable-utf8 --enable-unicode-properties"
 
 patch_step()
 {
-       libtoolize || mkdir -p m4
+       portz_invoke libtoolize || mkdir -p m4
        portz_invoke autoreconf -i -f || true
 }
 

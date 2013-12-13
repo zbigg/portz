@@ -1,6 +1,10 @@
+eval `bashfoo --eval-out`
+
+bashfoo_require run
+bashfoo_require log
+
 if [ -z "${portz_root}" ] ; then
-    echo "$0: portz_root not set, report it as a portz bug" 1>&2
-    exit 3
+    fail "portz_root not set, report it as a portz bug"
 fi
 
 if [ -d "${portz_root}/repo" ] ; then
@@ -15,6 +19,7 @@ else
     portz_tools=${portz_root}/share/portz/tools
     portz_archive=${portz_root}/var/cache/portz/archive 
 fi
+
 
 . ${portz_scripts}/functions.sh
 
@@ -285,6 +290,9 @@ if [ -n "$package_param" ] ; then
 		else
 			name="$(basename "$package_def_file" | sed -e 's/\.portz//')"
 		fi
+		if [ -n "$name" ] ; then
+		    PNAME="$PNAME($name)"
+        fi
 	fi
 	export name
         if [ -z "$package" -a -n "$name" ] ; then
@@ -293,6 +301,7 @@ if [ -n "$package_param" ] ; then
 	export package
     fi
 fi
+
 
 if [ -n "$package" ] ; then
     manifest_file=${exec_prefix}/lib/portz/${package}.MANIFEST
@@ -328,7 +337,7 @@ portz_do_invoke_step()
 
 function_exists()
 {
-	declare -F $1 2> /dev/null
+	declare -F $1 2>/dev/null 1> /dev/null
 	return $?
 }
 
@@ -338,12 +347,13 @@ portz_step()
     action=$2
     
     shift
-    shift    
+    shift
     portz_step_path="${package_folder} ${portz_scripts}/${stereotype} ${portz_scripts}/common"
 
     step_function_name="${action}_step"
+    actionu=$(echo $action | tr a-z A-Z)
     if function_exists ${step_function_name} ; then
-    	inform "$action (in $folder)"
+    	inform "$actionu (in $folder)"
         (cd $folder ; eval $step_function_name "$@" )
         return $?
     fi
@@ -351,7 +361,7 @@ portz_step()
     for SP in ${portz_step_path} ; do
         local script="$SP/$action"
         if [ -f "${script}" ] ; then
-    	    inform "$action (in $folder)"
+    	    inform "$actionu (in $folder)"
             portz_do_invoke_step $folder $script "$@"
             return $?
         fi
@@ -368,8 +378,9 @@ portz_optional_step()
     shift
 
     step_function_name="${action}_step"
+    actionu=$(echo $action | tr a-z A-Z)
     if declare -F ${step_function_name} >/dev/null; then
-    	inform "$action (in $folder)"
+    	inform "$actionu (in $folder)"
         (cd $folder ; eval $step_function_name "$@" )
         return $?
     fi
@@ -379,7 +390,7 @@ portz_optional_step()
     for SP in ${portz_step_path} ; do
         local script="$SP/$action"
         if [ -f "${script}" ] ; then
-    	    inform "$action (in $folder)"
+    	    inform "$actionu (in $folder)"
             portz_do_invoke_step $folder $script "$@"
             return "$?"
         fi

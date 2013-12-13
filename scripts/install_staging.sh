@@ -27,7 +27,7 @@ portz_step ${bld_dir} build
 
 # and staging install
 rm -rf ${staging_dir}
-portz_step ${bld_dir} install_staging 
+portz_step ${bld_dir} install_staging
 
 # update manifest
 

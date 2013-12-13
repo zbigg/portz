@@ -1,20 +1,15 @@
+
+
+
 fail()
 {
-    if [ -n "$name" ]; then
-        echo "$PNAME($name): error: $*" 1>&2
-    else
-        echo "$PNAME: error: $*" 1>&2
-    fi
+    log_error "$@"
     exit 1
 }
 
 inform()
 {
-    if [ -n "$name" ]; then
-        echo "$PNAME($name): $*" 1>&2
-    else
-        echo "$PNAME: $*" 1>&2
-    fi
+    log_info "$@"
 }
 
 realpath()
@@ -33,7 +28,7 @@ realpath()
 portz_invoke()
 {
     inform "executing: $@"
-    "$@"
+    quiet_if_success "$@"
     r=$?
     if [ "$r" != "0" ] ; then
         echo "'$@' failed with error code $r" 1>&2
@@ -43,8 +38,7 @@ portz_invoke()
 
 portz_invoke_always()
 {
-    inform "[!] $@"
-    eval "$@"
+    portz_invoke "$@"
 }
 
 portz_assert_know_package()

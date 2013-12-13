@@ -14,19 +14,19 @@ if [ ! -d $prefix ] ; then
 fi
 
 if [ ! -w $prefix ] ; then
-	echo "$PNAME: must escalate priviledges to root"
-	MAYBE_SUDO=sudo
-	fi
-	
+    MAYBE_SUDO=${SUDO-sudo}
+    inform"must escalate priviledges to root (using $MAYBE_SUDO)"
+    fi
+
 gnu_tar_deploy()
 {
     TAR_FLAGS="--no-overwrite-dir --atime-preserve -m --no-same-owner --no-same-permissions"
     (
         cd ${staging_dir}
-        portz_invoke ${TAR} c .
+        ${TAR} c .
     ) | ( 
         cd / 
-        portz_invoke ${MAYBE_SUDO} ${TAR} xv ${TAR_FLAGS} 
+        ${MAYBE_SUDO} ${TAR} xv ${TAR_FLAGS} 
     )
 }
 

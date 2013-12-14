@@ -229,5 +229,7 @@ portz_make_parallel()
 
 MAKE_PARALLEL="${MAKE} -j$cpus"
 
-[ -z "${TMP}" ] && TMP="${TEMP-/tmp}"
+if [ -z "${TMP}" ] ; then
+    TMP="${TEMP-/tmp}"
+fi
 

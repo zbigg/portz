@@ -24,7 +24,7 @@ gnu_tar_deploy()
         ${TAR} c .
     ) | ( 
         cd / 
-        quiet_if_success ${MAYBE_SUDO} ${TAR} xv ${TAR_FLAGS} 
+        portz_invoke ${MAYBE_SUDO} ${TAR} xv ${TAR_FLAGS} 
     )
 }
 
@@ -33,7 +33,7 @@ freebsd_cp_deploy()
     (
         cd ${staging_dir}
         # verbose, recursive cp with, no overwrite existing
-        quiet_if_success portz_invoke cp -v -R -n * /
+        portz_invoke cp -v -R -n * /
     )
 }
 

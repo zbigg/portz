@@ -4,18 +4,40 @@
 ## portz - minimal port system by zbigg
 ##          (custom software bundling system)
 ##
-## usage:
-##   portz [options] install PACKAGE
-##   portz [options] easy_install name=foo PACKAGE_URL
-##   portz [options] get PACKAGE
-##   portz [options] packback
+## general usage:
+##   portz [options] ACTION [ARGS...]
+##
+## installation:
+##   portz install PACKAGE
+##   portz easy_install name=foo PACKAGE_URL
+##
+## installed packages
+##   portz list              - list installed packages in $prefix
+##   portz files PACKAGE     - list files in PACKAGE under $prefix
+##   portz uninstall PACKAGE - uninstall package
+##
+## distribution
+##   portz dist PACKAGE      - build tgz archive from uninstalled package
+##   portz packback PACKAGE  - build tgz archive from alreadt installed package
+##
+## environment
+##   prefix
+##   exec_prefix
+##   site
+##   portz_repo
+##
+## other
+##   portz get_src PACKAGE
 ##
 ## options
-##   --prefix PATH      -- change installation prefix, default ($prefix, /usr/local)
-##   --exec-prefix PATH -- change installation prefix, default ($exec_prefix, $prefix)
+##   -p PATH | --prefix PATH
+##       change installation prefix, default ($prefix, /usr/local)
+##   --exec-prefix PATH
+##       change installation prefix, default ($exec_prefix, $prefix)
 ##   --debug|-d  -- debug mode, be more verbose
 ##   --quiet|-q  -- quiet mode, show only warnings and errors
-##
+##   -r REPO 
+##       change repo location
 
 #if type bashfoo >/dev/null 2>/dev/null ; then
 
@@ -39,7 +61,7 @@ portz_script_dir=$(abspath $portz_script_dir)
 if [ -f "${portz_script_dir}/scripts/runtime.sh" ] ; then
     portz_libdir="${portz_script_dir}"
 elif [ -f "${portz_script_dir}/../lib/portz/scripts/runtime.sh" ] ; then
-    portz_libdir="${portz_script_dir}/../lib/portz/scripts/runtime.sh"
+    portz_libdir="${portz_script_dir}/../lib/portz/"
 else
     echo "$0: rest of portz not found or incorrect, panic" 2>&1
     exit 1
@@ -60,7 +82,7 @@ while [ -n "$1" ] ; do
     fi
 
     case "$1" in
-        --prefix)
+        -p|--prefix)
             [ -z "$2" ] && fail_on_bad_usage "$1, argument required"
             prefix=$2
             export prefix
@@ -78,7 +100,24 @@ while [ -n "$1" ] ; do
             export portz_repo
             shift ; shift
             ;;
-        install|invoke|get|easy_install|query|packback|uninstall|build_site)
+        -i) 
+            action=install ; shift ;;
+        -ql)
+            action=file ; shift ;;
+        get_src)
+            action=get
+            shift
+            break
+            ;;
+        list)
+            next_cmd="${portz_libdir}/portz_query list"
+            shift ; break ;;
+
+        files)
+            next_cmd="${portz_libdir}/portz_query files"
+            shift ; break ;;
+            
+        install|invoke|easy_install|query|packback|uninstall|build_site)
             action=$1
             shift
             break
@@ -89,14 +128,18 @@ while [ -n "$1" ] ; do
     esac
 done
 
-[ -z "$action" ] && fail_on_bad_usage "action required"
+[ -z "$action" -a -z "$next_cmd" ] && fail_on_bad_usage "action required"
 
 export portz_libdir
 
-log_debug "action=$action"
 log_debug "portz_libdir=$portz_libdir"
 log_debug "prefix=$prefix"
 log_debug "exec_prefix=$exec_prefix"
 
-exec "${portz_libdir}/portz_${action}" "$@"
-
+if [ -n "${next_cmd}" ] ; then
+    log_debug "next_cmd=$next_cmd"
+    exec ${next_cmd} "$@"
+else
+    log_debug "action=$action"
+    exec "${portz_libdir}/portz_${action}" "$@"
+fi

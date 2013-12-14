@@ -46,7 +46,9 @@ portz_lib_SCRIPTS = \
 	scripts/verbatim/find_src_dir \
 	scripts/fetch_src.sh \
 	scripts/functions.sh \
-	scripts/defs.sh \
+	scripts/runtime.sh \
+	scripts/package_defs.sh \
+	scripts/build_defs.sh \
 	scripts/gnu/configure \
 	scripts/config.guess \
 	scripts/python/configure \
@@ -75,7 +77,8 @@ bashfoo_lib_FILES =\
 	bashfoo/flag.sh \
 	bashfoo/auto_usage.sh \
 	bashfoo/path.sh \
-	bashfoo/temp.sh
+	bashfoo/temp.sh \
+	bashfoo/assert.sh
 
 bashfoo_lib_INSTALL_DEST=$(libdir)/portz
 COMPONENTS += bashfoo_lib

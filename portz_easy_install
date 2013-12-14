@@ -56,7 +56,11 @@ export PNAME
 
 set -e 
 #set -x
-portz_root=${portz_libdir-`pwd`}
+portz_libdir=${portz_libdir-`pwd`}
+. ${portz_libdir}/scripts/runtime.sh
+. ${portz_scripts}/functions.sh
+. ${portz_scripts}/build_defs.sh
+. ${portz_scripts}/package_defs.sh
 
 while [ -n "$1" ]; do
     if echo $1 | egrep -q '^[A-Za-z]+=' ; then
@@ -68,6 +72,10 @@ while [ -n "$1" ]; do
     shift
 done
 
+if [ -z "$name" -o -z "$baseurl" ] ; then
+	fail "usage: $0 name=<package_name> URL"
+fi
+
 export portz_easy_install=1
 export baseurl
 export package=$name
@@ -75,14 +83,10 @@ export package=$name
 build_command="$0 name=$name $baseurl"
 export build_command
 
-. ${portz_root}/scripts/defs.sh
+package_setup_variables
 
-if [ -z "$name" -o -z "$baseurl" ] ; then
-	fail "usage: $0 name=<package_name> URL"
-fi
-
-inform "prefix      = $prefix"
-inform "exec_prefix = $exec_prefix"
+PNAME="$PNAME[$package_name]"
+SCRIPT_NAME="$PNAME"
 
 . ${portz_scripts}/install_staging.sh
 

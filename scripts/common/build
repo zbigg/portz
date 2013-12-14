@@ -1,7 +1,5 @@
 #!/bin/bash
 
-. ${portz_root}/scripts/defs.sh
-
 make_flags=""
 if [ -z "$portz_no_parallel_build" ] ; then
     make_flags="${make_flags} -j${cpus}"

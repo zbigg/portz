@@ -1,10 +1,8 @@
 #!/bin/bash
 
-. ${portz_root}/scripts/defs.sh
-
-inform "creating package info ($package.PKGINFO)"
+inform "creating package info (${package_name}.PKGINFO)"
 pkginfo_dir=$(dirname $manifest_file)
-pkginfo_file=${pkginfo_dir}/${package}.PKGINFO
+pkginfo_file=${pkginfo_dir}/${package_name}.PKGINFO
 mkdir -p ${staging_dir}${manifest_dir}
 
 foobar()
@@ -26,13 +24,14 @@ influential_args()
 	foobar CXXFLAGS
 	foobar LFFLAGS
 	foobar LDLIBS
+	foobar PKG_CONFIG_PATH
 }
 
 (
-	echo "name=$package"
-	echo "version=$version"
+	echo "name=${package_name}"
+	echo "version=${package_version}"
 	if [ -n "$baseurl" ] ; then
-		echo "baseurl=$baseurl"
+		echo "baseurl=${package_baseurl}"
 	elif [ -n "${svn_path}" ] ; then
 		echo "svn_path=$svn_path"
 		echo "svn_revision=$(cd $src_dir ; svnversion ; )"
@@ -43,12 +42,12 @@ influential_args()
 	if [ -n "$build_command" ] ; then
 		echo "build_command=$(influential_args) $build_command"
 	else
-		echo "build_command=$(influential_args) portz_install ${package}"
+		echo "build_command=$(influential_args) portz_install ${package_name}"
 	fi
 ) > ${staging_dir}${pkginfo_file}
 
 inform "package info"
-cat "${staging_dir}${pkginfo_file}"
+cat "${staging_dir}${pkginfo_file}" | bashfoo.prefix "    "
 
 # jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
 

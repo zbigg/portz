@@ -5,11 +5,9 @@
 # compiled package
 #
 
-. ${portz_root}/scripts/defs.sh
-
 here=$(pwd)
 
-filename=${package}-${version}${dist_suffix}.tar.gz
+filename=${package_name}-${package_version}${dist_suffix}.tar.gz
 
 inform "creating distribution archive: ${filename} ($(cat ${staging_dir}${manifest_file} | wc -l ) files)"
 

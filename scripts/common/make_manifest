@@ -1,7 +1,5 @@
 #!/bin/bash
 
-. ${portz_root}/scripts/defs.sh
-
 inform "creating manifest file"
 manifest_dir=$(dirname $manifest_file)
 mkdir -p ${staging_dir}${manifest_dir}
@@ -12,7 +10,7 @@ mkdir -p ${staging_dir}${manifest_dir}
 )
 
 
-inform "package $package-$version installation consists of $(wc -l < ${staging_dir}${manifest_file}) files"
+inform "package ${package_name}-${package_version} installation consists of $(wc -l < ${staging_dir}${manifest_file}) files"
 
 
 # jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:

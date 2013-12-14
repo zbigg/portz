@@ -11,19 +11,27 @@
 
 PNAME=portz-query
 set -e
-portz_root=${portz_libdir-`pwd`}
+
+portz_libdir=${portz_libdir-`pwd`}
+. ${portz_libdir}/scripts/runtime.sh
+. ${portz_scripts}/functions.sh
+log_quiet=1
+. ${portz_scripts}/build_defs.sh
+log_quiet=0
+. ${portz_scripts}/package_defs.sh
 
 action=$1
-package=$2
-
-. ${portz_root}/scripts/defs.sh
+package_name=$2
 
 if [ "$action" = "list" ] ; then
     ls -1 ${exec_prefix}/lib/portz/ | grep -v PKGINFO | sed -e 's@.MANIFEST@@'
 elif [ "$action" = "files" ] ; then
-    if [ -z ${package} ] ; then
+    package_name=$2
+    if [ -z ${package_name} ] ; then
         fail "need package name"
     fi
+    setup_package_build_defs
+    
     if [ ! -f ${manifest_file} ] ; then
         fail "package '$package' not installed (failed to read ${manifest_file})"
     fi

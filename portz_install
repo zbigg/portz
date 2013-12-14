@@ -12,42 +12,54 @@
 PNAME=portz-install
 export PNAME
 
-set -e
-portz_root=${portz_libdir-`pwd`}
-export portz_root
-package_param=$1
+#set -e
+#set -x
 
-build_command="$0 $@"
-export build_command
+portz_libdir=${portz_libdir-`pwd`}
+. ${portz_libdir}/scripts/runtime.sh
+. ${portz_scripts}/functions.sh
+. ${portz_scripts}/build_defs.sh
+. ${portz_scripts}/package_defs.sh
 
-. ${portz_root}/scripts/defs.sh
+install_dependencies()
+{
+    if [ -n "$depends" ] ; then 
+        inform "DEPENDS: $depends"
+    
+        for dep in $depends ; do
+            if portz_check_installed $dep ; then
+                inform "dependency '$dep' already installed"
+            else
+                inform "dependency '$dep' not met, installing"
+                (
+                    $0 $dep
+                )
+            fi
+        done
+    fi
+}
 
-portz_assert_know_package
+for p in $* ; do
+    (
+        
 
-inform "prefix      = $prefix"
-inform "exec_prefix = $exec_prefix"
+        load_package $p
+        
+        build_command="$0 $package_path"
+        export build_command
+        
+        PNAME="$PNAME[$package_name]"
+        SCRIPT_NAME="$PNAME"
+        
+        #portz_assert_know_package
 
-if [ -n "$depends" ] ; then 
-    inform "DEPENDS: $depends"
+        install_dependencies
 
-    for dep in $depends ; do
-        if portz_check_installed $dep ; then
-            inform "$dep -> already available"
-        else
-            inform "$dep -> not installed, installing"
-            (
-                unset first_name
-                unset name
-                unset package
-                ${portz_root}/portz_install $dep
-            )
-        fi
-    done
-fi
+        . ${portz_scripts}/install_staging.sh
 
-. ${portz_scripts}/install_staging.sh
-
-portz_step ${staging_dir} deploy
+        portz_step ${staging_dir} deploy
+    )
+done
 
 
 # jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:

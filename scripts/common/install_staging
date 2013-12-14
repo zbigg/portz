@@ -1,7 +1,5 @@
 #!/bin/bash
 
-. ${portz_root}/scripts/defs.sh
-
 #
 # this installs already build package to staging area ($staging_dir)
 #

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-. ${portz_root}/scripts/defs.sh
-
 # we are targeting at portable libraries as possible
 # so pass flags manually
 # -U_FORTIFY_SOURCE - is needed because some distributions define it

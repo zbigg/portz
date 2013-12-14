@@ -1,7 +1,5 @@
 #!/bin/bash
 
-. ${portz_root}/scripts/defs.sh
-
 portz_download()
 {
     if which wget > /dev/null; then

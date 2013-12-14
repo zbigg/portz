@@ -5,8 +5,6 @@
 #
 archive_file="$1"
 
-. ${portz_root}/scripts/defs.sh
-
 portz_unzip()
 {
     if which unzip > /dev/null; then

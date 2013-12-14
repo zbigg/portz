@@ -12,17 +12,36 @@
 PNAME=portz-packback
 set -e
 
-portz_root=${portz_libdir-`pwd`}
+portz_libdir=${portz_libdir-`pwd`}
+. ${portz_libdir}/scripts/runtime.sh
+. ${portz_scripts}/functions.sh
+. ${portz_scripts}/build_defs.sh
+. ${portz_scripts}/package_defs.sh
 
-package=$1
+package_name=$1
 
-. ${portz_root}/scripts/defs.sh
+setup_package_build_defs
 
 if [ ! -f ${manifest_file} ] ; then
     fail "manifest file not found (expecting ${manifest_file}"
 fi
 
-filename=${package}-${version}${dist_suffix}.tar.gz
+inform "found manifest file: ${manifest_file}"
+
+if [ -f "$pkginfo_file" ] ; then
+    inform "found package info file: ${pkginfo_file}"
+    portz_show_pkginfo $package_name
+    package_version="$(egrep ^version= $pkginfo_file | cut -d= -f2-)"
+fi
+
+if [ -z "$package_version" ] ; then
+    inform "package _version: not found, please set \$package_version; now falling back to 'unknown'"
+    package_version=unknown
+else
+    inform "package version found: $package_version"
+fi
+
+filename=${package_name}-${package_version}${dist_suffix}.tar.gz
 
 filename2="$(pwd)/$filename"
 

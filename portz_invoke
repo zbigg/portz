@@ -14,20 +14,22 @@ export PNAME
 
 set -e 
 #set -x
-portz_root=${portz_libdir-`pwd`}
+portz_libdir=${portz_libdir-`pwd`}
+. ${portz_libdir}/scripts/runtime.sh
+. ${portz_scripts}/functions.sh
+. ${portz_scripts}/build_defs.sh
+. ${portz_scripts}/package_defs.sh
 
+load_package $1
+package_setup_variables
 
-package_param=$1
-shift
-. ${portz_root}/scripts/defs.sh
-portz_assert_know_package
+build_command="$0 $package_path"
+export build_command
 
-inform "prefix      = $prefix"
-inform "exec_prefix = $exec_prefix"
+PNAME="$PNAME[$package_name]"
+SCRIPT_NAME="$PNAME"
 
-# find dirs
-
-src_dir=$(portz_step ${TMP}/portz/${package}/src find_src_dir)
+src_dir=$(portz_step ${TMP}/portz/${package_name}/src find_src_dir)
 inform src_dir="$src_dir"
 
 bld_dir=$(portz_step ${src_dir} find_bld_dir)
@@ -41,7 +43,7 @@ while [ -n "$1" ] ; do
 
     case "$action" in
         fetch_src):
-            . ${portz_root}/scripts/fetch_src.sh
+            . ${portz_scripts}/fetch_src.sh
             ;;
         build|configure|install_staging)
             portz_step ${bld_dir} $action

@@ -14,20 +14,9 @@ export PNAME
 
 set -e
 
-eval `bashfoo --eval-out`
-
-bashfoo_require run
-bashfoo_require log
-
-prefix="${prefix-$(pwd)}"
-exec_prefix=${exec_prefix-$prefix}
-portz_repo=${portz_repo-$prexix}
 portz_libdir=${portz_libdir-`pwd`}
-
-source "${portz_libdir}/scripts/functions.sh"
-
-log_info "prefix      = $prefix"
-log_info "exec_prefix = $exec_prefix"
+. ${portz_libdir}/scripts/runtime.sh
+. ${portz_scripts}/functions.sh
 
 packages_to_install="$*"
 
@@ -44,8 +33,6 @@ find_available_packages()
     ) | sort -u
 )
 
-find_available_packages $portz_repo
-
 if [ -z "$packages_to_install" ] ; then
     packages_to_install="$(find_available_packages $portz_repo)"
 fi
@@ -58,7 +45,8 @@ if [ -z "$packages_to_install" ] ; then
 fi
 for package in $packages_to_install ; do
     if portz_check_installed $package ; then
-        log_info "$package -> already available"
+        log_info "$package -> already installed:"
+        portz_show_pkginfo $package
     else
         log_info "$package -> not installed, installing"
         (

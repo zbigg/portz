@@ -14,15 +14,20 @@ export PNAME
 
 set -e 
 #set -x
-portz_root=${portz_libdir-`pwd`}
+portz_libdir=${portz_libdir-`pwd`}
+. ${portz_libdir}/scripts/runtime.sh
+. ${portz_scripts}/functions.sh
+. ${portz_scripts}/build_defs.sh
+. ${portz_scripts}/package_defs.sh
 
-package=$1
+load_package $1
+package_setup_variables
 
-. ${portz_root}/scripts/defs.sh
-portz_assert_know_package
+build_command="$0 $package_path"
+export build_command
 
-inform "prefix      = $prefix"
-inform "exec_prefix = $exec_prefix"
+PNAME="$PNAME[$package_name]"
+SCRIPT_NAME="$PNAME"
 
 . ${portz_scripts}/install_staging.sh
 

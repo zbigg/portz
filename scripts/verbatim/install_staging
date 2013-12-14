@@ -1,7 +1,5 @@
 #!/bin/bash
 
-. ${portz_root}/scripts/defs.sh 
-
 where=${prefix}
 
 portz_invoke mkdir -p ${DESTDIR}${where}

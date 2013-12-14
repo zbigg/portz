@@ -1,7 +1,5 @@
 #!/bin/bash
 
-. ${portz_root}/scripts/defs.sh
-
 #
 # this is default script for deploying package from temporary staging area (${staging_dir})
 # to its final location (prefix and exec_prefix)

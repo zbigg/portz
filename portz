@@ -18,32 +18,37 @@
 ##
 
 #if type bashfoo >/dev/null 2>/dev/null ; then
-if false ; then
-    eval `bashfoo --eval-out`
-    
-    portz_bindir=$(abspath $(dirname $BASH_SOURCE))
-else
-    portz_bindir=$(dirname $BASH_SOURCE)
-    bashfoo_libdir="${portz_bindir}/../lib/portz/bashfoo"
+
+portz_script_dir="$(dirname $BASH_SOURCE)"
+if [ -f ${portz_script_dir}/bashfoo/bashfoo.sh ] ; then
+    export bashfoo_libdir="${portz_script_dir}/bashfoo"
     source ${bashfoo_libdir}/bashfoo.sh
+elif [ -f ${portz_script_dir}/../lib/portz/bashfoo/bashfoo.sh ] ; then
+    export bashfoo_libdir="${portz_script_dir}/../lib/portz/bashfoo"
+    source  ${bashfoo_libdir}/bashfoo.sh
+elif [ type bashfoo >/dev/null 2>/dev/null ] ; then
+    eval `bashfoo --eval-out`
+else
+    echo "$0: bashfoo not found or incorrect, panic" 2>&1
+    exit 1
+fi
+
+bashfoo_require path
+
+portz_script_dir=$(abspath $portz_script_dir)
+if [ -f "${portz_script_dir}/scripts/runtime.sh" ] ; then
+    portz_libdir="${portz_script_dir}"
+elif [ -f "${portz_script_dir}/../lib/portz/scripts/runtime.sh" ] ; then
+    portz_libdir="${portz_script_dir}/../lib/portz/scripts/runtime.sh"
+else
+    echo "$0: rest of portz not found or incorrect, panic" 2>&1
+    exit 1
 fi
 
 bashfoo_require auto_usage
-bashfoo_require path
-portz_bindir="$(abspath $(dirname $BASH_SOURCE))"
-bashfoo_libdir="$(abspath ${portz_bindir}/../lib/portz/bashfoo)"
-export bashfoo_libdir
 
-#
-# find portz_libdir, our library
-#
-if   [ -x "$portz_bindir/portz_install" ] ; then
-    portz_libdir="$portz_bindir"
-elif [ -x "$portz_bindir/../lib/portz/portz_install" ] ; then
-    portz_libdir="$portz_bindir/../lib/portz"
-else
-    log_error "unable to find 'portz_libdir', tried $portz_bindir and $portz_bindir/../lib/portz" 
-fi
+export portz_libdir
+export bashfoo_libdir
 
 portz_quiet=${portz_quiet-1}
 

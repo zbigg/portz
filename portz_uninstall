@@ -11,16 +11,24 @@
 
 PNAME=portz-uninstall
 set -e
-portz_root=${portz_libdir-`pwd`}
+portz_libdir=${portz_libdir-`pwd`}
+. ${portz_libdir}/scripts/runtime.sh
+. ${portz_scripts}/functions.sh
+log_quiet=1
+. ${portz_scripts}/build_defs.sh
+log_quiet=0
+. ${portz_scripts}/package_defs.sh
 
-package=$1
+package_name=$1
 
-. ${portz_root}/scripts/defs.sh
-if [ -z ${package} ] ; then
+if [ -z ${package_name} ] ; then
     fail "need package name"
 fi
+
+setup_package_build_defs
+
 if [ ! -f ${manifest_file} ] ; then
-    fail "package '$package' not installed (failed to read ${manifest_file})"
+    fail "package '$package_name' not installed (failed to read ${manifest_file})"
 fi
 
 XXX=/tmp/XXX

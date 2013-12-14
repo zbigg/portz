@@ -1,9 +1,7 @@
 #!/bin/bash
 
 # fetch and unarchive
-. ${portz_root}/scripts/defs.sh
-
-src_dir="${TMP}/portz/${package}/src"
+src_dir="${TMP}/portz/${package_name}/src"
 rm -rf ${src_dir}
 mkdir -p ${src_dir}
 
@@ -11,7 +9,7 @@ if [ -n "${svn_path}" ] ; then
 	dir="$package-trunk"
 	if [ -n "${revision}" ] ; then
 		svn_options="-r ${revision}"
-		dir="${package}-r${revision}"
+		dir="${package_name}-r${revision}"
 	fi
 	(
 		cd ${src_dir}
@@ -23,8 +21,8 @@ elif [ -n "${mtn_url}" ] ; then
 		exit 1
 	fi
 
-	dir="${package}-r${revision}"
-	db="${portz_root}/archive/${package}.mtn"
+	dir="${package_name}-r${revision}"
+	db="${portz_archive}/${package_name}.mtn"
 	if [ ! -f "$db" ] ; then
 		portz_invoke mtn -d $db db init 
 	fi
@@ -57,8 +55,8 @@ elif [ -n "${git_url}" ] ; then
     fi    
 	
 else
-	archive_file=$(portz_step $(pwd) fetch ${baseurl})
+	archive_file=$(portz_step $(pwd) fetch ${package_baseurl})
 
 	inform archive_file="$archive_file"
-	portz_step ${TMP}/portz/${package}/src unarchive ${archive_file}
+	portz_step ${TMP}/portz/${package_name}/src unarchive ${archive_file}
 fi

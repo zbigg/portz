@@ -17,14 +17,26 @@
 ##   --quiet|-q  -- quiet mode, show only warnings and errors
 ##
 
-eval `bashfoo --eval-out`
+#if type bashfoo >/dev/null 2>/dev/null ; then
+if false ; then
+    eval `bashfoo --eval-out`
+    
+    portz_bindir=$(abspath $(dirname $BASH_SOURCE))
+else
+    portz_bindir=$(dirname $BASH_SOURCE)
+    bashfoo_libdir="${portz_bindir}/../lib/portz/bashfoo"
+    source ${bashfoo_libdir}/bashfoo.sh
+fi
 
 bashfoo_require auto_usage
 bashfoo_require path
+portz_bindir="$(abspath $(dirname $BASH_SOURCE))"
+bashfoo_libdir="$(abspath ${portz_bindir}/../lib/portz/bashfoo)"
+export bashfoo_libdir
+
 #
 # find portz_libdir, our library
 #
-portz_bindir=$(abspath $(dirname $BASH_SOURCE))
 if   [ -x "$portz_bindir/portz_install" ] ; then
     portz_libdir="$portz_bindir"
 elif [ -x "$portz_bindir/../lib/portz/portz_install" ] ; then
@@ -55,7 +67,13 @@ while [ -n "$1" ] ; do
             export exec_prefix
             shift ; shift
             ;;
-        install|invoke|get|easy_install|query|packback|uninstall)
+        -r|--repo)
+            [ -z "$2" ] && fail_on_bad_usage "$1, argument required"
+            portz_repo="$(abspath $2)"
+            export portz_repo
+            shift ; shift
+            ;;
+        install|invoke|get|easy_install|query|packback|uninstall|build_site)
             action=$1
             shift
             break

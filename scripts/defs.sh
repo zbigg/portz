@@ -1,28 +1,55 @@
-eval `bashfoo --eval-out`
 
-bashfoo_require run
-bashfoo_require log
-
+#
+# let's start some refactor work
+#
+# we depend on bashfoo -> ok
+# files reponsibility:
+#   scripts/STEREOTYPE/step
+#    
+# build_defs.mk (current: defs.mk)
+#   functions use by steps !
+#     remove package_XXX detection and move to 'package_defs.mk' 
+# package_defs.mk
+#    load package variables
+#    package_XXX variables
+# functions.sh
+#    internal functions
+#
 set -e
 
 if [ -z "${portz_root}" ] ; then
-    fail "portz_root not set, report it as a portz bug"
+    echo "defs.mk: portz_root not set, report it as a portz bug" 2>&1
+    exit 1
 fi
 
-if [ -d "${portz_root}/repo" ] ; then
+
+if [ -d "${portz_libdir}" ] ; then
+    if [ -z "${bashfoo_libdir}" ] ; then
+        echo "defs.mk: bashfoo_libdir not set, report it as a portz bug" 2>&1
+        exit 1
+    fi
+
+    portz_scripts=${portz_libdir}/scripts
+    portz_tools=${portz_root}/tools
+    source ${bashfoo_libdir}/bashfoo.sh
+
+    portz_repo="${portz_repo-${portz_root}/share/portz/repo}"
+    portz_archive=${portz_root}/var/cache/portz/archive 
+elif [ -d "${portz_root}/repo" ] ; then
+    eval `bashfoo --eval-out`
+    
     portz_local=1
     portz_repo=${portz_root}/repo
     portz_scripts=${portz_root}/scripts
     portz_archive=${portz_root}/archive 
     portz_tools=${portz_root}/tools
 else
-    portz_repo=${portz_root}/share/portz/repo
-    portz_scripts=${portz_root}/share/portz/scripts
-    portz_tools=${portz_root}/share/portz/tools
-    portz_archive=${portz_root}/var/cache/portz/archive 
+    echo "defs.mk: portz_libdir&portz_root not set or incorrect, panic" 2>&1
+    exit 1
 fi
 
-
+bashfoo_require run
+bashfoo_require log
 . ${portz_scripts}/functions.sh
 
 if [ -z "$OSTYPE" ] ; then

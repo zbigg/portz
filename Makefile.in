@@ -40,6 +40,7 @@ portz_lib_SCRIPTS = \
         portz_packback \
         portz_query \
         portz_uninstall \
+	portz_build_site \
 	scripts/verbatim/install_staging \
 	scripts/verbatim/build \
 	scripts/verbatim/find_src_dir \
@@ -66,6 +67,23 @@ portz_lib_SCRIPTS = \
 portz_lib_INSTALL_DEST=$(libdir)/portz
 COMPONENTS += portz_lib
 
+bashfoo_lib_FILES =\
+	bashfoo/bashfoo.sh \
+	bashfoo/log.sh \
+	bashfoo/text.sh \
+	bashfoo/run.sh \
+	bashfoo/flag.sh \
+	bashfoo/auto_usage.sh \
+	bashfoo/path.sh \
+	bashfoo/temp.sh
+
+bashfoo_lib_INSTALL_DEST=$(libdir)/portz
+COMPONENTS += bashfoo_lib
+
+bashfoo_libdir := $(shell bashfoo --libdir)
+bashfoo/%: $(bashfoo_libdir)/%
+	@mkdir -p bashfoo
+	@cp -v $< $@
 #
 # makefoo documentation > docdir (prefix/share/doc/makefoo)
 #
@@ -99,4 +117,5 @@ MAKEFOO_USE += src-dist
 include $(MAKEFOO)
 
 # jedit: :tabSize=8:mode=makefile:
+
 

@@ -1,0 +1,72 @@
+#!/bin/bash
+#
+# This file is part of 'portz'
+#
+# Copyright (C) Zbigniew Zagorski <z.zagorski@gmail.com> and others, 
+# licensed to the public under the terms of the GNU GPL (>= 2)
+# see the file COPYING for details
+#
+# I.e., do what you like, but keep copyright and there's NO WARRANTY. 
+#
+
+PNAME=portz_build_site
+export PNAME
+
+set -e
+
+eval `bashfoo --eval-out`
+
+bashfoo_require run
+bashfoo_require log
+
+prefix="${prefix-$(pwd)}"
+exec_prefix=${exec_prefix-$prefix}
+portz_repo=${portz_repo-$prexix}
+portz_libdir=${portz_libdir-`pwd`}
+
+source "${portz_libdir}/scripts/functions.sh"
+
+log_info "prefix      = $prefix"
+log_info "exec_prefix = $exec_prefix"
+
+packages_to_install="$*"
+
+find_available_packages()
+(
+    local ddd=$1
+    (
+        shopt -s failglob
+        (cd $ddd ; ls -1 *.portz || true ) | sed -e 's/\.portz//' 
+        if [ -f "$1/portz_import_packages" ] ; then
+            cat $1/portz_import_packages
+        fi
+        echo "$param_packages"
+    ) | sort -u
+)
+
+find_available_packages $portz_repo
+
+if [ -z "$packages_to_install" ] ; then
+    packages_to_install="$(find_available_packages $portz_repo)"
+fi
+
+log_info "packages    = $packages_to_install"
+
+if [ -z "$packages_to_install" ] ; then
+    log_error "no packag definitions found in prefix '$prefix'"
+    exit 1
+fi
+for package in $packages_to_install ; do
+    if portz_check_installed $package ; then
+        log_info "$package -> already available"
+    else
+        log_info "$package -> not installed, installing"
+        (
+            ${portz_libdir}/portz_install $package
+        )
+    fi
+done
+
+
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
+

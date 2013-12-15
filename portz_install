@@ -12,7 +12,7 @@
 PNAME=portz-install
 export PNAME
 
-#set -e
+set -e
 #set -x
 
 portz_libdir=${portz_libdir-`pwd`}
@@ -39,19 +39,16 @@ install_dependencies()
     fi
 }
 
+overall_result=0
 for p in $* ; do
     (
-        
-
         load_package $p
-        
+
         build_command="$0 $package_path"
         export build_command
-        
+
         PNAME="$PNAME[$package_name]"
         SCRIPT_NAME="$PNAME"
-        
-        #portz_assert_know_package
 
         install_dependencies
 
@@ -59,8 +56,16 @@ for p in $* ; do
 
         portz_step ${staging_dir} deploy
     )
+    r=$?
+    if [ "$r" != 0 ] ; then
+        overall_result=$r
+        failed_packages="$failed_packages $package"
+    fi
 done
-
+if [ "$overall_result" != 0 ] ; then
+    log_info "failure, following packages failed to install: $failed_packages"
+fi
+exit $overall_result
 
 # jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
 

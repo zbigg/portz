@@ -143,9 +143,28 @@ Definitions:
  - sources from monotone:
    - mtn_url - monotone database pull URL
    - revision - mandatory, a monotone selector: h:branch, t:tag, HASH
+ - sources from git:
+   - git_url - specifies from where we shall pull changes; by default
+               whole repo is cloned
+   - git_ref is used for this (git_tag has precedence)
+   - git_tag specifies what tag shall be cheked out; optionally
+   - git_fetch_options are passed to fetch command
 
+PACKAGE EXAMPLES:
 
- 
+GIT:
+   following package file (repo/tinfra.portz):
+   
+     git_url=https://github.com/zbigg/tinfra.git
+     git_tag=foo-1.2.3
+     git_ref=master
+       
+   creates:
+      ${src_dir}/tinfra.git
+   initializes it (git init)
+   fetches all changes from (https://github.com/zbigg/tinfra.git)
+   and checkouts foo-1.2.3
+
     
 CROSS COMPILATION                             
 =====================

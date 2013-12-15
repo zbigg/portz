@@ -32,28 +32,37 @@ elif [ -n "${mtn_url}" ] ; then
 		portz_invoke mtn -d "${db}" checkout -r$revision ${dir}
 	)
 elif [ -n "${git_url}" ] ; then
-	# version as a tag
-	if [ -z "$git_tag" -a -z "$git_branch" ] ; then
-	    if [ -n "$version" ] ; then
-	        git_tag="$version"
+    if [ -z "$git_tag" -a -z "$git_branch" -a -z "$git_ref" ] ; then
+        if [ -n "$version" ] ; then
+            git_tag="$version"
         fi
     fi
-    set -x
-	if [ -n "$git_tag" ] ; then
-	    dir=$name-$git_tag
-	    refspec="refs/tags/$git_tag:refs/tags/$git_tag"
-	    if [ ! -d "${src_dir}/$dir" ] ; then
-	        git init "${src_dir}/$dir"
-        fi
-	    (
-	        cd "${src_dir}/$dir"
-	        git fetch --depth=1 $git_url $refspec
-	        git checkout $git_tag
-	    )
-    else
-        exit 1
-    fi    
-	
+    repo="${portz_archive}/${package_name}.git"
+    refspec=""
+    dir="${src_dir}/${package_name}"
+    
+    if [ -n "$git_tag" ] ; then
+        #refspec="refs/tags/$git_tag:refs/tags/$git_tag"
+        git_ref="$git_tag"
+    fi                  
+    if [ ! -d "${repo}" ] ; then
+        mkdir -p "${repo}"
+        git init "${repo}"
+        ( cd "$repo" ; git remote add origin "$git_url")
+    fi
+    # ensure repo is up-to-date
+    (
+        cd "${repo}"
+        git remote set-url origin "$git_url"
+        git fetch origin
+        
+    )
+    # and checkout
+    git clone --reference="$repo" "$git_url" "$dir"
+    ( 
+        cd "$dir"
+        git checkout "$git_ref"
+    )
 else
 	archive_file=$(portz_step $(pwd) fetch ${package_baseurl})
 

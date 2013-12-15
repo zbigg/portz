@@ -14,6 +14,7 @@ export PNAME
 
 set -e 
 #set -x
+
 portz_libdir=${portz_libdir-`pwd`}
 . ${portz_libdir}/scripts/runtime.sh
 . ${portz_scripts}/functions.sh
@@ -21,7 +22,7 @@ portz_libdir=${portz_libdir-`pwd`}
 . ${portz_scripts}/package_defs.sh
 
 load_package $1
-package_setup_variables
+shift
 
 build_command="$0 $package_path"
 export build_command
@@ -36,6 +37,7 @@ bld_dir=$(portz_step ${src_dir} find_bld_dir)
 inform bld_dir="$bld_dir"
 
 maybe_detect_stereotype
+setup_package_build_defs
 
 while [ -n "$1" ] ; do
 
@@ -58,7 +60,7 @@ while [ -n "$1" ] ; do
             portz_step ${staging_dir} $action
             ;;
         *)
-            fail "this action can't be run from $0"
+            fail "unknown action '$action'"
             ;;
     esac
     shift

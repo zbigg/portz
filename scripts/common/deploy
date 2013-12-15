@@ -33,12 +33,26 @@ freebsd_cp_deploy()
     (
         cd ${staging_dir}
         # verbose, recursive cp with, no overwrite existing
-        portz_invoke cp -v -R -n * /
+        portz_invoke cp -f -v -R -n * /
+    )
+}
+
+bsd_tar_deploy()
+{
+    (
+        cd ${staging_dir}
+        tar -cf - .
+    ) | (
+        cd /
+        portz_invoke ${MAYBE_SUDO} tar -xpmvf -
     )
 }
 
 case "$OSTYPE" in
-*darwin*|*freebsd*|*FreeBSD*)
+*darwin*)
+    bsd_tar_deploy
+    ;;
+*freebsd*|*FreeBSD*)
     freebsd_cp_deploy
     ;;
 *linux*|*Linux*)

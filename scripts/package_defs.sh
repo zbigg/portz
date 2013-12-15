@@ -5,7 +5,7 @@
 find_package_path_in_repo()
 {
     local name="$1"
-    assert_variable_present portz_repo
+    #assert_variable_present portz_repo
     
     if [ -f "${portz_repo}/${name}/info.txt" ] ; then
         echo "${portz_repo}/${name}"

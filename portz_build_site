@@ -13,10 +13,13 @@ PNAME=portz_build_site
 export PNAME
 
 set -e
+#set -x
 
 portz_libdir=${portz_libdir-`pwd`}
 . ${portz_libdir}/scripts/runtime.sh
 . ${portz_scripts}/functions.sh
+. ${portz_scripts}/build_defs.sh
+. ${portz_scripts}/package_defs.sh
 
 packages_to_install="$*"
 
@@ -43,18 +46,32 @@ if [ -z "$packages_to_install" ] ; then
     log_error "no packag definitions found in prefix '$prefix'"
     exit 1
 fi
+
+overall_result=0
 for package in $packages_to_install ; do
-    if portz_check_installed $package ; then
-        log_info "$package -> already installed:"
-        portz_show_pkginfo $package
-    else
-        log_info "$package -> not installed, installing"
-        (
-            ${portz_libdir}/portz_install $package
-        )
+    (
+        load_package "$package"
+        if portz_check_installed $package_name ; then
+            log_info "$package_name -> already installed:"
+            portz_show_pkginfo $package_name
+        else
+            log_info "$package_name -> not installed, installing"
+            (
+                ${portz_libdir}/portz_install $package
+            )
+            exit $?
+        fi
+    )
+    r=$?
+    if [ "$r" != 0 ] ; then
+        overall_result=$r
+        failed_packages="$failed_packages $package"
     fi
 done
-
+if [ "$overall_result" != 0 ] ; then
+    log_info "failure, following packages failed to install: $failed_packages"
+fi
+exit $overall_result
 
 # jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
 

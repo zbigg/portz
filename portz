@@ -117,7 +117,7 @@ while [ -n "$1" ] ; do
             next_cmd="${portz_libdir}/portz_query files"
             shift ; break ;;
             
-        install|invoke|easy_install|query|packback|uninstall|build_site)
+        install|invoke|easy_install|query|packback|uninstall|build_site|invoke)
             action=$1
             shift
             break

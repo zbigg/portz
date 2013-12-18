@@ -2,6 +2,11 @@ version=1.10
 baseurl=http://downloads.sourceforge.net/ltp/lcov-${version}.tar.gz
 web=http://ltp.sourceforge.net/coverage/lcov.php
 
+patch_step()
+{
+    portz_invoke patch -p3 -i ${package_folder}/lcov-install.patch
+}
+
 build_step()
 {
     true

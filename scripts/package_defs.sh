@@ -48,6 +48,9 @@ package_setup_variables()
     package_version="$version"
     package_baseurl="$baseurl"
     
+    message="loaded $package_name"
+    [ -n "$package_version" ] && message="$message version=$package_version"
+    log_info "$message"
     #maybe_detect_stereotype
     
     #TBD, support REPLACEMENT VARIABLES
@@ -62,6 +65,11 @@ package_from_portz_file()
     fi
 
     package_folder="$(abspath $(dirname $1))"
+    unset name
+    unset version
+    unset baseurl
+    unset stereotype
+    
     source "$package_def_file"
 
     package_setup_variables

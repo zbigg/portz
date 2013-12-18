@@ -34,6 +34,9 @@ fi
 XXX=/tmp/XXX
 cp ${manifest_file} $XXX
 (cd $prefix ; cat $XXX | xargs -n 20 rm -rvf ;)
+if [ -f "$prefix/lib/portz/$package_name.PKGINFO" ] ; then
+    rm -v "$prefix/lib/portz/$package_name.PKGINFO"
+fi
 rm $XXX
 
 # jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:

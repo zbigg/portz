@@ -32,8 +32,8 @@ portz_step ${bld_dir} install_staging
 
 # update manifest
 
-portz_step "${staging_dir}" make_manifest
 portz_step "${staging_dir}" make_pkginfo
+portz_step "${staging_dir}" make_manifest
 
 # jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
 

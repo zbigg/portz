@@ -47,21 +47,23 @@ elif [ -n "${git_url}" ] ; then
     fi                  
     if [ ! -d "${repo}" ] ; then
         mkdir -p "${repo}"
-        git init "${repo}"
+        portz_invoke git init "${repo}"
         ( cd "$repo" ; git remote add origin "$git_url")
     fi
+    log_info "in ${repo}"
     # ensure repo is up-to-date
     (
         cd "${repo}"
         git remote set-url origin "$git_url"
-        git fetch origin
-        
+        portz_invoke git fetch origin   
     )
     # and checkout
-    git clone --reference="$repo" "$git_url" "$dir"
+    portz_invoke git clone -n --reference="$repo" "$git_url" "$dir"
+    
+    log_info "in ${dir}"
     ( 
         cd "$dir"
-        git checkout "$git_ref"
+        portz_invoke git checkout "$git_ref"
     )
 else
 	archive_file=$(portz_step $(pwd) fetch ${package_baseurl})

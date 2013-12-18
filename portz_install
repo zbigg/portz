@@ -59,9 +59,14 @@ for p in $* ; do
     r=$?
     if [ "$r" != 0 ] ; then
         overall_result=$r
-        failed_packages="$failed_packages $package"
+        failed_packages="$failed_packages $p"
+    else
+        successfull_installs="$successfull_installs $p"
     fi
 done
+if [ -n "$successfull_installs" ]; then
+    log_info "successfully installed: $successfull_installs"
+fi
 if [ "$overall_result" != 0 ] ; then
     log_info "failure, following packages failed to install: $failed_packages"
 fi

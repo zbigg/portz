@@ -56,13 +56,36 @@ portz_assert_know_package()
     fi
 }
 
+check_command()
+{
+    local path="$(which $1 2>/dev/null || true)"
+    if [ -n "$path" ]; then
+        log_info "found command $1 -> $path"
+        return 0
+    else
+        return 1
+    fi
+}
+
 portz_check_installed()
 {
     local dep_pkginfo="$prefix/lib/portz/$1.PKGINFO"
     if [ -f "$dep_pkginfo" ] ; then
         return 0
     fi
-    return 1
+    (
+        load_package "$1"
+        if function_exists check_presence_step ; then
+            check_presence_step
+        else
+            exit 1
+        fi
+    )
+    r=$?
+    if [ "$r" = 0 ] ; then
+        return $r
+    fi
+    return $r
 }
 
 portz_show_pkginfo()

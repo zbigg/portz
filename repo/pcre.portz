@@ -1,19 +1,7 @@
-version=8.33
+version=8.34
 baseurl=ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-${version}.tar.bz2
 web=http://www.pcre.org/
 
 configure_options="--enable-utf8 --enable-unicode-properties"
-
-#8.21 can't reliably build cpp unittests also on ubuntu in lsb env, so remove
-# it from all builds
-#if [ "$OSTYPE" == "msys" ] ; then 
-    configure_options="$configure_options --disable-cpp"
-#fi
-
-patch_step()
-{
-       portz_invoke libtoolize || mkdir -p m4
-       portz_invoke autoreconf -i -f || true
-}
 
 stereotype="gnu"

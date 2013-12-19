@@ -1,9 +1,8 @@
 #!/bin/bash
 
 inform "creating package info (${package_name}.PKGINFO)"
-pkginfo_dir=$(dirname $manifest_file)
-pkginfo_file=${pkginfo_dir}/${package_name}.PKGINFO
-mkdir -p ${staging_dir}${manifest_dir}
+pkginfo_dir=$(dirname $pkginfo_file)
+mkdir -p "${staging_dir}${pkginfo_dir}"
 
 foobar()
 {

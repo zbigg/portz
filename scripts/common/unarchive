@@ -22,12 +22,13 @@ case ${archive_file} in
     *.tgz)     portz_invoke_always ${TAR} zx ${TAR_COMMON_OPTIONS} -f ${archive_file} ;; 
     *.tar.bz2) portz_invoke_always ${TAR} jx ${TAR_COMMON_OPTIONS} -f ${archive_file} ;;
     *.tbz)     portz_invoke_always ${TAR} jx ${TAR_COMMON_OPTIONS} -f ${archive_file} ;;
-    *.txz)     portz_invoke_always ${TAR} Jx ${TAR_COMMON_OPTIONS} -f ${archive_file} ;;
-    *.tar.xz)  portz_invoke_always ${TAR} Jx ${TAR_COMMON_OPTIONS} -f ${archive_file} ;;
+    *.txz|*.tar.xz)     
+               portz_invoke_always xz --decompress --stdout ${archive_file} | portz_invoke ${TAR} x ${TAR_COMMON_OPTIONS} -f - 
+               ;;
     *.zip)     portz_unzip ${archive_file} ;;
     *.tar.lzma) portz_invoke_always ${TAR} x --lzma -f ${archive_file} ;;
     # TODO, add lzma
-    *) fail "unknown archive type: ${archive_file} (supported tar (gz,bz2) and zip"
+    *) fail "unknown archive type: ${archive_file} (supported tar (gz,bz2,xz) and zip"
 esac
 
 # jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:

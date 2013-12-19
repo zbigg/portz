@@ -34,6 +34,13 @@ install_dependencies()
                 (
                     $0 $dep
                 )
+                r=$?
+                if [ "$r" != 0 ] ; then
+                    overall_result=$r
+                    failed_packages="$failed_packages $dep"
+                else
+                    successfull_installs="$successfull_installs $dep"
+                fi
             fi
         done
     fi
@@ -44,14 +51,18 @@ for p in $* ; do
     (
         load_package $p
 
-        build_command="$0 $package_path"
-        export build_command
-
         PNAME="$PNAME[$package_name]"
         SCRIPT_NAME="$PNAME"
 
         install_dependencies
 
+        log_quiet=1
+        . ${portz_scripts}/build_defs.sh
+        log_quiet=0
+
+        build_command="$0 $package_path"
+        export build_command
+        
         . ${portz_scripts}/install_staging.sh
 
         portz_step ${staging_dir} deploy

@@ -1,8 +1,22 @@
-version="1.9.6"
-baseurl="http://ftp.gnu.org/gnu/automake/automake-${version}.tar.bz2"
+name=automake
+version="1.14"
+baseurl="http://ftp.gnu.org/gnu/automake/automake-${version}.tar.gz"
 
 description="..."
 
 web="http://www.gnu.org/software/automake/"
 
 stereotype="gnu"
+
+depends="autoconf"
+
+check_presence_step()
+{
+    check_command automake
+}
+
+build_step()
+{
+    portz_invoke ./bootstrap.sh
+    portz_invoke ${MAKE}
+}

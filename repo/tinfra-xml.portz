@@ -1,0 +1,9 @@
+name="tinfra-xml"
+version="0.0.1-dev"
+website="http://idf2.hotpo.pl/tinfra"
+
+git_url="https://github.com/zbigg/tinfra.git"
+git_ref="pl.reddix.tinfra/pl.reddix.tinfra-xml"
+
+depends="makefoo pkg-config autoconf automake tinfra expat"
+

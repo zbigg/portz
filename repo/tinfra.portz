@@ -2,8 +2,8 @@ name="tinfra"
 version="0.0.3-dev"
 website="http://idf2.hotpo.pl/tinfra"
 
-mtn_url="mtn://mtn.hotpo.pl/tinfra?pl.reddix.tinfra"
-revision="h:pl.reddix.tinfra"
+git_url="https://github.com/zbigg/tinfra.git"
+git_ref="master"  
 
-depends="makefoo"
+depends="makefoo autoconf automake"
 

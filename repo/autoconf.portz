@@ -1,5 +1,6 @@
-version="2.61"
-baseurl="http://ftp.gnu.org/gnu/autoconf/autoconf-${version}.tar.bz2"
+name=autoconf
+version="2.69"
+baseurl="http://ftp.gnu.org/gnu/autoconf/autoconf-${version}.tar.gz"
 description="Autoconf is an extensible package of M4 macros that produce shell 
 scripts to automatically configure software source code packages. 
 These scripts can adapt the packages to many kinds of UNIX-like systems without 
@@ -11,6 +12,14 @@ web="http://www.gnu.org/software/autoconf/"
 
 stereotype="gnu"
 
+depends=""
+
 build_step() {
 	${MAKE}
 }
+
+check_presence_step()
+{
+    check_command autoconf
+}
+

@@ -1,15 +1,25 @@
 #!/bin/bash
+# not it's not a script, it shall be sourced
+# with package,runtime and build already in place
+#
+# it implements following common steps:
+# - fetch source (download  & unarchive or checkout from vcs) 
+# - detect sources/stereotype
+# - patch / configure / patch again
+# - build
+# - install (in staging) dir
+# - make manifest and package info
+# 
 
-# fetch and unarchive
-
-. ${portz_scripts}/fetch_src.sh
+parent_src_dir="${TMP}/portz/${package_name}/src"
+. ${portz_scripts}/fetch_src.sh "${parent_src_dir}"
 
 # find dirs
 
-src_dir=$(portz_step ${TMP}/portz/${package_name}/src find_src_dir)
+readonly src_dir=$(portz_step ${TMP}/portz/${package_name}/src find_src_dir)
 inform src_dir="$src_dir"
 
-bld_dir=$(portz_step ${src_dir} find_bld_dir)
+readonly bld_dir=$(portz_step ${src_dir} find_bld_dir)
 inform bld_dir="$bld_dir"
 
 export src_dir bld_dir

@@ -1,8 +1,14 @@
-version=2.7.2
+name=python
+version=2.7.5
 baseurl=http://www.python.org/ftp/python/${version}/Python-${version}.tar.bz2
 web=http://www.python.org/
 
 configure_options="--enable-shared --disable-debug"
 
 stereotype="gnu"
+
+patch_step()
+{
+    portz_invoke patch -p1 < ${package_folder}/python_build_modules_usr_local.patch
+}
 

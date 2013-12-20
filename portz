@@ -1,8 +1,7 @@
 #!/bin/bash
-
 ##
-## portz - minimal port system by zbigg
-##          (custom software bundling system)
+## portz - minimal local port system
+##         (custom software build/packaging system)
 ##
 ## general usage:
 ##   portz [options] ACTION [ARGS...]
@@ -20,14 +19,18 @@
 ##   portz dist PACKAGE      - build tgz archive from uninstalled package
 ##   portz packback PACKAGE  - build tgz archive from alreadt installed package
 ##
+## package maintenance
+##   portz invoke PACKAGE STEP - invoke particural step of build
+##   portz make_patch PACKAGE  - make patch from currently processed sources
+##
+## other
+##   portz get_src PACKAGE
+##
 ## environment
 ##   prefix
 ##   exec_prefix
 ##   site
 ##   portz_repo
-##
-## other
-##   portz get_src PACKAGE
 ##
 ## options
 ##   -p PATH | --prefix PATH
@@ -117,7 +120,7 @@ while [ -n "$1" ] ; do
             next_cmd="${portz_libdir}/portz_query files"
             shift ; break ;;
             
-        install|invoke|easy_install|query|packback|uninstall|build_site|invoke)
+        install|invoke|easy_install|query|packback|uninstall|build_site|invoke|make_patch)
             action=$1
             shift
             break

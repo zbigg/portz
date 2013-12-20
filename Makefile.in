@@ -41,6 +41,7 @@ portz_lib_SCRIPTS = \
         portz_query \
         portz_uninstall \
 	portz_build_site \
+	portz_make_patch \
 	scripts/verbatim/install_staging \
 	scripts/verbatim/build \
 	scripts/verbatim/find_src_dir \
@@ -65,6 +66,9 @@ portz_lib_SCRIPTS = \
 	scripts/common/make_pkginfo \
 	scripts/common/find_src_dir \
 	scripts/install_staging.sh
+
+portz_lib_FILES=\
+	portz_make_patch_diff_exclude.diff
 
 portz_lib_INSTALL_DEST=$(libdir)/portz
 COMPONENTS += portz_lib

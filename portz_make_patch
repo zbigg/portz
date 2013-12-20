@@ -63,6 +63,7 @@ else
         portz_step "${base_src2}" unarchive ${archive_file}
         readonly src_dir2=$(portz_step "${base_src2}" find_src_dir)
         mv "${src_dir2}" "${patched_dir}"
+        portz_optional_step "${patched_dir}" patch
     fi
     
     src_dir_basename="$(basename "${src_dir}")"

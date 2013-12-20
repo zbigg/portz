@@ -1,7 +1,8 @@
 #!/bin/sh
+name=ace-tao
 
-version=6.0.8
-baseurl=http://download.dre.vanderbilt.edu/previous_versions/ACE+TAO-${version}.tar.gz
+version=6.2.3
+baseurl=http://download.dre.vanderbilt.edu/previous_versions/ACE+TAO-${version}.tar.bz2
 web=http://www.cs.wustl.edu/~schmidt/ACE.html
 
 mingw_configure() {
@@ -37,6 +38,9 @@ configure_step()
     linux-*)
         acetao_configure linux linux        
         ;;
+    darwin12|darwin*)
+        acetao_configure macosx-lion macosx_lion
+        ;;
     *)
         echo "not supported platform $OSTYPE"
         exit 1
@@ -47,19 +51,20 @@ configure_step()
 }
 
 build_step() {
-    set -x
+    #set -x
     export ACE_ROOT=$(pwd)
     export TAO_ROOT=${ACE_ROOT}/TAO
+    export DYLD_LIBRARY_PATH="$ACE_ROOT/lib:$DYLD_LIBRARY_PATH"
     
-    (cd ace ; ${MAKE_PARALLEL})
-    (cd apps/gperf; ${MAKE_PARALLEL})
-    (cd TAO/TAO_IDL ; ${MAKE_PARALLEL})
-    (cd TAO/tao ; ${MAKE_PARALLEL})
+    portz_invoke ${MAKE_PARALLEL} -C ace
+    portz_invoke ${MAKE_PARALLEL} -C apps/gperf
+    portz_invoke ${MAKE_PARALLEL} -C TAO/TAO_IDL
+    portz_invoke ${MAKE_PARALLEL} -C TAO/tao
 }
 
 install_staging_step()
 {
-    set -x
+    #set -x
     
     if [ "$OSTYPE" == "msys" ] ; then
         EXE=.exe
@@ -120,15 +125,20 @@ install_staging_step()
 
     # bin
     mkdir -p ${DESTDIR}${exec_prefix}/bin
-    mkdir -p ${DESTDIR}${exec_prefix}/lib
     cp -vf TAO/TAO_IDL/tao_idl${EXE} ${DESTDIR}${exec_prefix}/bin
     cp -vf apps/gperf/src/ace_gperf${EXE} ${DESTDIR}${exec_prefix}/bin
 
-    # libs
-    find ace TAO -name "*.dll" | xargs -r cp -vPf --target-directory=${DESTDIR}${exec_prefix}/bin
-    find ace TAO -name "*.so*" | xargs -r cp -vPf --target-directory=${DESTDIR}${exec_prefix}/lib
-    find ace TAO -name "*.a" | xargs -r cp -vPf --target-directory=${DESTDIR}${exec_prefix}/lib
+    for f in `find ace TAO -name "*.dll"` ; do
+        cp -vf $f ${DESTDIR}${exec_prefix}/bin
+    done
     
+    # libs    
+    mkdir -p ${DESTDIR}${exec_prefix}/lib
+    for f in `find ace TAO -name "*.so*" -o -name "*.dylib" -o -name "*.a"` ; do
+        cp -vf $f ${DESTDIR}${exec_prefix}/lib
+    done   
+    
+    #man 
     mkdir -p ${DESTDIR}${exec_prefix}/share/man/man1
     cp -vf TAO/TAO_IDL/tao_idl.1 ${DESTDIR}${exec_prefix}/share/man/man1
 }

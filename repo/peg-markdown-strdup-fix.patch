@@ -1,0 +1,13 @@
+diff -u -r --exclude-from /home/zagorzbi/bin/../lib/portz//portz_make_patch_diff_exclude.diff peg-markdown-0.4.14-portz-orig/markdown_peg.h peg-markdown-0.4.14/markdown_peg.h
+--- peg-markdown-0.4.14-portz-orig/markdown_peg.h	2013-12-20 14:58:02.000000000 +0100
++++ peg-markdown-0.4.14/markdown_peg.h	2013-12-20 14:54:15.000000000 +0100
+@@ -2,7 +2,7 @@
+ #include "markdown_lib.h"
+ #include <glib.h>
+ 
+-extern char *strdup(const char *string);
++/* extern char *strdup(const char *string); */
+ 
+ /* Information (label, URL and title) for a link. */
+ struct Link {
+

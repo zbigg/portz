@@ -1,4 +1,4 @@
-version=1.7.10
+version=1.8.0.1
 baseurl=http://git-core.googlecode.com/files/git-${version}.tar.gz
 web=http://code.google.com/p/git-core/
 stereotype=auto

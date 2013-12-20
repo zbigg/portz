@@ -1,10 +1,15 @@
 #!/bin/bash
 
-# fetch and unarchive
-src_dir="${TMP}/portz/${package_name}/src"
-rm -rf ${src_dir}
-mkdir -p ${src_dir}
+if [ -z "${src_dir}" ]; then
+    src_dir="${parent_src_dir}"
+fi
+    
+if [ "${portz_keep_current_src}" != 1 ] ; then
+    rm -rf ${src_dir}
+    mkdir -p ${src_dir}
+fi
 
+# fetch and unarchive
 if [ -n "${svn_path}" ] ; then
 	dir="$package-trunk"
 	if [ -n "${revision}" ] ; then

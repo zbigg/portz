@@ -25,5 +25,5 @@ load_package $package
 archive_file="$(portz_step $(pwd) fetch ${package_baseurl})"
 
 inform archive_file="$archive_file"
-portz_step src/${package} unarchive ${archive_file}
+portz_step "src/${package_name}" unarchive ${archive_file}
 

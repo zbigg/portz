@@ -1,0 +1,73 @@
+#!/bin/bash
+#
+# This file is part of 'portz'
+#
+# Copyright (C) Zbigniew Zagorski <z.zagorski@gmail.com> and others, 
+# licensed to the public under the terms of the GNU GPL (>= 2)
+# see the file COPYING for details
+#
+# I.e., do what you like, but keep copyright and there's NO WARRANTY. 
+# 
+
+PNAME=portz_make_patch
+export PNAME
+
+set -e
+#set -x
+
+portz_libdir=${portz_libdir-`pwd`}
+. ${portz_libdir}/scripts/runtime.sh
+. ${portz_scripts}/functions.sh
+. ${portz_scripts}/build_defs.sh
+. ${portz_scripts}/package_defs.sh
+
+package="$1"
+overall_result=0
+
+load_package "$package"
+       
+PNAME="$PNAME[$package_name]"
+SCRIPT_NAME="$PNAME"
+
+readonly base_src_dir="${TMP}/portz/${package_name}/src"
+readonly src_dir="$(portz_step "${base_src_dir}" find_src_dir)"
+
+if [ -z "${src_dir}" ] ; then
+    exit 1
+fi
+log_info "current sources: $src_dir"
+
+if   [ -d "${src_dir}/.git" ] ; then
+    cd "$src_dir"
+    portz_invoke git diff
+elif [ -d "${src_dir}/.svn" ] ; then
+    cd "$src_dir"
+    portz_invoke svn diff
+elif [ -d "${src_dir}/_MTN" ] ; then
+    cd "$src_dir"
+    portz_invoke mtn diff
+else
+    
+    patched_dir_basename="$(basename "$src_dir")-portz-orig"
+    patched_dir="${base_src_dir}/${patched_dir_basename}"    
+    
+    if [ -d "${patched_dir}" ] ; then
+        log_info "original already in place ($patched_dir)"
+    else
+        log_info "fetching original source into $patched_dir"
+        # wholly shit, don't look
+        # at this, whole "fetch & friends have to be refactored to clean this up"
+        readonly base_src2="${TMP}/portz/${package_name}/src2"
+        mkdir -p "${base_src2}"
+        archive_file=$(portz_step $(pwd) fetch ${package_baseurl})
+        portz_step "${base_src2}" unarchive ${archive_file}
+        readonly src_dir2=$(portz_step "${base_src2}" find_src_dir)
+        mv "${src_dir2}" "${patched_dir}"
+    fi
+    
+    src_dir_basename="$(basename "${src_dir}")"
+    cd "${base_src_dir}"
+    portz_invoke diff -u -r --exclude-from "${portz_libdir}/portz_make_patch_diff_exclude.diff" "${patched_dir_basename}" "${src_dir_basename}"
+fi
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
+

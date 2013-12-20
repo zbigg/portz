@@ -1,5 +1,5 @@
 #!/bin/bash
 
-python setup.py install --prefix=${prefix} --exec-prefix=${exec_prefix} --root=${DESTDIR}
+portz_invoke ${PYTHON} setup.py install --prefix=${prefix} --exec-prefix=${exec_prefix} --root=${DESTDIR}
 
 # jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:

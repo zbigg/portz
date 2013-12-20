@@ -6,6 +6,10 @@ stereotype=none
 
 export JAVA_HOME=/opt/jdk1.7.0_11
 
+patch_step()
+{
+    patch -p1 < ${package_folder}/java-ant-build-no-junit.patch
+}
 configure_step()
 {
     true

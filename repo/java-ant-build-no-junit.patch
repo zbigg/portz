@@ -1,0 +1,14 @@
+Only in apache-ant-1.9.2: bin
+Only in apache-ant-1.9.2: build
+diff -u -r --exclude-from /home/zagorzbi/bin/../lib/portz//portz_make_patch_diff_exclude.diff apache-ant-1.9.2-portz-orig/build.xml apache-ant-1.9.2/build.xml
+--- apache-ant-1.9.2-portz-orig/build.xml	2013-12-20 17:27:59.000000000 +0100
++++ apache-ant-1.9.2/build.xml	2013-12-20 17:27:50.000000000 +0100
+@@ -873,7 +873,7 @@
+        ===================================================================
+   -->
+   <target name="dist-lite"
+-    depends="jars,test-jar"
++    depends="jars"
+     description="--> creates a minimum distribution to run Apache Ant">
+ 
+     <mkdir dir="${dist.dir}"/>

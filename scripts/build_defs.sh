@@ -12,9 +12,11 @@ fi
 #
 CC=${CC-gcc}
 CXX=${CXX-g++}
+PYTHON="${PYTHON-python}"
 
 export CC CFLAGS
 export CXX CXXFLAGS
+export PYTHON
 
 def_dist_name="$(uname -s | tr A-Z a-z)-$(uname -m)"
 def_prefix=/usr
@@ -22,7 +24,6 @@ def_prefix=/usr
 TAR=tar
 PATCH=patch
 MAKE=make
-PYTHON=python
 
 #
 # custom platforms
@@ -155,7 +156,8 @@ fi
 
 C_INCLUDE_PATH="${prefix}/include:$C_INCLUDE_PATH"
 CPLUS_INCLUDE_PATH="${prefix}/include:$CPLUS_INCLUDE_PATH"
-LD_LIBRARY_PATH="${exec_prefix}/lib:$CPLUS_INCLUDE_PATH"
+LD_LIBRARY_PATH="${exec_prefix}/lib:$LD_LIBRARY_PATH"
+LIBRARY_PATH="${exec_prefix}/lib:$LIBRARY_PATH"
 PKG_CONFIG_PATH="${exec_prefix}/lib/pkgconfig:${prefix}/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 export C_INCLUDE_PATH CPLUS_INCLUDE_PATH LD_LIBRARY_PATH PKG_CONFIG_PATH

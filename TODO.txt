@@ -1,6 +1,59 @@
-kinda issue, feature, wish list tracking
+Feature Requests / Wishes List
+===============================
 
-1) --help for all commands
-2) cleanup of /tmp folder
-3) installation of package version, so we know what is installed
-4) version override ./portz_install pcre version=8.29 
+Accepted
+--------
+
+List of ideas clear and accepted for implementation:
+
+* (4) version override ./portz_install pcre version=8.29
+  Will be done using autoconf like overrides, so def will be changed from:
+  
+    version=1.2
+    baseurl=http://foo/bar/baz-${version}.tar.gz
+    
+  to
+    version=1.2
+    baseurl=http://foo/bar/baz-@version@.tar.gz
+    
+  Replacement will be done after merging package & "override" params using sed.
+  
+* (1) --help for all commands
+ partially implemented, as portz is now interface
+
+* (7) subtasks dependency tracking;
+  'portz invoke next' shall be added, and portz shall know which
+  steps have been completed in package "build/staging" area
+ 
+* (9) manual 
+
+Grooming / ideas
+---------------
+
+* easy installable install script
+  not sure how yet ...
+    
+* (6) renaming of steps, so they are easy "spellable" in invoke
+  Currently fetch_src, patch, configure, ... build is not documented
+  
+* (2) cleanup of /tmp folder
+
+* (3) functional tests !
+
+Implemented
+----------------
+
+Ideas already implemented:
+
+* (3) installation of package version, so we know what is installed
+ -> now in PKGINFO
+ 
+* (5) make patch utility
+  portz make_patch on already
+  
+* (6) package dependencies
+  depends="foo"
+  
+* (8) uniform CLI frontend, 'portz'
+  'portz' frontend created
+  

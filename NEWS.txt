@@ -1,11 +1,15 @@
-kinda functional changelog
+Funcitonal-wise release-by-release change log. 
 
-* version 0.0.1, not released yet
+2013-12-27, release 0.0.1
 
-    very personal set of scripts, not yet ready for release
-    * portz_install -> install prepared package
-    * portz_easy_install -> auto-install package from network (supports, 
+    very personal set of scripts to help local installation
+    of software packages:
+
+    * portz install -> install prepared package
+    * portz easy_install -> auto-install package from network (supports, 
       configure/make, setup.py modes)
-    * portz_dist -> make distribution
-    * portz_get  -> get_sources
+    * portz dist -> make distribution
+    * portz get  -> get_sources
+
+    basic repo of packages
 

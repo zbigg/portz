@@ -150,13 +150,14 @@ Definitions:
   
 * sources from svn:
   
-  ** svn_path - SVN url
-  ** revision - optional, HEAD is the default
+  * svn_path - SVN url
+  * revision - optional, HEAD is the default
 
 * sources from monotone:
 
   * mtn_url - monotone database pull URL
   * revision - mandatory, a monotone selector: h:branch, t:tag, HASH
+
 * sources from git:
 
   * git_url - specifies from where we shall pull changes; by default

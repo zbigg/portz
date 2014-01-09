@@ -94,7 +94,7 @@ bashfoo/%: $(bashfoo_libdir)/%
 #
 # makefoo documentation > docdir (prefix/share/doc/makefoo)
 #
-portz_doc_FILES = README.txt TODO.txt
+portz_doc_FILES = README.md TODO.txt
 portz_doc_INSTALL_DEST=$(docdir)/portz
 COMPONENTS += portz_doc
 
@@ -104,6 +104,31 @@ portz_COMPONENTS = \
 	portz_bin \
 	portz_lib \
 	portz_doc
+
+MAKEFOO_DISTCHECK_TARGETS = check
+
+CHECK_ROOT=$(shell pwd)/_portz-check
+CHECK_prefix=$(CHECK_ROOT)${prefix}
+CHECK_PORTZ=$(CHECK_ROOT)${bindir}/portz
+
+check: check-install 
+
+EXTRA_DIST += repo/zlib.portz
+check-install:
+	rm -rf $(CHECK_prefix)
+	$(MAKE) install prefix=$(CHECK_prefix)
+	/usr/local/bin/bash $(CHECK_PORTZ) --help
+	
+	/usr/local/bin/bash $(CHECK_PORTZ) --prefix $(CHECK_prefix) install $(srcdir)/repo/zlib.portz
+	/usr/local/bin/bash $(CHECK_PORTZ) --prefix $(CHECK_prefix) list
+	test -f $(CHECK_prefix)/lib/portz/zlib.PKGINFO
+	test -f $(CHECK_prefix)/lib/portz/zlib.MANIFEST
+	/usr/local/bin/bash $(CHECK_PORTZ) --prefix $(CHECK_prefix) files zlib
+	/usr/local/bin/bash $(CHECK_PORTZ) --prefix $(CHECK_prefix) packback zlib
+	/usr/local/bin/bash $(CHECK_PORTZ) --prefix $(CHECK_prefix) uninstall zlib
+	
+	! test -f $(CHECK_prefix)/lib/portz/zlib.PKGINFO
+	! test -f $(CHECK_prefix)/lib/portz/zlib.MANIFEST
 
 PACKAGES += portz
 

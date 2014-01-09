@@ -117,15 +117,16 @@ EXTRA_DIST += repo/zlib.portz
 check-install:
 	rm -rf $(CHECK_prefix)
 	$(MAKE) install prefix=$(CHECK_prefix)
-	/usr/local/bin/bash $(CHECK_PORTZ) --help
+	$(CHECK_PORTZ) --help
 	
-	/usr/local/bin/bash $(CHECK_PORTZ) --prefix $(CHECK_prefix) install $(srcdir)/repo/zlib.portz
-	/usr/local/bin/bash $(CHECK_PORTZ) --prefix $(CHECK_prefix) list
+	$(CHECK_PORTZ) --prefix $(CHECK_prefix) install $(srcdir)/repo/zlib.portz
+	$(CHECK_PORTZ) --prefix $(CHECK_prefix) list
 	test -f $(CHECK_prefix)/lib/portz/zlib.PKGINFO
 	test -f $(CHECK_prefix)/lib/portz/zlib.MANIFEST
-	/usr/local/bin/bash $(CHECK_PORTZ) --prefix $(CHECK_prefix) files zlib
-	/usr/local/bin/bash $(CHECK_PORTZ) --prefix $(CHECK_prefix) packback zlib
-	/usr/local/bin/bash $(CHECK_PORTZ) --prefix $(CHECK_prefix) uninstall zlib
+	
+	$(CHECK_PORTZ) --prefix $(CHECK_prefix) files zlib
+	$(CHECK_PORTZ) --prefix $(CHECK_prefix) packback zlib
+	$(CHECK_PORTZ) --prefix $(CHECK_prefix) uninstall zlib
 	
 	! test -f $(CHECK_prefix)/lib/portz/zlib.PKGINFO
 	! test -f $(CHECK_prefix)/lib/portz/zlib.MANIFEST

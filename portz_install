@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # This file is part of 'portz'
 #
@@ -75,6 +75,7 @@ for p in $* ; do
         successfull_installs="$successfull_installs $p"
     fi
 done
+
 if [ -n "$successfull_installs" ]; then
     log_info "successfully installed: $successfull_installs"
 fi

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ##
 ## portz - minimal local port system
 ##         (custom software build/packaging system)
@@ -78,7 +78,7 @@ export bashfoo_libdir
 portz_quiet=${portz_quiet-1}
 
 while [ -n "$1" ] ; do
-    maybe_show_auto_help
+    maybe_show_auto_help "$1"
     if log_process_options "$1"; then
         shift
         continue
@@ -146,3 +146,4 @@ else
     log_debug "action=$action"
     exec "${portz_libdir}/portz_${action}" "$@"
 fi
+

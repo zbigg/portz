@@ -1,6 +1,6 @@
 Funcitonal-wise release-by-release change log. 
 
-2013-01-XX, release 0.0.2 (not released)
+2013-01-09, release 0.0.2
 
     * FreeBSD compatibility (/usr/bin/env bash used in shebang)
     * first packaged version with bundled deps (bashfoo,makefoo) (portz-0.0.2.tar.gz)

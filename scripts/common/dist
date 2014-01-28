@@ -7,7 +7,9 @@
 
 here=$(pwd)
 
-filename=${package_name}-${package_version}${dist_suffix}.tar.gz
+portz_dist_suffix="${portz_dist_suffix-$dist_suffix}"
+
+filename=${package_name}-${package_version}${portz_dist_suffix}.tar.gz
 
 inform "creating distribution archive: ${filename} ($(cat ${staging_dir}${manifest_file} | wc -l ) files)"
 

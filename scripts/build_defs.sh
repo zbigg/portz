@@ -130,6 +130,13 @@ fi
 # 
 prefix=${prefix-$def_prefix}
 
+if [ "${portz_deploy_mode}" = stow ] ; then
+    if [ -n "${package_name}" -a -n "${package_version}" ] ; then
+        prefix="${prefix}/${package_name}-${package_version}"
+    else
+        inform "warning: portz_deploy_mode=stow, but package_name&version unknown"
+    fi
+fi
 if test "x$PORTZ_SEPARATE_EXEC" = "x1"
 then
     def_exec_prefix=${prefix}/platforms/${target_arch}

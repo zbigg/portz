@@ -18,7 +18,7 @@ set -e
 portz_libdir=${portz_libdir-`pwd`}
 . ${portz_libdir}/scripts/runtime.sh
 . ${portz_scripts}/functions.sh
-. ${portz_scripts}/build_defs.sh
+#. ${portz_scripts}/build_defs.sh
 . ${portz_scripts}/package_defs.sh
 
 install_dependencies()
@@ -50,15 +50,17 @@ overall_result=0
 for p in $* ; do
     (
         load_package $p
-
+        
         PNAME="$PNAME[$package_name]"
         SCRIPT_NAME="$PNAME"
 
         install_dependencies
-
+        
         log_quiet=1
         . ${portz_scripts}/build_defs.sh
         log_quiet=0
+        
+        setup_package_build_defs
 
         build_command="$0 $package_path"
         export build_command

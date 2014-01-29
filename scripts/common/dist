@@ -13,7 +13,14 @@ filename=${package_name}-${package_version}${portz_dist_suffix}.tar.gz
 
 inform "creating distribution archive: ${filename} ($(cat ${staging_dir}${manifest_file} | wc -l ) files)"
 
-( cd ${staging_dir}/${prefix} ; portz_invoke tar chozf ${here}/${filename} * ; )
+( 
+    if [ -n "$portz_dist_with_prefix" ] ; then
+        cd ${staging_dir}
+    else
+        cd ${staging_dir}/${prefix}
+    fi
+    portz_invoke tar chzf ${here}/${filename} * 
+)
 
 # jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
 

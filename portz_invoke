@@ -13,7 +13,7 @@ PNAME=portz-invoke
 export PNAME
 
 set -e 
-#set -x
+set -x
 
 portz_libdir=${portz_libdir-`pwd`}
 . ${portz_libdir}/scripts/runtime.sh
@@ -30,22 +30,26 @@ export build_command
 PNAME="$PNAME[$package_name]"
 SCRIPT_NAME="$PNAME"
 
-src_dir=$(portz_step ${TMP}/portz/${package_name}/src find_src_dir)
-inform src_dir="$src_dir"
+parent_src_dir="${TMP}/portz/${package_name}/src"
 
-bld_dir=$(portz_step ${src_dir} find_bld_dir)
-inform bld_dir="$bld_dir"
+src_dir=$(portz_step ${TMP}/portz/${package_name}/src find_src_dir || true)
+if [ -n "${src_dir}" ] ; then 
+    inform src_dir="$src_dir"
+    
+    bld_dir=$(portz_step ${src_dir} find_bld_dir)
+    inform bld_dir="$bld_dir"
+fi
 
 maybe_detect_stereotype
 setup_package_build_defs
 
 while [ -n "$1" ] ; do
 
-    action=$1
+    action="$1"
 
     case "$action" in
         fetch_src):
-            . ${portz_scripts}/fetch_src.sh
+            . ${portz_scripts}/fetch_src.sh "${parent_src_dir}"
             ;;
         build|configure|install_staging)
             portz_step ${bld_dir} $action

@@ -17,11 +17,18 @@ set -e
 portz_libdir=${portz_libdir-`pwd`}
 . ${portz_libdir}/scripts/runtime.sh
 . ${portz_scripts}/functions.sh
-. ${portz_scripts}/build_defs.sh
 . ${portz_scripts}/package_defs.sh
 
+if [ "$1" = --with-prefix ] ; then
+    export portz_dist_with_prefix=1
+    shift
+fi
+
 load_package $1
-package_setup_variables
+
+. ${portz_scripts}/build_defs.sh
+
+setup_package_build_defs
 
 build_command="$0 $package_path"
 export build_command

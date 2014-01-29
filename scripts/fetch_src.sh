@@ -5,6 +5,9 @@ if [ -z "${src_dir}" ]; then
 fi
     
 if [ "${portz_keep_current_src}" != 1 ] ; then
+    if  [ -d "${src_dir}" ] ; then
+        inform "cleaning current sources ($src_dir)"
+    fi
     rm -rf ${src_dir}
     mkdir -p ${src_dir}
 fi
@@ -71,8 +74,8 @@ elif [ -n "${git_url}" ] ; then
         portz_invoke git checkout "$git_ref"
     )
 else
-	archive_file=$(portz_step $(pwd) fetch ${package_baseurl})
+    archive_file=$(portz_step $(pwd) fetch ${package_baseurl})
 
-	inform archive_file="$archive_file"
-	portz_step ${TMP}/portz/${package_name}/src unarchive ${archive_file}
+    inform archive_file="$archive_file"
+    portz_step ${TMP}/portz/${package_name}/src unarchive ${archive_file}
 fi

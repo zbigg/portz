@@ -14,31 +14,31 @@ fi
 
 # fetch and unarchive
 if [ -n "${svn_path}" ] ; then
-	dir="${package_name}-trunk"
-	if [ -n "${revision}" ] ; then
-		svn_options="-r ${revision}"
-		dir="${package_name}-r${revision}"
-	fi
-	(
-		cd ${src_dir}
-		portz_invoke svn co ${svn_options} ${svn_path} ${dir}
-	)
+    dir="${package_name}-trunk"
+    if [ -n "${revision}" ] ; then
+        svn_options="-r ${revision}"
+        dir="${package_name}-r${revision}"
+    fi
+    (
+        cd ${src_dir}
+        portz_invoke svn co ${svn_options} ${svn_path} ${dir}
+    )
 elif [ -n "${mtn_url}" ] ; then
-	if [ -z "${revision}" ] ; then
-		echo "$package: mtn package is missing revision property"
-		exit 1
-	fi
+    if [ -z "${revision}" ] ; then
+        echo "$package: mtn package is missing revision property"
+        exit 1
+    fi
 
-	dir="${package_name}-r${revision}"
-	db="${portz_archive}/${package_name}.mtn"
-	if [ ! -f "$db" ] ; then
-		portz_invoke mtn -d $db db init 
-	fi
-	portz_invoke mtn -d "$db" $mtn_options pull "$mtn_url"
-	(
-		cd "${src_dir}"
-		portz_invoke mtn -d "${db}" checkout -r$revision ${dir}
-	)
+    dir="${package_name}-r${revision}"
+    db="${portz_archive}/${package_name}.mtn"
+    if [ ! -f "$db" ] ; then
+        portz_invoke mtn -d $db db init 
+    fi
+    portz_invoke mtn -d "$db" $mtn_options pull "$mtn_url"
+    (
+        cd "${src_dir}"
+        portz_invoke mtn -d "${db}" checkout -r$revision ${dir}
+    )
 elif [ -n "${git_url}" ] ; then
     if [ -z "$git_tag" -a -z "$git_branch" -a -z "$git_ref" ] ; then
         if [ -n "$version" ] ; then
@@ -48,7 +48,7 @@ elif [ -n "${git_url}" ] ; then
     repo="${portz_archive}/${package_name}.git"
     refspec=""
     dir="${src_dir}/${package_name}"
-    
+
     if [ -n "$git_tag" ] ; then
         #refspec="refs/tags/$git_tag:refs/tags/$git_tag"
         git_ref="$git_tag"
@@ -67,25 +67,25 @@ elif [ -n "${git_url}" ] ; then
     )
     # and checkout
     portz_invoke git clone -n --reference="$repo" "$git_url" "$dir"
-    
+
     log_info "in ${dir}"
     ( 
         cd "$dir"
         portz_invoke git checkout "$git_ref"
     )
 else
-	archive_file=$(portz_step $(pwd) fetch ${package_baseurl})
-	
-	archive_sha1sum="$(sha1sum "$archive_file" | awk '{print $1}')"
-	if [ -n "$sha1sum" ] ; then
-	    if [ "$sha1sum" != "$archive_sha1sum" ] ; then
-	        log_info "error: bad checksum: expected $sha1sum, found $archive_sha1sum ... aborting"
-	        exit 1
+    archive_file=$(portz_step $(pwd) fetch ${package_baseurl})
+
+    archive_sha1sum="$(sha1sum "$archive_file" | awk '{print $1}')"
+    if [ -n "$sha1sum" ] ; then
+        if [ "$sha1sum" != "$archive_sha1sum" ] ; then
+            log_info "error: bad checksum: expected $sha1sum, found $archive_sha1sum ... aborting"
+            exit 1
         else
             log_info "checksum (sha1) ok"
         fi
-	else
-	    log_info "warning: package doesn't define sha1sum property: no integrity, authenticity check performed!"
+    else
+        log_info "warning: package doesn't define sha1sum property: no integrity, authenticity check performed!"
     fi
 
     inform archive_file="$archive_file"

@@ -11,7 +11,7 @@ fi
 
 # fetch and unarchive
 if [ -n "${svn_path}" ] ; then
-	dir="$package-trunk"
+	dir="${package_name}-trunk"
 	if [ -n "${revision}" ] ; then
 		svn_options="-r ${revision}"
 		dir="${package_name}-r${revision}"
@@ -72,6 +72,18 @@ elif [ -n "${git_url}" ] ; then
     )
 else
 	archive_file=$(portz_step $(pwd) fetch ${package_baseurl})
+	
+	archive_sha1sum="$(sha1sum "$archive_file" | awk '{print $1}')"
+	if [ -n "$sha1sum" ] ; then
+	    if [ "$sha1sum" != "$archive_sha1sum" ] ; then
+	        log_info "error: bad checksum: expected $sha1sum, found $archive_sha1sum ... aborting"
+	        exit 1
+        else
+            log_info "checksum (sha1) ok"
+        fi
+	else
+	    log_info "warning: package doesn't define sha1sum property: no integrity, authenticity check performed!"
+    fi
 
 	inform archive_file="$archive_file"
 	portz_step ${TMP}/portz/${package_name}/src unarchive ${archive_file}

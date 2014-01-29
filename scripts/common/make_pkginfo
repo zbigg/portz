@@ -11,6 +11,7 @@ foobar()
 		echo -n "$1=\"$V\" "
 	fi
 }
+
 influential_args()
 {
 	foobar prefix
@@ -31,6 +32,9 @@ influential_args()
 	echo "version=${package_version}"
 	if [ -n "$baseurl" ] ; then
 		echo "baseurl=${package_baseurl}"
+		if [ -n "$archive_sha1sum" ] ; then
+		    echo "sha1sum=${archive_sha1sum}"
+                fi
 	elif [ -n "${svn_path}" ] ; then
 		echo "svn_path=$svn_path"
 		echo "svn_revision=$(cd $src_dir ; svnversion ; )"

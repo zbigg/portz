@@ -21,9 +21,12 @@ if [ ! -f $archived_filename ] ; then
     [ -d $portz_archive ] || mkdir -p $portz_archive
     #trap "rm -rf $archived_filename; exit 1"
     rm -rf $archived_filename.tmp
+    log_info "downloading $url"
     portz_download ${archived_filename}.tmp $url
     mv $archived_filename.tmp $archived_filename
     #trap
+else
+    log_info "$filename already in cache"
 fi
 echo $archived_filename
 

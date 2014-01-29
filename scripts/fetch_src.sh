@@ -74,7 +74,8 @@ elif [ -n "${git_url}" ] ; then
         portz_invoke git checkout "$git_ref"
     )
 else
-    archive_file=$(portz_step $(pwd) fetch ${package_baseurl})
+    archive_file="$(portz_step $(pwd) fetch ${package_baseurl})"
+    inform archive_file="$archive_file"
 
     archive_sha1sum="$(sha1sum "$archive_file" | awk '{print $1}')"
     if [ -n "$sha1sum" ] ; then
@@ -88,6 +89,6 @@ else
         log_info "warning: package doesn't define sha1sum property: no integrity, authenticity check performed!"
     fi
 
-    inform archive_file="$archive_file"
     portz_step ${TMP}/portz/${package_name}/src unarchive ${archive_file}
 fi
+

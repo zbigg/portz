@@ -1,6 +1,16 @@
 Funcitonal-wise release-by-release change log. 
 
-2013-01-09, release 0.0.2
+2014-xx-xx, release 0.0.3
+
+    * portz: fix: portz support dist action
+    * support portz_deploy_mode=stow, to install in ${prefix}/name-version
+    * dist: support portz_dist_suffix, instead of default Linux-x86_64
+    * dist&install: fix defs loading order
+    * dist: support for portz_dist_with_prefix
+    * dist: created archive contain symlinks (remove -h from tar command)
+    * NEW: sha1sum check of downloaded package (if sha1sum portz variable defined)
+
+2014-01-09, release 0.0.2
 
     * FreeBSD compatibility (/usr/bin/env bash used in shebang)
     * first packaged version with bundled deps (bashfoo,makefoo) (portz-0.0.2.tar.gz)

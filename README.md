@@ -22,24 +22,25 @@ How to use
 
 Easy install sample usage:
 
-    prefix=$HOME/foo ./portz_easy_install name=wget http://ftp.gnu.org/gnu/wget/wget-1.13.tar.xz
+    prefix=$HOME/foo portz easy_install name=wget http://ftp.gnu.org/gnu/wget/wget-1.13.tar.xz
  
 Installs:
 
-    ./home/zbigg/foo/lib/portz/wget.MANIFEST
+    /home/zbigg/foo/lib/portz/wget.MANIFEST
+    /home/zbigg/foo/lib/portz/wget.PKGINFO 
     (...)
-    ./home/zbigg/foo/share/locale/be/LC_MESSAGES/wget.mo
+    /home/zbigg/foo/share/locale/be/LC_MESSAGES/wget.mo
     (...)
     ./home/zbigg/foo/share/locale/pt_BR/LC_MESSAGES/wget.mo
     (...)
-    ./home/zbigg/foo/share/man/man1/wget.1
-    ./home/zbigg/foo/share/info/wget.info
-    ./home/zbigg/foo/share/info/dir
-    ./home/zbigg/foo/etc/wgetrc
-    ./home/zbigg/foo/bin/wget
+    /home/zbigg/foo/share/man/man1/wget.1
+    /home/zbigg/foo/share/info/wget.info
+    /home/zbigg/foo/share/info/dir
+    /home/zbigg/foo/etc/wgetrc
+    /home/zbigg/foo/bin/wget
 
 Prepared packages usage:
-    ./portz_install pcre
+    portz install pcre
     
 See repo/pcre.portz for package definition.
 
@@ -49,7 +50,11 @@ Supported parameters, passed via environment:
  - exec_prefix - prefix for arch specific files, eg. binaries
  - arch        - autoconf style arch name (x86_64-unknown-linux-gnu, i586-mingw32msvc)
 
-     
+See `portz --help` for all featured commands.
+
+Options
+-------------
+
 If environment variable PORTZ_SEPARATE_EXEC is equal to 1 then
 portz will automagically differentiate exec prefix for installed packages. It will be:
 
@@ -58,8 +63,8 @@ portz will automagically differentiate exec prefix for installed packages. It wi
 which will result in:
 
     ${prefix}/platforms/{i686|x86_64|sun4u}
-    
-or something (setting arch, implictly enables PORTZ_SEPARATE_EXEC)
+
+or something (setting arch, implictly enables PORTZ_SEPARATE_EXEC).
 
 SITE DEFAULTS
 -------------
@@ -116,12 +121,13 @@ Currently package file format is just a shell script with some key
 variable settings.
 
 Canonical example:
-  # repo/pcre.portz
-  version=8.31
-  baseurl=ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-${version}.tar.bz2
-  web=http://www.pcre.org/
-  configure_options="--enable-utf8 --enable-unicode-properties"
-  stereotype="gnu"
+
+    # repo/pcre.portz
+    version=8.31
+    baseurl=ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-${version}.tar.bz2
+    web=http://www.pcre.org/
+    configure_options="--enable-utf8 --enable-unicode-properties"
+    stereotype="gnu"
 
 It described pcre (http://pcre.org) in version 8.31 and download URL. It tells
 also that it's a 'gnu' type of package, so portz will expect canonical
@@ -138,6 +144,7 @@ So, basically portz supports out-of-the-box following "steretypes":
 Portz can fetch source from using:
 
  - baseurl, it just fetched tgz,tbz2,zip etc
+   (if sha1sum is defined, then downloaded file is checked for integrity/authenticity)
  - svn url & revision
  - monotone url & revision
  - git url and & ref
@@ -147,6 +154,7 @@ Definitions:
 * downloaded packages
 
   * baseurl -> from where wget or curl shall fetch source package
+  * sha1sum -> expected sha1sum of downloaded package
   
 * sources from svn:
   
@@ -167,25 +175,23 @@ Definitions:
   * git_fetch_options are passed to fetch command
 
 Examples
-----------------
+--------
 
-Git based
-~~~~~~~
+Some examples below ...
+
+### Git based ### 
+
 Following package file (repo/tinfra.portz):
 
- git_url=https://github.com/zbigg/tinfra.git
- git_tag=foo-1.2.3
- git_ref=master
+    git_url=https://github.com/zbigg/tinfra.git
+    git_tag=foo-1.2.3
+    git_ref=master
    
-creates:
-  ${src_dir}/tinfra.git
-initializes it (git init)
-fetches all changes from (https://github.com/zbigg/tinfra.git)
-and checkouts foo-1.2.3
+Clones https://github.com/zbigg/tinfra.git and checkouts foo-1.2.3.
+Then, usual build occurs.
 
     
-Cross compilation                             
-=====================
+### Cross compilation ###                            
 
 Install i386-libs/headers of expat x86_64 linux:
 
@@ -193,22 +199,22 @@ Install i386-libs/headers of expat x86_64 linux:
         
 installs:
 
-    ./home/zbigg/s2/include/expat.h
-    ./home/zbigg/s2/include/expat_external.h
+    /home/zbigg/s2/include/expat.h
+    /home/zbigg/s2/include/expat_external.h
     (...)
-    ./home/zbigg/s2/platforms/i386-unknown-linux-gnu/lib/libexpat.so
-    ./home/zbigg/s2/platforms/i386-unknown-linux-gnu/lib/libexpat.so.1
-    ./home/zbigg/s2/platforms/i386-unknown-linux-gnu/lib/libexpat.a
+    /home/zbigg/s2/platforms/i386-unknown-linux-gnu/lib/libexpat.so
+    /home/zbigg/s2/platforms/i386-unknown-linux-gnu/lib/libexpat.so.1
+    /home/zbigg/s2/platforms/i386-unknown-linux-gnu/lib/libexpat.a
     (...)
-    ./home/zbigg/s2/platforms/i386-unknown-linux-gnu/bin/xmlwf
+    /home/zbigg/s2/platforms/i386-unknown-linux-gnu/bin/xmlwf
 
-Same works with portz_easy_install, i386-tinfra installed on x86_64 linux:
+Same works with portz easy_install, i386-tinfra installed on x86_64 linux:
     
     arch=i386-unknown-linux-gnu prefix=$HOME/s2 portz easy_install \
         name=tinfra http://idf.hotpo.pl/index.php/p/tinfra/downloads/get/tinfra-dev-0.0.2.zip
 
 Real cross compilation, also works (tested @Linux, builf for mingw32), (REQUIRES 
-mingw32 installed, i.e i586-mingw32msvc-gcc and friends)
+mingw32 installed, i.e i586-mingw32msvc-gcc and friends):
     
     $ arch=i586-mingw32msvc prefix=$HOME/s2 portz install expat
     (...)

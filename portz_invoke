@@ -13,7 +13,7 @@ PNAME=portz-invoke
 export PNAME
 
 set -e 
-set -x
+#set -x
 
 portz_libdir=${portz_libdir-`pwd`}
 . ${portz_libdir}/scripts/runtime.sh

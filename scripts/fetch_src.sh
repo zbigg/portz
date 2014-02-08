@@ -74,21 +74,27 @@ elif [ -n "${git_url}" ] ; then
         portz_invoke git checkout "$git_ref"
     )
 else
-    archive_file="$(portz_step $(pwd) fetch ${package_baseurl})"
-    inform archive_file="$archive_file"
-
-    archive_sha1sum="$(sha1sum "$archive_file" | awk '{print $1}')"
-    if [ -n "$sha1sum" ] ; then
-        if [ "$sha1sum" != "$archive_sha1sum" ] ; then
-            log_info "error: bad checksum: expected $sha1sum, found $archive_sha1sum ... aborting"
-            exit 1
+    for url in ${package_baseurl} ; do
+        archive_file="$(portz_step $(pwd) fetch $url)"
+        inform archive_file="$archive_file"
+        archive_sha1sums="$(sha1sum "$archive_file" | awk '{print $1}')"
+        
+        #note, sha1sum works currently only
+        # if there is only one archive
+        if [ -n "$sha1sum" ] ; then
+            if [ "$sha1sum" != "$archive_sha1sum" ] ; then
+                log_info "error: bad checksum: expected $sha1sum, found $archive_sha1sum ... aborting"
+                exit 1
+            else
+                log_info "checksum (sha1) ok"
+            fi
         else
-            log_info "checksum (sha1) ok"
+            log_info "warning: package doesn't define sha1sum property: no integrity, authenticity check performed!"
         fi
-    else
-        log_info "warning: package doesn't define sha1sum property: no integrity, authenticity check performed!"
-    fi
+        archive_files="$archive_files $archive_file"
+    done
 
-    portz_step ${TMP}/portz/${package_name}/src unarchive ${archive_file}
+
+    portz_step ${TMP}/portz/${package_name}/src unarchive ${archive_files}
 fi
 

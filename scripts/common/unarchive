@@ -1,35 +1,17 @@
 #!/bin/bash
 
 #
-# this script unarchives package to some current directory
+# unarchive step accepts list of archive files
+# as arguments used as:
+#  portz_step ${parent_src_dir} unarchive ${archive_files}
 #
-archive_file="$1"
+#
+# portz_unarchive (defined in functions.sh) is common thing that can
+# unarchive common formats like zip,tgz,tbz,txz etc ...
 
-portz_unzip()
-{
-    if which unzip > /dev/null; then
-        portz_invoke_always unzip $*
-    else
-        inform "using bundled unzip"
-        portz_invoke_always $portz_tools/unzip/unzip $*
-    fi
-} 
-
-TAR_COMMON_OPTIONS="-m --no-same-owner --no-same-permissions"
-case ${archive_file} in
-    *.tar)     portz_invoke_always ${TAR} x ${TAR_COMMON_OPTIONS} -f ${archive_file} ;;
-    *.tar.gz)  portz_invoke_always ${TAR} zx ${TAR_COMMON_OPTIONS} -f ${archive_file} ;;
-    *.tgz)     portz_invoke_always ${TAR} zx ${TAR_COMMON_OPTIONS} -f ${archive_file} ;; 
-    *.tar.bz2) portz_invoke_always ${TAR} jx ${TAR_COMMON_OPTIONS} -f ${archive_file} ;;
-    *.tbz)     portz_invoke_always ${TAR} jx ${TAR_COMMON_OPTIONS} -f ${archive_file} ;;
-    *.txz|*.tar.xz)     
-               portz_invoke_always xz --decompress --stdout ${archive_file} | portz_invoke ${TAR} x ${TAR_COMMON_OPTIONS} -f - 
-               ;;
-    *.zip)     portz_unzip ${archive_file} ;;
-    *.tar.lzma) portz_invoke_always ${TAR} x --lzma -f ${archive_file} ;;
-    # TODO, add lzma
-    *) fail "unknown archive type: ${archive_file} (supported tar (gz,bz2,xz) and zip"
-esac
+for archive_file in $* ; do
+    portz_unarchive "$archive_file"
+done
 
 # jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
 

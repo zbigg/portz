@@ -43,6 +43,37 @@ portz_invoke()
     fi
 }
 
+portz_unzip()
+{
+    if which unzip > /dev/null; then
+        portz_invoke_always unzip $*
+    else
+        inform "using bundled unzip"
+        portz_invoke_always $portz_tools/unzip/unzip $*
+    fi
+} 
+
+
+portz_unarchive() {
+    local archive_file="$1"
+
+    local TAR_COMMON_OPTIONS="-m --no-same-owner --no-same-permissions"
+    case ${archive_file} in
+        *.tar)     portz_invoke_always ${TAR} x ${TAR_COMMON_OPTIONS} -f ${archive_file} ;;
+        *.tar.gz)  portz_invoke_always ${TAR} zx ${TAR_COMMON_OPTIONS} -f ${archive_file} ;;
+        *.tgz)     portz_invoke_always ${TAR} zx ${TAR_COMMON_OPTIONS} -f ${archive_file} ;; 
+        *.tar.bz2) portz_invoke_always ${TAR} jx ${TAR_COMMON_OPTIONS} -f ${archive_file} ;;
+        *.tbz)     portz_invoke_always ${TAR} jx ${TAR_COMMON_OPTIONS} -f ${archive_file} ;;
+        *.txz|*.tar.xz)     
+                   portz_invoke_always xz --decompress --stdout ${archive_file} | portz_invoke ${TAR} x ${TAR_COMMON_OPTIONS} -f - 
+                   ;;
+        *.zip)     portz_unzip ${archive_file} ;;
+        *.tar.lzma) portz_invoke_always ${TAR} x --lzma -f ${archive_file} ;;
+        # TODO, add lzma
+        *) fail "unknown archive type: ${archive_file} (supported tar (gz,bz2,xz) and zip"
+    esac
+}
+
 portz_invoke_always()
 {
     portz_invoke "$@"

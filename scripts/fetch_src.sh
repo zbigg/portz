@@ -77,7 +77,7 @@ else
     for url in ${package_baseurl} ; do
         archive_file="$(portz_step $(pwd) fetch $url)"
         inform archive_file="$archive_file"
-        archive_sha1sums="$(sha1sum "$archive_file" | awk '{print $1}')"
+        archive_sha1sum="$(sha1sum "$archive_file" | awk '{print $1}')"
         
         #note, sha1sum works currently only
         # if there is only one archive

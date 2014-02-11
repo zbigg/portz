@@ -139,7 +139,7 @@ check-install:
 PACKAGES += portz
 
 PRODUCT=portz
-VERSION=0.0.2-dev
+VERSION=0.0.3
 
 #TBD, it shall be EXTRA_DIST_WILDCARD 
 #     realized as in autoconf.mk EXTRA_DIST addition

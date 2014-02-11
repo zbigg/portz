@@ -1,6 +1,6 @@
 Funcitonal-wise release-by-release change log. 
 
-2014-xx-xx, release 0.0.3
+2014-02-11, release 0.0.3
 
     * portz: fix: portz support dist action
     * support portz_deploy_mode=stow, to install in ${prefix}/name-version

@@ -1,0 +1,85 @@
+#
+# install_staging step for rpm sterotype
+#
+# rpm uninstalls software into
+#    /usr/...
+# cp it into
+#    ${DESTDIR}${prefix}
+#       bin
+#       lib
+#       lib64
+#    ${DESTDIR}${exec_prefix}
+#       include
+#       share
+#       etc ...
+
+#
+# sbin: squeezed /bin and /usr/bin
+#
+if [ -d "bin" ] ; then
+    portz_invoke mkdir -p ${DESTDIR}${exec_prefix}/bin
+    portz_invoke cp -pvr bin/* ${DESTDIR}${exec_prefix}/bin
+fi
+
+if [ -d "usr/bin" ] ; then
+    portz_invoke mkdir -p ${DESTDIR}${exec_prefix}/bin
+    portz_invoke cp -pvr usr/bin/* ${DESTDIR}${exec_prefix}/bin
+fi
+
+#
+# sbin: squeezed /sbin and /usr/sbin
+#
+if [ -d "sbin" ] ; then
+    portz_invoke mkdir -p ${DESTDIR}${exec_prefix}/sbin
+    portz_invoke cp -pvr sbin/* ${DESTDIR}${exec_prefix}/sbin
+fi
+
+if [ -d "usr/sbin" ] ; then
+    portz_invoke mkdir -p ${DESTDIR}${exec_prefix}/sbin
+    portz_invoke cp -pvr usr/sbin/* ${DESTDIR}${exec_prefix}/sbin
+fi
+
+#
+# libs - all libs are squeezed in exec_prefix/lib
+#
+if [ -d "lib" ] ; then
+    portz_invoke mkdir -p ${DESTDIR}${exec_prefix}/lib
+    portz_invoke cp -pvr lib/* ${DESTDIR}${exec_prefix}/lib
+fi
+
+if [ -d "usr/lib" ] ; then
+    portz_invoke mkdir -p ${DESTDIR}${exec_prefix}/lib
+    portz_invoke cp -pvr usr/lib/* ${DESTDIR}${exec_prefix}/lib
+fi
+
+if [ -d "lib64" ] ; then
+    portz_invoke mkdir -p ${DESTDIR}${exec_prefix}/lib
+    portz_invoke cp -pvr lib64/* ${DESTDIR}${exec_prefix}/lib
+fi
+
+
+if [ -d "usr/lib64" ] ; then
+    portz_invoke mkdir -p ${DESTDIR}${exec_prefix}/lib
+    portz_invoke cp -pvr usr/lib64/* ${DESTDIR}${exec_prefix}/lib
+fi
+
+# includes
+if [ -d "usr/include" ] ; then
+    portz_invoke mkdir -p ${DESTDIR}${prefix}/include
+    portz_invoke cp -pvr usr/include/* ${DESTDIR}${prefix}/include
+fi
+
+# etc
+if [ -d "etc" ] ; then
+    portz_invoke mkdir -p ${DESTDIR}${prefix}/etc
+    portz_invoke cp -pvr etc/* ${DESTDIR}${prefix}/etc
+fi
+
+# doc
+if [ -d "usr/share" ] ;  then
+    portz_invoke mkdir -p ${DESTDIR}${prefix}/share
+    portz_invoke cp -pvr usr/share/* ${DESTDIR}${prefix}/share
+fi
+
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
+

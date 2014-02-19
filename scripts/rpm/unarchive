@@ -1,0 +1,12 @@
+#
+# unarchive step
+#
+# usage: <rpm_files>
+#
+
+for rpm_file in $* ; do
+    portz_invoke rpm2cpio "${rpm_file}" | cpio -i --make-directories
+done
+
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
+

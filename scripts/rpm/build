@@ -1,0 +1,6 @@
+#!/bin/sh
+
+true
+
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
+

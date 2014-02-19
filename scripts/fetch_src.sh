@@ -1,5 +1,17 @@
 #!/bin/bash
 
+izip()
+{
+    local a1=($1)
+    local a2=($2)
+    local a3=($3)
+    local i=0
+    for v in ${a1[@]} ; do
+        echo "$v ${a2[$i]} ${a3[$i]}"
+        i="$((i+1))"
+    done
+}
+
 if [ -z "${src_dir}" ]; then
     src_dir="${parent_src_dir}"
 fi
@@ -74,11 +86,10 @@ elif [ -n "${git_url}" ] ; then
         portz_invoke git checkout "$git_ref"
     )
 else
-    for url in ${package_baseurl} ; do
+    while read url sha1sum ; do
         archive_file="$(portz_step $(pwd) fetch $url)"
         inform archive_file="$archive_file"
         archive_sha1sum="$(sha1sum "$archive_file" | awk '{print $1}')"
-        
         #note, sha1sum works currently only
         # if there is only one archive
         if [ -n "$sha1sum" ] ; then
@@ -92,8 +103,11 @@ else
             log_info "warning: package doesn't define sha1sum property: no integrity, authenticity check performed!"
         fi
         archive_files="$archive_files $archive_file"
-    done
-
+        archive_sha1sums="$archive_sha1sums $sha1sum"
+    done < <(izip "$package_baseurl" "$sha1sum")
+    if [ -z "$sha1sum" ] ; then
+        sha1sum="$(echo $archive_sha1sums)"
+    fi
 
     portz_step ${TMP}/portz/${package_name}/src unarchive ${archive_files}
 fi

@@ -32,8 +32,8 @@ influential_args()
 	echo "version=${package_version}"
 	if [ -n "$baseurl" ] ; then
 		echo "baseurl=${package_baseurl}"
-		if [ -n "$archive_sha1sum" ] ; then
-		    echo "sha1sum=${archive_sha1sum}"
+		if [ -n "$sha1sum" ] ; then
+		    echo "sha1sum=${sha1sum}"
                 fi
 	elif [ -n "${svn_path}" ] ; then
 		echo "svn_path=$svn_path"

@@ -183,6 +183,18 @@ portz_optional_step()
     portz_step --optional "$@"
 }
 
+izip()
+{
+    local a1=($1)
+    local a2=($2)
+    local a3=($3)
+    local i=0
+    for v in ${a1[@]} ; do
+        echo "$v ${a2[$i]} ${a3[$i]}"
+        i="$((i+1))"
+    done
+}
+
 
 # jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
 

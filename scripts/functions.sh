@@ -140,7 +140,7 @@ portz_step()
     fi
     local folder="$1"
     local action="$2"
-    
+
     shift
     shift
     portz_step_path="${package_folder} ${portz_scripts}/${stereotype} ${portz_scripts}/common"
@@ -174,7 +174,7 @@ portz_step()
     if [ "$optional" = 1 ] ; then
         inform "${action} step skipped"
     else
-        fail "step $action not found (path is ${portz_step_path})"
+        fail "step '${action}' not found (path is ${portz_step_path})"
     fi
 }
 

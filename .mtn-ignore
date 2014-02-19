@@ -1,11 +1,11 @@
-archive$
-src$
-Makefile$
-config.log$
-configure$
-config.status$
-aclocal.m4$
-tags$
-makefoo_configured_defs.mk$
-bashfoo$
+^archive$
+^src$
+^Makefile$
+^config.log$
+^configure$
+^config.status$
+^aclocal.m4$
+^tags$
+^makefoo_configured_defs.mk$
+^bashfoo$
 

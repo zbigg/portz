@@ -59,15 +59,17 @@ set -e
 portz_libdir=${portz_libdir-`pwd`}
 . ${portz_libdir}/scripts/runtime.sh
 . ${portz_scripts}/functions.sh
-. ${portz_scripts}/build_defs.sh
 . ${portz_scripts}/package_defs.sh
 
 while [ -n "$1" ]; do
     if echo $1 | egrep -q '^[A-Za-z]+=' ; then
-    	echo "$0: $1"
+    	log_info "$1"
     	eval export $1
-    else
+    elif [ -z "$baseurl" ] ; then
     	baseurl=$1
+    else
+        log_info "error: unknown parameter '$1'"
+        exit 1
     fi
     shift
 done
@@ -76,17 +78,21 @@ if [ -z "$name" -o -z "$baseurl" ] ; then
 	fail "usage: $0 name=<package_name> URL"
 fi
 
+build_command="$0 name=$name $baseurl"
+export build_command
+
 export portz_easy_install=1
 export baseurl
 export package=$name
-
-build_command="$0 name=$name $baseurl"
-export build_command
 
 package_setup_variables
 
 PNAME="$PNAME[$package_name]"
 SCRIPT_NAME="$PNAME"
+
+. ${portz_scripts}/build_defs.sh
+
+setup_package_build_defs
 
 . ${portz_scripts}/install_staging.sh
 

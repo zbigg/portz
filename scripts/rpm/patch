@@ -1,0 +1,38 @@
+#
+# patch rpm archive to match prefix/exec_prefix
+#
+# rpm install whole SW into /usr
+# we relocate it into $prefix/$exec_prefix
+#
+# this script
+#   patches pkgconfig files (PREFIX/lib(64?)/pkconfig*.pc)
+#   to obey new prefix
+#
+
+pkgconfig_patch()
+{
+    sed -i -e "s|^prefix=/usr|prefix=$prefix|" \
+           -e "s|^exec_prefix=/usr|exec_prefix=$exec_prefix|" \
+           -e "s|^bindir=/usr/bin|bindir=$exec_prefix/bin|" \
+           -e "s|/usr/lib64|/usr/lib|g" \
+           -e "s|/usr/lib|$libdir|g" \
+           -e "s|/usr/|$prefix/|g" \
+           $1
+}
+
+set -x
+
+if [ -d "usr/lib/pkgconfig" ] ; then 
+    for f in `find usr/lib/pkgconfig -name "*.pc"` ; do
+        pkgconfig_patch $f
+    done
+fi
+
+if [ -d "usr/lib64/pkgconfig" ] ; then 
+    for f in `find usr/lib64/pkgconfig -name "*.pc"` ; do
+        pkgconfig_patch $f
+    done
+fi
+
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
+

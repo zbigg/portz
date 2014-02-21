@@ -1,9 +1,9 @@
 Funcitonal-wise release-by-release change log. 
 
 2014-??-??, release x.x.x
-    
+
     * sha1sum fix for osx&freebsd & multiple download packackes
-    * rpm stereotype: unpack binary rpm into prefix/exec_prefix
+    * rpm stereotype: unpack binary rpm into prefix/exec_prefix (autodected if ends with = ~.rpm$)
 
 2014-02-11, release 0.0.3
 

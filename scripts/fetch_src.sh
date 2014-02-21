@@ -86,15 +86,15 @@ elif [ -n "${git_url}" ] ; then
         portz_invoke git checkout "$git_ref"
     )
 else
-    while read url sha1sum ; do
+    while read url expected_sha1sum ; do
         archive_file="$(portz_step $(pwd) fetch $url)"
         inform archive_file="$archive_file"
         archive_sha1sum="$(portz_sha1sum "$archive_file")"
         #note, sha1sum works currently only
         # if there is only one archive
-        if [ -n "$sha1sum" ] ; then
-            if [ "$sha1sum" != "$archive_sha1sum" ] ; then
-                log_info "error: bad checksum: expected $sha1sum, found $archive_sha1sum ... aborting"
+        if [ -n "$expected_sha1sum" ] ; then
+            if [ "$expected_sha1sum" != "$archive_sha1sum" ] ; then
+                log_info "error: bad checksum: expected $expected_sha1sum, found $archive_sha1sum ... aborting"
                 exit 1
             else
                 log_info "checksum (sha1) ok"
@@ -103,10 +103,18 @@ else
             log_info "warning: package doesn't define sha1sum property: no integrity, authenticity check performed!"
         fi
         archive_files="$archive_files $archive_file"
-        archive_sha1sums="$archive_sha1sums $sha1sum"
+        archive_sha1sums="$archive_sha1sums $archive_sha1sum"
     done < <(izip "$package_baseurl" "$sha1sum")
     if [ -z "$sha1sum" ] ; then
         sha1sum="$(echo $archive_sha1sums)"
+    fi
+
+    if [ -z "$stereotype" -o "$stereotype" = auto ] ; then
+        rpm_file_re='\.rpm$'
+        if [[ "${archive_files}" =~ $rpm_file_re ]] ; then
+            log_info "file looks like rpm -> stereotype=rpm"
+            stereotype=rpm
+        fi
     fi
 
     portz_step ${TMP}/portz/${package_name}/src unarchive ${archive_files}

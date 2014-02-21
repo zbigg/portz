@@ -89,7 +89,7 @@ else
     while read url sha1sum ; do
         archive_file="$(portz_step $(pwd) fetch $url)"
         inform archive_file="$archive_file"
-        archive_sha1sum="$(sha1sum "$archive_file" | awk '{print $1}')"
+        archive_sha1sum="$(portz_sha1sum "$archive_file")"
         #note, sha1sum works currently only
         # if there is only one archive
         if [ -n "$sha1sum" ] ; then

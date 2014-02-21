@@ -5,6 +5,22 @@ bashfoo_require log
 bashfoo_require path
 bashfoo_require assert
 
+#
+# TBD, it shall be autoconf like-test 
+# executed before in configure
+# or before first run of config ?
+#
+case "$OSTYPE" in
+    *freebsd*|*FreeBSD*)
+        SHA1SUM="shasum -a 1"
+	;;
+    *darwin*)
+        SHA1SUM="shasum -a 1"
+        ;;
+    *)
+        SHA1SUM="sha1sum"
+    	;;
+esac
 
 fail()
 {
@@ -72,6 +88,11 @@ portz_unarchive() {
         # TODO, add lzma
         *) fail "unknown archive type: ${archive_file} (supported tar (gz,bz2,xz) and zip"
     esac
+}
+
+portz_sha1sum()
+{
+    $SHA1SUM "$@"| awk '{print $1}'
 }
 
 portz_invoke_always()

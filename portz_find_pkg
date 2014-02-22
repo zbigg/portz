@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+abspath()
+{
+    if test -z "$1" 
+    then
+        return
+    fi
+    if [ -d "$1" ] ; then
+        (
+            cd $1 
+            pwd
+        )
+    else
+        local dir="$(dirname "$1")"
+        local name="$(basename "$1")"
+        (
+            cd $dir
+            echo "`pwd`/$name"
+        )
+    fi
+}
+find_lib_portz()
+{
+    local potential_prefix=.
+    while [ "$potential_prefix" != "/" ]
+    do
+        local potential_prefix_abs="$(abspath $potential_prefix)"
+        if [ -d "$potential_prefix_abs/lib/portz" ]
+        then
+            echo "$potential_prefix_abs"
+        fi
+
+        if [ "$potential_prefix_abs" = "/" ] ; then
+            break
+        fi
+        potential_prefix="$potential_prefix_abs/.."
+    done
+}
+
+for f in "$@" ; do
+    new_roots="$(find_lib_portz $f)"
+    fa="$(abspath $f)"
+    for root in $new_roots ; do
+        for manifest_file in $root/lib/portz/*.MANIFEST ; do
+            package_name="$(basename $manifest_file | sed -e 's/.MANIFEST$//')"
+            pkginfo="$(dirname $manifest_file)/${package_name}.PKGINFO"
+            package_version=
+            awk -v p=$pkginfo -v r=$root '{printf("%s %s/%s\n",p,r,$1)}' $manifest_file | grep " $fa" 
+        done
+    done
+done | while read pkginfo file ; do
+    package_name="$(cat $pkginfo | grep "^name=" | cut -d= -f2)"
+    package_version="$(cat $pkginfo | grep "^version=" | cut -d= -f2)"
+    root="$(abspath $(dirname $pkginfo)/../../)"
+    echo "$root $package_name-$package_version $file"
+done

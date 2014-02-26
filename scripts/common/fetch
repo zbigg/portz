@@ -15,9 +15,17 @@ portz_download()
 url=$1
 shift
 filename=`basename $url`
+if ! [[ ${filename} =~ ^${package_name} ]] ; then
+    filename="${package_name}-${filename}"
+fi
+
 archived_filename="${portz_archive}/$filename"
 
 if [ ! -f $archived_filename ] ; then
+    # THIS is soooo weak, TBD
+    # fix this
+    #  - download to REAL tmp
+    #  - move only on success
     [ -d $portz_archive ] || mkdir -p $portz_archive
     #trap "rm -rf $archived_filename; exit 1"
     rm -rf $archived_filename.tmp

@@ -63,6 +63,11 @@ if [ -d "usr/lib64" ] ; then
     portz_invoke cp -pvr usr/lib64/* ${DESTDIR}${exec_prefix}/lib
 fi
 
+if [ -d "usr/libexec" ] ; then
+    portz_invoke mkdir -p ${DESTDIR}${exec_prefix}/libexec
+    portz_invoke cp -pvr usr/libexec/* ${DESTDIR}${exec_prefix}/libexec
+fi
+
 # includes
 if [ -d "usr/include" ] ; then
     portz_invoke mkdir -p ${DESTDIR}${prefix}/include

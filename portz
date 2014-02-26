@@ -41,6 +41,8 @@
 ##   --quiet|-q  -- quiet mode, show only warnings and errors
 ##   -r REPO 
 ##       change repo location
+##   -a FOLDER
+##       change archive location
 
 #if type bashfoo >/dev/null 2>/dev/null ; then
 
@@ -101,6 +103,12 @@ while [ -n "$1" ] ; do
             [ -z "$2" ] && fail_on_bad_usage "$1, argument required"
             portz_repo="$(abspath $2)"
             export portz_repo
+            shift ; shift
+            ;;
+         -a|--archive)
+            [ -z "$2" ] && fail_on_bad_usage "$1, argument required"
+            portz_archive="$(abspath $2)"
+            export portz_archive
             shift ; shift
             ;;
         -i) 

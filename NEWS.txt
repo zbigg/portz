@@ -6,6 +6,7 @@ Funcitonal-wise release-by-release change log.
     * rpm stereotype: unpack binary rpm into prefix/exec_prefix (autodected if ends with = ~.rpm$)
     * rpm stereotype: automatically patch pkg-config files (*.pc) when relocating to other prefix
     * --strip & --strip-leave-debug option added (easy_install/install/dist)
+    * ${step}_add function may be added by package to _add_ script to step
 
 2014-02-11, release 0.0.3
 

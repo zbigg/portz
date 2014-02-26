@@ -166,7 +166,9 @@ portz_step()
     shift
     portz_step_path="${package_folder} ${portz_scripts}/${stereotype} ${portz_scripts}/common"
 
-    step_function_name="${action}_step"
+    local step_function_name="${action}_step"
+    local add_function_name="${action}_add"
+    local step_result=
     actionu="$(echo $action | tr a-z A-Z)"
     if function_exists ${step_function_name} ; then
     	inform "$actionu (in $folder) (port custom)"
@@ -176,22 +178,40 @@ portz_step()
             cd $folder
             $step_function_name "$@"
         )
-        return $?
+        step_result=$?
     fi
-
-    for SP in ${portz_step_path} ; do
-        local script="$SP/$action"
-        if [ -f "${script}" ] ; then
-    	    inform "$actionu (in $folder)"
-    	    (
-    	        set -e
-    	        mkdir -p $folder
-    	        cd $folder 
-    	        source $script "$@"
-            )
-            return $?
+    if [ -z "$step_result" ] ; then
+        for SP in ${portz_step_path} ; do
+            local script="$SP/$action"
+            if [ -f "${script}" ] ; then
+                inform "$actionu (in $folder)"
+                (
+                    set -e
+                    mkdir -p $folder
+                    cd $folder 
+                    source $script "$@"
+                )
+                step_result=$?
+                break
+            fi
+        done
+    fi
+    if function_exists ${add_function_name} ; then
+        inform "$add_function_name (in $folder) (port additional step)"
+        (
+            set -e
+            mkdir -p $folder
+            cd $folder
+            $add_function_name "$@"
+        )
+        r=$?
+        if [ "$r" != 0 ] ; then
+            step_result=$r
         fi
-    done
+    fi
+    if [ -n "$step_result" ]; then
+        return "$step_result"
+    fi
     if [ "$optional" = 1 ] ; then
         inform "${action} step skipped"
     else

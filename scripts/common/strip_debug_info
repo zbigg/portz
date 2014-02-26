@@ -1,0 +1,41 @@
+#
+# strip_debug_info
+#
+# This step is executed after install_staging to manage debug information
+# in just installed native binaries.
+#
+# By default does nothing.
+#
+# portz_deploy_strip_binaries=1 
+#    --> strips debuginfo (purge)
+#    --> uses strip
+# portz_deploy_strip_binaries=1 && portz_deploy_strip_leave_debug_info=1 
+#    --> strips and leaves debuginfo in *.debug
+#    --> works only with BINUTILS objcopy & strip
+#
+
+STRIP="${STRIP-strip}"
+OBJCOPY="${OBJCOPY-objcopy}"
+
+strip_binaries_binutils()
+{
+    cd ${staging_dir}
+    for file in $(find . -type f | xargs file | egrep " (PE32|ELF).+executable" | cut -d: -f1 ) ; do
+        if [ "${portz_deploy_strip_leave_debug_info}" = 1 ] ; then
+            portz_invoke ${OBJCOPY} --only-keep-debug $file $file.debug
+            portz_invoke ${STRIP} "$file"
+            portz_invoke ${OBJCOPY} --add-gnu-debuglink=$file.debug $file
+        else
+            portz_invoke ${STRIP} "$file"
+        fi
+    done
+}
+
+if [ "${portz_deploy_strip_binaries}" = 1 ] ; then
+    log_info "stripping executable files"
+    strip_binaries_binutils
+fi
+
+# jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
+
+

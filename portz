@@ -43,6 +43,11 @@
 ##       change repo location
 ##   -a FOLDER
 ##       change archive location
+##
+## install/dist/easy_install options:
+##   --strip             -- strip debug info from binaries
+##   --strip-leave-debug -- move debug into from binaries to *.debug
+##
 
 #if type bashfoo >/dev/null 2>/dev/null ; then
 
@@ -105,11 +110,20 @@ while [ -n "$1" ] ; do
             export portz_repo
             shift ; shift
             ;;
-         -a|--archive)
+        -a|--archive)
             [ -z "$2" ] && fail_on_bad_usage "$1, argument required"
             portz_archive="$(abspath $2)"
             export portz_archive
             shift ; shift
+            ;;
+        --strip)
+            export portz_deploy_strip_binaries=1
+            shift
+            ;;
+        --strip-leave-debug)
+            export portz_deploy_strip_binaries=1
+            export portz_deploy_strip_leave_debug_info=1
+            shift
             ;;
         -i) 
             action=install ; shift ;;

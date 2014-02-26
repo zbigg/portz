@@ -13,8 +13,8 @@ fi
 
 if [ ! -w $prefix ] ; then
     MAYBE_SUDO=${SUDO-sudo}
-    inform"must escalate priviledges to root (using $MAYBE_SUDO)"
-    fi
+    inform "must escalate priviledges to root (using $MAYBE_SUDO)"
+fi
 
 gnu_tar_deploy()
 {

@@ -21,6 +21,9 @@ strip_binaries_binutils()
 {
     cd ${staging_dir}
     for file in $(find . -type f | xargs file | egrep " (PE32|ELF).+(executable|shared object)" | cut -d: -f1 ) ; do
+        if [ ! -w "${file}" ] ; then
+            portz_invoke chmod u+w "$file"
+        fi
         if [ "${portz_deploy_strip_leave_debug_info}" = 1 ] ; then
             portz_invoke ${OBJCOPY} --only-keep-debug $file $file.debug
             portz_invoke ${STRIP} "$file"

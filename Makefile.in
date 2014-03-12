@@ -65,6 +65,7 @@ portz_lib_SCRIPTS = \
 	scripts/common/unarchive \
 	scripts/common/make_pkginfo \
 	scripts/common/find_src_dir \
+	scripts/common/strip_debug_info \
 	scripts/install_staging.sh
 
 portz_lib_FILES=\

@@ -38,6 +38,8 @@ find_lib_portz()
     done
 }
 
+shopt -s nullglob
+
 for f in "$@" ; do
     known=0
     new_roots="$(find_lib_portz $f)"
@@ -71,9 +73,14 @@ for f in "$@" ; do
     fi
 done | while read file pkginfo ; do
     if [ "$pkginfo" != - ] ; then
-        package_name="$(cat $pkginfo | grep "^name=" | cut -d= -f2)"
-        package_version="$(cat $pkginfo | grep "^version=" | cut -d= -f2)"
-        package_version="${package_version--}"
+        if [ -f "$pkginfo" ] ; then
+            package_name="$(cat $pkginfo | grep "^name=" | cut -d= -f2)"
+            package_version="$(cat $pkginfo | grep "^version=" | cut -d= -f2)"
+            package_version="${package_version--}"
+        else
+            package_name="$(basename $pkginfo | sed -e 's|.PKGINFO$||')"
+            package_version=-
+        fi
         root="$(abspath $(dirname $pkginfo)/../../)"
         echo "$file $package_name $package_version $root"
     else

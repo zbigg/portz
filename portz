@@ -14,6 +14,7 @@
 ##   portz list              - list installed packages in $prefix
 ##   portz files PACKAGE     - list files in PACKAGE under $prefix
 ##   portz uninstall PACKAGE - uninstall package
+##   portz classify FILES    - find owner packages for FILES
 ##
 ## distribution
 ##   portz dist PACKAGE      - build tgz archive from uninstalled package
@@ -138,6 +139,11 @@ while [ -n "$1" ] ; do
             next_cmd="${portz_libdir}/portz_query list"
             shift ; break ;;
 
+        -S|-qf|classify)
+            action=find_pkg
+            shift
+            break;
+            ;;
         files)
             next_cmd="${portz_libdir}/portz_query files"
             shift ; break ;;

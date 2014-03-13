@@ -40,6 +40,47 @@ Grooming / ideas
 
 * (3) functional tests !
 
+* (10) refactor fetch
+     fetch is either
+        baseurl:
+                download (many)
+                check sha1sum !!
+                unarchive (many, custom)
+        svn_path:
+                just checkout
+        mtn_url:
+                pull branch
+                checkout
+        git_url
+                clone url
+                checkout git_tag | git_ref
+     unarchive shall be still custom
+     fetch shall be autodetected
+
+* (11) dependency tracking for build steps ...
+        generate Makefile in srcdir that has targets
+                
+                prepare_clean_src.tag:
+                        # either download & unarchive
+                        # git, mtn, svn checkout
+                     
+                patch_src.tag: prepare_clean_src.tag
+                        ...
+                configure_src.tag: patch_src.tag
+                        ...
+                build.tag: configure_src.tag
+                        # internal invoke build
+                
+                install_staging.tag: build.tag
+                        # ...
+                analyze.tag: install_staging.tag
+                
+                deploy.tag: analyze.tag
+                        #
+                        
+                $(dist_archive_file): $(analyze_tag)
+                       
+
 Implemented
 ----------------
 

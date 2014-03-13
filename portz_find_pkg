@@ -47,7 +47,21 @@ for f in "$@" ; do
             package_name="$(basename $manifest_file | sed -e 's/.MANIFEST$//')"
             pkginfo="$(dirname $manifest_file)/${package_name}.PKGINFO"
             package_version=""
-            if awk -v p=$pkginfo -v r=$root '{printf("%s/%s %s\n",r,$1,p)}' $manifest_file | egrep "^$fa " ; then
+            # there are two formats of MANIFEST
+            # relative to ${prefix}
+            #   bin/goo
+            #   lib/libfoo.so
+            #   ...
+            # absolute, starting with ./
+            #   ./opt/foo/bin/goo
+            #   ./opt/foo/lib/libfoo.so
+            if awk -v p=$pkginfo -v r=$root '
+                # absolute format
+                /^.\//  {printf("%s %s\n", substr($1,2), p); next; }
+                # relative format
+                //      {printf("%s/%s %s\n",r,$1,p); next; }
+                ' $manifest_file | egrep "^$fa " 
+            then
                 known=1
             fi
         done

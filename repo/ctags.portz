@@ -1,5 +1,6 @@
 version=5.8
 baseurl=http://prdownloads.sourceforge.net/ctags/ctags-${version}.tar.gz
+sha1sum=482da1ecd182ab39bbdc09f2f02c9fba8cd20030
 web=http://ctags.sourceforge.net/
 stereotype="gnu"
 make_install_no_destdir=1

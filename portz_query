@@ -24,7 +24,13 @@ action=$1
 package_name=$2
 
 if [ "$action" = "list" ] ; then
-    ls -1 ${exec_prefix}/lib/portz/ | grep -v PKGINFO | sed -e 's@.MANIFEST@@'
+    shopt -s nullglob
+    readonly asked_portz_libdir=${prefix}/lib/portz
+    if [ ! -d "$asked_portz_libdir" ] ; then
+        fail "${prefix} doesn't look like portz installation target ($asked_portz_libdir doesn't exist)"
+    fi
+    cd "$asked_portz_libdir"
+    ls -1 *.MANIFEST | sed -e 's@.MANIFEST@@'
 elif [ "$action" = "files" ] ; then
     package_name=$2
     if [ -z ${package_name} ] ; then

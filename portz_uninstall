@@ -31,13 +31,20 @@ if [ ! -f ${manifest_file} ] ; then
     fail "package '$package_name' not installed (failed to read ${manifest_file})"
 fi
 
-XXX=/tmp/XXX
-cp ${manifest_file} $XXX
-(cd $prefix ; cat $XXX | xargs -n 20 rm -rvf ;)
+# move manifest to temp file, so we don't remove
+# file that is currently read
+readonly temp_manifest=/tmp/.portz_uninstall-$$-$USER
+cp ${manifest_file} $temp_manifest
+
+# TBD, protect against spaces !!!
+portz_list_files_from_manifest ${temp_manifest} | xargs -n 20 rm -rvf
+
+# hack:
+#  some old manifest files doesn't contain PKGINFO
 if [ -f "$prefix/lib/portz/$package_name.PKGINFO" ] ; then
     rm -v "$prefix/lib/portz/$package_name.PKGINFO"
 fi
-rm $XXX
+rm $temp_manifest
 
 # jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
 

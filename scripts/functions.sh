@@ -146,6 +146,26 @@ portz_show_pkginfo()
     cat $dep_pkginfo | bashfoo.prefix "    "
 }
 
+portz_list_files_from_manifest()
+{
+    local manifest_file="$1"
+    local prefix="$(realpath $(dirname ${manifest_file})/../..)"
+    # there are two formats of MANIFEST
+    # relative to ${prefix}
+    #   bin/goo
+    #   lib/libfoo.so
+    #   ...
+    # absolute, starting with ./
+    #   ./opt/foo/bin/goo
+    #   ./opt/foo/lib/libfoo.so
+
+    awk -v r=$prefix '
+        # absolute format
+        /^.\//  {printf("%s\n", substr($1,2)); next; }
+        # relative format
+        //      {printf("%s/%s\n",r,$1); next; }
+        ' "${manifest_file}"
+}
 function_exists()
 {
 	declare -F $1 2>/dev/null 1> /dev/null

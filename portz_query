@@ -31,11 +31,12 @@ elif [ "$action" = "files" ] ; then
         fail "need package name"
     fi
     setup_package_build_defs
-    
+
     if [ ! -f ${manifest_file} ] ; then
         fail "package '$package' not installed (failed to read ${manifest_file})"
     fi
-    cat ${manifest_file} | sed -e "sX^X${prefix}/X"
+
+    portz_list_files_from_manifest ${manifest_file}
 else
     fail "bad usage"
 fi

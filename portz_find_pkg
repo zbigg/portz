@@ -1,5 +1,16 @@
 #!/usr/bin/env bash
 
+PNAME=portz_find_pkg
+set -e
+
+portz_libdir=${portz_libdir-`pwd`}
+. ${portz_libdir}/scripts/runtime.sh
+. ${portz_scripts}/functions.sh
+log_quiet=1
+. ${portz_scripts}/build_defs.sh
+log_quiet=0
+. ${portz_scripts}/package_defs.sh
+
 abspath()
 {
     if test -z "$1" 
@@ -57,13 +68,9 @@ for f in "$@" ; do
             # absolute, starting with ./
             #   ./opt/foo/bin/goo
             #   ./opt/foo/lib/libfoo.so
-            if awk -v p=$pkginfo -v r=$root '
-                # absolute format
-                /^.\//  {printf("%s %s\n", substr($1,2), p); next; }
-                # relative format
-                //      {printf("%s/%s %s\n",r,$1,p); next; }
-                ' $manifest_file | egrep "^$fa " 
+            if portz_list_files_from_manifest $manifest_file | egrep -q "^$fa"
             then
+                echo "$fa $pkginfo"
                 known=1
             fi
         done

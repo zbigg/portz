@@ -42,6 +42,7 @@ portz_lib_SCRIPTS = \
         portz_uninstall \
 	portz_build_site \
 	portz_make_patch \
+	portz_find_pkg \
 	scripts/verbatim/install_staging \
 	scripts/verbatim/build \
 	scripts/verbatim/find_src_dir \

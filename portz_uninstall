@@ -36,8 +36,9 @@ fi
 readonly temp_manifest=/tmp/.portz_uninstall-$$-$USER
 cp ${manifest_file} $temp_manifest
 
+prefix="$(realpath $(dirname ${manifest_file})/../..)"
 # TBD, protect against spaces !!!
-portz_list_files_from_manifest ${temp_manifest} | xargs -n 20 rm -rvf
+portz_list_files_from_manifest "${temp_manifest}" "${prefix}" | xargs -n 20 rm -rvf
 
 # hack:
 #  some old manifest files doesn't contain PKGINFO

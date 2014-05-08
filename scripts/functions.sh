@@ -149,7 +149,10 @@ portz_show_pkginfo()
 portz_list_files_from_manifest()
 {
     local manifest_file="$1"
-    local prefix="$(realpath $(dirname ${manifest_file})/../..)"
+    local prefix="$2"
+    if [ -z "$prefix" ] ; then
+        prefix="$(realpath $(dirname ${manifest_file})/../..)"
+    fi
     # there are two formats of MANIFEST
     # relative to ${prefix}
     #   bin/goo

@@ -69,6 +69,7 @@ package_from_portz_file()
     unset version
     unset baseurl
     unset stereotype
+    unset depends
     
     source "$package_def_file"
 
@@ -113,7 +114,8 @@ load_package()
         package_from_path "$path"
         package_path="$path"
     else
-        fail "package $name is not file and cannot be found in repo '$portz_repo'"
+        log_info "package $name is not file and cannot be found in repo '$portz_repo'"
+        return 1
     fi
 }
 

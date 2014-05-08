@@ -117,6 +117,10 @@ while [ -n "$1" ] ; do
             export portz_archive
             shift ; shift
             ;;
+        -n|--dry-run)
+            export portz_dry_run=1
+            shift
+            ;;
         --strip)
             export portz_deploy_strip_binaries=1
             shift
@@ -147,7 +151,7 @@ while [ -n "$1" ] ; do
         files)
             next_cmd="${portz_libdir}/portz_query files"
             shift ; break ;;
-            
+
         dist|install|invoke|easy_install|query|packback|uninstall|build_site|invoke|make_patch)
             action=$1
             shift

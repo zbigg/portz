@@ -12,24 +12,37 @@ foobar()
 	fi
 }
 
+foobar_cmd()
+{
+	local V="$(eval echo "\$$1")"
+	if [ -n "$V" ] ; then
+	    echo -n "$1=\"$(which $V)\" "
+	fi
+}
+
 influential_args()
 {
 	foobar prefix
 	foobar exec_prefix
 	foobar arch
-	foobar CC
-	foobar CXX
-	foobar LD
 	foobar CFLAGS
 	foobar CXXFLAGS
 	foobar LFFLAGS
 	foobar LDLIBS
 	foobar PKG_CONFIG_PATH
+	
+	foobar_cmd CC
+	foobar_cmd CXX
+	foobar_cmd LD
 }
 
 (
 	echo "name=${package_name}"
 	echo "version=${package_version}"
+	echo "prefix=${prefix}"
+	if [ "$prefix" != "$exec_prefix" ] ; then
+	    echo "exec_prefix=$exec_prefix"
+        fi
 	if [ -n "$baseurl" ] ; then
 		echo "baseurl=${package_baseurl}"
 		if [ -n "$sha1sum" ] ; then

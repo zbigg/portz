@@ -24,6 +24,7 @@ fi
 
 bashfoo_require path
 bashfoo_require log
+bashfoo_require run
 
 #
 # find rest of portz

@@ -16,10 +16,10 @@ parent_src_dir="${TMP}/portz/${package_name}/src"
 
 # find dirs
 
-readonly src_dir=$(portz_step "${TMP}/portz/${package_name}/src" find_src_dir)
+readonly src_dir=$(portz_step_capture "${TMP}/portz/${package_name}/src" find_src_dir)
 inform src_dir="$src_dir"
 
-readonly bld_dir=$(portz_step "${src_dir}" find_bld_dir)
+readonly bld_dir=$(portz_step_capture "${src_dir}" find_bld_dir)
 inform bld_dir="$bld_dir"
 
 export src_dir bld_dir

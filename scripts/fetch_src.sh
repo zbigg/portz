@@ -87,7 +87,7 @@ elif [ -n "${git_url}" ] ; then
     )
 else
     while read url expected_sha1sum ; do
-        archive_file="$(portz_step $(pwd) fetch $url)"
+        archive_file="$(portz_fetch_url_with_cache $url)"
         inform archive_file="$archive_file"
         archive_sha1sum="$(portz_sha1sum "$archive_file")"
         #note, sha1sum works currently only

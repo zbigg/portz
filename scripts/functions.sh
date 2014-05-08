@@ -172,6 +172,14 @@ function_exists()
 	return $?
 }
 
+invoke_step_maybe_quiet()
+{
+    if [ -n "$quiet_steps" ] ; then
+        quiet_if_success "$@"
+    else
+        "$@"
+    fi
+}
 portz_step()
 {
     local optional=0
@@ -196,7 +204,7 @@ portz_step()
             set -e
             mkdir -p $folder
             cd $folder
-            $step_function_name "$@"
+            invoke_step_maybe_quiet $step_function_name "$@"
         )
         step_result=$?
     fi
@@ -208,8 +216,8 @@ portz_step()
                 (
                     set -e
                     mkdir -p $folder
-                    cd $folder 
-                    source $script "$@"
+                    cd $folder
+                    invoke_step_maybe_quiet source $script "$@"
                 )
                 step_result=$?
                 break
@@ -222,7 +230,7 @@ portz_step()
             set -e
             mkdir -p $folder
             cd $folder
-            $add_function_name "$@"
+            invoke_step_maybe_quiet $add_function_name "$@"
         )
         r=$?
         if [ "$r" != 0 ] ; then
@@ -239,6 +247,13 @@ portz_step()
     fi
 }
 
+portz_step_capture()
+{
+    local old_quiet_steps="$quiet_steps"
+    unset quiet_steps
+    portz_step "$@"
+    quiet_steps="$old_quiet_steps"
+}
 portz_optional_step()
 {
     portz_step --optional "$@"
@@ -256,6 +271,46 @@ izip()
     done
 }
 
+portz_download()
+{
+    if which wget > /dev/null; then
+        portz_invoke_always wget --no-check-certificate -O $1 $2
+    elif which curl > /dev/null ; then
+        portz_invoke_always curl --location --output $1 $2
+    else
+        inform "using bundled wget"
+        portz_invoke_always ${portz_tools}/wget/wget -O $1 $*
+    fi
+}
+
+portz_fetch_url_with_cache()
+{
+    local url=$1
+    shift
+    local filename=`basename $url`
+    if ! [[ ${filename} =~ ^${package_name} ]] ; then
+        filename="${package_name}-${filename}"
+    fi
+
+    local archived_filename="${portz_archive}/$filename"
+
+    if [ ! -f $archived_filename ] ; then
+        # THIS is soooo weak, TBD
+        # fix this
+        #  - download to REAL tmp
+        #  - move only on success
+        [ -d $portz_archive ] || mkdir -p $portz_archive
+        #trap "rm -rf $archived_filename; exit 1"
+        rm -rf $archived_filename.tmp
+        log_info "downloading $url"
+        portz_download ${archived_filename}.tmp $url
+        mv $archived_filename.tmp $archived_filename
+        #trap
+    else
+        log_info "$filename already in cache"
+    fi
+    echo "$archived_filename"
+}
 
 # jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
 

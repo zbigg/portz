@@ -233,7 +233,11 @@ if [ -f /proc/cpuinfo ] ; then
 elif [ -n "$NUMBER_OF_PROCESSORS" ] ; then
     cpus=$NUMBER_OF_PROCESSORS
 elif [ -n "$is_macosx" ] ; then
-    cpus="$(sysctl -n hw.ncpu)"
+    if [ -x "/usr/sbin/sysctl" ] ; then
+        cpus="$(/usr/sbin/sysctl -n hw.ncpu)"
+    else
+        cpus=1
+    fi
 else
     cpus=1
 fi

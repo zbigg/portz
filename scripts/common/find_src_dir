@@ -3,7 +3,7 @@
 if [ `ls -1 | grep -v -e "-portz-orig" | wc -l` = "1" ] ; then 
     cd `ls -1 | grep -v -e "-portz-orig"`
 else
-    fail "unable to find source directory in unpacked archive, override goto_srcdir() in package def"
+    fail "unable to find source directory in unpacked archive, override find_src_dir_step() in package def"
 fi
 
 pwd

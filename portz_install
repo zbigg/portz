@@ -48,14 +48,24 @@ install_dependencies()
 
 overall_result=0
 for p in $* ; do
+    if [ "$p" = --no-deps ] ; then
+        no_deps=1
+        shift
+        continue
+    elif [ "$p" = --quiet-steps ] ; then
+        quiet_steps=1
+        shift
+        continue
+    fi
     (
-        load_package $p
-        
+        if ! load_package $p ; then
+             exit 1
+        fi
         PNAME="$PNAME[$package_name]"
         SCRIPT_NAME="$PNAME"
-
-        install_dependencies
-        
+        if [ -z "$no_deps" ] ; then
+            install_dependencies
+        fi
         log_quiet=1
         . ${portz_scripts}/build_defs.sh
         log_quiet=0

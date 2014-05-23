@@ -18,10 +18,9 @@ set -e
 portz_libdir=${portz_libdir-`pwd`}
 . ${portz_libdir}/scripts/runtime.sh
 . ${portz_scripts}/functions.sh
-. ${portz_scripts}/build_defs.sh
 . ${portz_scripts}/package_defs.sh
 
-packages_to_install="$*"
+packages_required="$*"
 
 find_available_packages()
 (
@@ -36,38 +35,89 @@ find_available_packages()
     ) | sort -u
 )
 
-if [ -z "$packages_to_install" ] ; then
-    packages_to_install="$(find_available_packages $portz_repo)"
+if [ -z "$packages_required" ] ; then
+    packages_required="$(find_available_packages $portz_repo)"
 fi
 
-log_info "packages    = $packages_to_install"
+log_info "packages    = $packages_required"
 
-if [ -z "$packages_to_install" ] ; then
+if [ -z "$packages_required" ] ; then
     log_error "no packag definitions found in prefix '$prefix'"
     exit 1
 fi
 
 overall_result=0
-for package in $packages_to_install ; do
-    (
-        load_package "$package"
-        if portz_check_installed $package_name ; then
-            log_info "$package_name -> already installed:"
-            portz_show_pkginfo $package_name
-        else
-            log_info "$package_name -> not installed, installing"
-            (
-                ${portz_libdir}/portz_install $package
-            )
-            exit $?
+
+readonly packages_to_install="$(bashfoo.mktemp portz_build_size-to-install)"
+readonly packages_analyzed="$(bashfoo.mktemp portz_build_size-already-installed)"
+readonly packages_unknown="$(bashfoo.mktemp portz_build_size-unknown)"
+
+analyze_package_list()
+{
+    local packages="$*"
+    touch "$packages_analyzed"
+
+    #log_info "analyze_package_list: $packages"
+    
+    local package=""
+    for package in $packages ; do
+        #log_info "analyze_package_list: iter ---> $package"
+        if grep -qxF "$package" "$packages_analyzed" ; then
+            continue
         fi
+        log_quiet=1
+        if ! load_package "$package" ; then
+            echo "$package" >> "$packages_unknown"
+            continue
+        fi
+        log_quiet=0
+
+        if [ -n "$depends" ] ; then
+            (
+                local xdepends="$depends"
+                unset depends
+                dependency_of=" (dependency of $package)"
+                analyze_package_list $xdepends
+            )
+        fi
+        if log_quiet=1 portz_check_installed $package_name ; then
+            log_info "already installed: $package$dependency_of"
+            #portz_show_pkginfo $package_name
+        else
+            log_info "marked for install: $package ($package_name-$package_version from $package_def_file)$dependency_of"
+            echo "$package_def_file" >> "$packages_to_install"
+        fi
+
+        echo "$package" >> "$packages_analyzed"
+    done
+}
+
+analyze_package_list $packages_required
+
+if [ -s "$packages_unknown" ] ; then
+    ls -al "$packages_unknown"
+    while read package ; do
+        log_error "unknown package: $package"
+    done < <(cat "$packages_unknown" | sort -u )
+    exit 2
+fi
+
+if [ -n "$portz_dry_run" ]; then
+    log_info "dry_run mode, skipping install part"
+    exit 0
+fi
+
+while read package ; do
+    (
+        ${portz_libdir}/portz_install $package
     )
     r=$?
     if [ "$r" != 0 ] ; then
         overall_result=$r
         failed_packages="$failed_packages $package"
     fi
-done
+done < <(cat "$packages_to_install" )
+
 if [ "$overall_result" != 0 ] ; then
     log_info "failure, following packages failed to install: $failed_packages"
 fi

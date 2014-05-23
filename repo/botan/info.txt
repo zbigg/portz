@@ -1,4 +1,4 @@
-version=1.10.3
+version=1.10.8
 baseurl=http://files.randombit.net/botan/Botan-${version}.tbz
 web=http://botan.randombit.net/
 
@@ -6,7 +6,7 @@ configure_step() {
     opts="--prefix=$exec_prefix --exec-prefix=$exec_prefix"
     
     
-    if [ "$OSTYPE" == "msys" ] ; then 
+    if [ "$OSTYPE" == "msys" ] ; then
         opts="$opts --disable-shared --cc=gcc --os=mingw --with-tr1-implementation=none"
     fi
 

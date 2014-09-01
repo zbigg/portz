@@ -1,4 +1,15 @@
-version=1.8.0.1
+version=1.8.5.4
 baseurl=http://git-core.googlecode.com/files/git-${version}.tar.gz
+sha1sum=cbf14318ee9652232489982bb2da15d2e5ebb580
 web=http://code.google.com/p/git-core/
 stereotype=auto
+
+build_step()
+{
+        ${MAKE_PARALLEL} V=1
+}
+
+install_staging_step()
+{
+        ${MAKE_PARALLEL} V=1 install DESTDIR=${DESTDIR}
+}

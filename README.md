@@ -1,9 +1,10 @@
-PORTZ - native libraries/tools port system by zbigg
+PORTZ - local port system
 ===================
 
-Well, next tool like mingw-port, homebrew, easy_install. That is just tailored to my needs:
+Well, next tool like mingw-port, homebrew, easy_install, macportz, FreeBSD portz. That is just tailored to my needs:
 
- - works on MSys/Mingw32, Linux and FreeBSD
+ - works on MSys/Mingw32, Linux, OSX and FreeBSD
+ - is designed to target private trees ($HOME/usr, $HOME/project-sdk etc)
  - have ports for packages i use :)
  - supports basic cross compilation env (work in progress)
 
@@ -40,22 +41,23 @@ Installs:
     /home/zbigg/foo/bin/wget
 
 Prepared packages usage:
+
     portz install pcre
     
-See repo/pcre.portz for package definition.
+See `repo/pcre.portz` for package definition.
 
 Supported parameters, passed via environment:
 
- - prefix      - prefix for noarch files
- - exec_prefix - prefix for arch specific files, eg. binaries
- - arch        - autoconf style arch name (x86_64-unknown-linux-gnu, i586-mingw32msvc)
+ - `prefix`      - prefix for noarch files
+ - `exec_prefix` - prefix for arch specific files, eg. binaries
+ - `arch`        - autoconf style arch name (`x86_64-unknown-linux-gnu`, `i586-mingw32msvc`)
 
 See `portz --help` for all featured commands.
 
 Options
 -------------
 
-If environment variable PORTZ_SEPARATE_EXEC is equal to 1 then
+If environment variable `PORTZ_SEPARATE_EXEC` is equal to 1 then
 portz will automagically differentiate exec prefix for installed packages. It will be:
 
     ${prefix}/platforms/$(uname -m)
@@ -64,7 +66,7 @@ which will result in:
 
     ${prefix}/platforms/{i686|x86_64|sun4u}
 
-or something (setting arch, implictly enables PORTZ_SEPARATE_EXEC).
+or something (setting arch, implictly enables `PORTZ_SEPARATE_EXEC`).
 
 SITE DEFAULTS
 -------------
@@ -72,23 +74,22 @@ SITE DEFAULTS
 If one wishes to have whole "site" of software compiled in particular way, then <site>
 feature can be used.
 
-When portz script is executed with site=FOLDER variable set, then
-it reads defaults from $site/.portz.conf. This file can/should contains defaults
+When portz script is executed with `site=DIR` variable set, then
+it reads defaults from `$site/.portz.conf`. This file can/should contains defaults
 like specification of compiler, compilation flags etc.
 
-site=XXX implies following:
+`site=DIR` implies following:
 
- - inclusion of $site/bin in $PATH (not in cross-compilation mode)
- - inclusion of $site/lib in $LD_LIBRARY_PATH( not in cross-comp)
- - inclusion of $site/lib in $LIBRARY_PATH
- - ... $site/include in C_INCLUDE_PATH and CPLUS_INCLUDE_PATH
- - ... $site/lib/pkgconfig in PKG_CONFIG_PATH
- - ... $site/lib/pythhon{X.Y}/site-packages in PYTHON_PATH
+ - inclusion of `$site/bin` in `$PATH` (not in cross-compilation mode)
+ - inclusion of `$site/lib` in `$LD_LIBRARY_PATH` (not in cross-compilation)
+ - inclusion of `$site/lib` in `$LIBRARY_PATH`
+ - ... `$site/include` in `C_INCLUDE_PATH` and `CPLUS_INCLUDE_PATH`
+ - ... `$site/lib/pkgconfig` in `PKG_CONFIG_PATH`
+ - ... `$site/lib/pythhon{X.Y}/site-packages` in `PYTHON_PATH`
 
 Example, site for cross-compilation to mingw32:
 
-    |x86_64| zbigg@hunter:/home/zbigg/site/mingw32
-    $ cat .portz.conf
+    ~/site/mingw32 $ cat .portz.conf
     CC=i586-mingw32msvc-cc
     CXX=i586-mingw32msvc-c++
 	
@@ -130,21 +131,21 @@ Canonical example:
     stereotype="gnu"
 
 It described pcre (http://pcre.org) in version 8.31 and download URL. It tells
-also that it's a 'gnu' type of package, so portz will expect canonical
-configure & make & make install DESTDIR=xxx working.
+also that it's a `gnu` type of package, so portz will expect canonical
+`configure & make & make install DESTDIR=tmp_staging_folder` working.
 
-(Sterotype is autodetected in configure & Makefile.in exists, so stereotype
+(GNU Sterotype is autodetected if configure & Makefile.in exists, so stereotype
  settings is redundant here)
 
 So, basically portz supports out-of-the-box following "steretypes":
 
- - gnu (configure&make packages)
+ - gnu (configure & make packages)
  - python (featuring distutils compatible setup.py)
 
 Portz can fetch source from using:
 
- - baseurl, it just fetched tgz,tbz2,zip etc
-   (if sha1sum is defined, then downloaded file is checked for integrity/authenticity)
+ - `baseurl`, it just fetched tgz,tbz2,zip etc
+   (if `sha1sum` is defined, then downloaded file is checked for integrity/authenticity)
  - svn url & revision
  - monotone url & revision
  - git url and & ref
@@ -153,45 +154,53 @@ Definitions:
 
 * downloaded packages
 
-  * baseurl -> from where wget or curl shall fetch source package
-  * sha1sum -> expected sha1sum of downloaded package
+  * `baseurl` -> from where wget or curl shall fetch source package
+  * `sha1sum` -> expected sha1sum of downloaded package
   
 * sources from svn:
   
-  * svn_path - SVN url
-  * revision - optional, HEAD is the default
+  * `svn_path` - SVN url
+  * `revision` - optional, HEAD is the default
 
 * sources from monotone:
 
-  * mtn_url - monotone database pull URL
-  * revision - mandatory, a monotone selector: h:branch, t:tag, HASH
+  * `mtn_url` - monotone database pull URL
+  * `revision` - mandatory, a monotone selector: h:branch, t:tag, HASH
 
 * sources from git:
 
-  * git_url - specifies from where we shall pull changes; by default
-               whole repo is cloned
-  * git_ref is used for this (git_tag has precedence)
-  * git_tag specifies what tag shall be cheked out; optionally
-  * git_fetch_options are passed to fetch command
+  * `git_url` - specifies from where we shall pull changes; by default
+    whole repo is cloned
+  * `git_ref` is used for this (`git_tag` has precedence)
+  * `git_tag` specifies what tag shall be cheked out; optionally
+  * `git_fetch_options` are passed to fetch command
 
-Examples
+Package Examples
 --------
 
 Some examples below ...
 
-### Git based ### 
+### Archive based ###
 
-Following package file (repo/tinfra.portz):
+Git build easily with with defaults:
+
+    version=1.8.0.1
+    baseurl=http://git-core.googlecode.com/files/git-${version}.tar.gz
+    web=http://code.google.com/p/git-core/
+
+### Git based ###
+
+Following package file (`repo/tinfra.portz`):
 
     git_url=https://github.com/zbigg/tinfra.git
     git_tag=foo-1.2.3
     git_ref=master
    
-Clones https://github.com/zbigg/tinfra.git and checkouts foo-1.2.3.
+Clones https://github.com/zbigg/tinfra.git and checkouts tag `foo-1.2.3`.
 Then, usual build occurs.
 
-    
-### Cross compilation ###                            
+Cross compilation
+--------
 
 Install i386-libs/headers of expat x86_64 linux:
 
@@ -208,12 +217,12 @@ installs:
     (...)
     /home/zbigg/s2/platforms/i386-unknown-linux-gnu/bin/xmlwf
 
-Same works with portz easy_install, i386-tinfra installed on x86_64 linux:
+Same works with `portz easy_install`, i386-tinfra installed on x86_64 linux:
     
     arch=i386-unknown-linux-gnu prefix=$HOME/s2 portz easy_install \
         name=tinfra http://idf.hotpo.pl/index.php/p/tinfra/downloads/get/tinfra-dev-0.0.2.zip
 
-Real cross compilation, also works (tested @Linux, builf for mingw32), (REQUIRES 
+Real cross compilation, also works (tested @Linux, build for mingw32), (REQUIRES 
 mingw32 installed, i.e i586-mingw32msvc-gcc and friends):
     
     $ arch=i586-mingw32msvc prefix=$HOME/s2 portz install expat

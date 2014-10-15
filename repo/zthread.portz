@@ -5,3 +5,13 @@ web=http://zthread.sourceforge.net/
 CXXFLAGS="-g -O2 -fpermissive"
 
 stereotype="gnu"
+
+build_step()
+{
+    portz_invoke ${MAKE_PARALLEL} ACLOCAL=true AUTOMAKE=true AUTOCONF=true AUTOHEADER=true
+}
+
+install_staging_step()
+{
+    portz_invoke ${MAKE} install DESTDIR=${DESTDIR} ACLOCAL=true AUTOMAKE=true AUTOCONF=true AUTOHEADER=true
+}

@@ -27,8 +27,16 @@ if [ ! -f configure ] ; then
     fi
 fi
 
+prefix_options=""
+if [ -n "$prefix" ] ; then
+    prefix_options="--prefix=$prefix"
+fi
+
+if [ -n "$exec_prefix" -a "$exec_prefix" != "$prefix" ] ; then
+    prefix_options="$prefix_options --exec-prefix=$exec_prefix"
+fi
 # and finally configure
-portz_invoke "./configure" "--prefix=${prefix}" "--exec-prefix=${exec_prefix}" ${cross_configure_options} ${configure_options} 
+portz_invoke "./configure" $prefix_options  ${cross_configure_options} ${configure_options}
 
 # jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
 

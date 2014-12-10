@@ -1,4 +1,0 @@
-version=0.6c11
-baseurl=http://pypi.python.org/packages/source/s/setuptools/setuptools-${version}.tar.gz
-web=http://pypi.python.org/pypi/setuptools
-stereotype=auto

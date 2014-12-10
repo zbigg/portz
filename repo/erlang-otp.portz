@@ -1,6 +1,0 @@
-name=erlang-otp
-version=R16B03_1
-baseurl=http://www.erlang.org/download/otp_src_R16B03-1.tar.gz
-sha1sum=c2634ea0c078500f1c6a1369f4be59a6d14673e0
-www=http://www.erlang.org/
-

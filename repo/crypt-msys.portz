@@ -1,6 +1,0 @@
-version=1.1_1.2
-baseurl=http://downloads.sourceforge.net/project/mingw/MSYS%20crypt/crypt-1.1_1-2/libcrypt-1.1_1-2-msys-1.0.11-dll-0.tar.lzma
-web=http://www.mingw.org
-prefix=/
-exec_prefix=/
-stereotype=verbatim

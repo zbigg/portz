@@ -1,7 +1,0 @@
-name="usher"
-version="1.0-dev"
-website="http://code.monotone.ca/p/contrib/source/tree/h:net.venge.monotone.contrib.usher/"
-
-mtn_url="mtn://code.monotone.ca/contrib?net.venge.monotone.contrib.usher"
-revision="h:net.venge.monotone.contrib.usher"
-

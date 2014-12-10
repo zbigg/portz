@@ -1,6 +1,0 @@
-version=1.24
-baseurl=http://ftp.gnu.org/gnu/libidn/libidn-${version}.tar.gz
-web=http://www.gnu.org/software/libidn/
-stereotype=gnu
-
-[ "$OSTYPE" == "msys" ] && portz_no_parallel_build=1

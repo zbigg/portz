@@ -1,4 +1,0 @@
-version=2.6.2
-baseurl=http://www.cmake.org/files/v2.6/cmake-${version}.tar.gz
-web=http://www.cmake.org/
-stereotype="gnu"

@@ -1,6 +1,0 @@
-name=libiconv
-version=1.13.1
-baseurl=http://ftp.gnu.org/pub/gnu/libiconv/libiconv-${version}.tar.gz
-web=http://www.gnu.org/software/libiconv/
-stereotype=gnu
-

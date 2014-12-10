@@ -1,4 +1,0 @@
-version=2.70
-baseurl=ftp://ftp.joedog.org/pub/siege/siege-${version}.tar.gz
-web=http://www.joedog.org/index/siege-home
-stereotype=auto

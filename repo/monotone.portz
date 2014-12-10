@@ -1,4 +1,0 @@
-version=0.47
-baseurl=http://monotone.ca/downloads/${version}/monotone-${version}.tar.gz
-web=http://monotone.ca/
-stereotype=gnu

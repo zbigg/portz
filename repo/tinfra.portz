@@ -1,9 +1,0 @@
-name="tinfra"
-version="0.0.3-dev"
-website="http://idf2.hotpo.pl/tinfra"
-
-git_url="https://github.com/zbigg/tinfra.git"
-git_ref="master"
-
-depends="makefoo autoconf automake pcre expat"
-

@@ -1,9 +1,0 @@
-version=0.10.1
-baseurl=http://nodejs.org/dist/v${version}/node-v${version}.tar.gz
-web=http://nodejs.org
-stereotype=auto
-
-configure_step()
-{
-    portz_invoke ./configure --prefix=${prefix} ${cross_configure_options} ${configure_options}
-}

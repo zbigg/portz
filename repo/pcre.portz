@@ -1,7 +1,0 @@
-version=8.34
-baseurl=ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-${version}.tar.bz2
-web=http://www.pcre.org/
-
-configure_options="--enable-utf8 --enable-unicode-properties"
-
-stereotype="gnu"

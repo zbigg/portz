@@ -1,9 +1,0 @@
-version="2.0.1"
-baseurl="http://dfn.dl.sourceforge.net/sourceforge/expat/expat-${version}.tar.gz"
-sha1sum=663548c37b996082db1f2f2c32af060d7aa15c2d
-description="This is James Clark's Expat XML parser library in C.
-It is a stream oriented parser that requires setting handlers to deal 
-with the structure that the parser discovers in the document."
-web="http://expat.sourceforge.net/"
-
-stereotype="gnu"

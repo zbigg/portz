@@ -1,7 +1,0 @@
-version=0.99
-baseurl=http://download.savannah.gnu.org/releases/libunwind/libunwind-${version}.tar.gz
-web=http://www.nongnu.org/libunwind/
-stereotype=auto
-
-export CFLAGS="-g -O2 -U_FORTIFY_SOURCE"
-

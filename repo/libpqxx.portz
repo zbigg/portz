@@ -1,8 +1,0 @@
-version=3.0
-baseurl="http://pqxx.org/download/software/libpqxx/libpqxx-${version}.tar.gz"
-description="the C++ API to the PostgreSQL database management system. "
-web="http://pqxx.org/"
-
-pg_config --version || fail "PostgreSQL config tool (pg_config) not found, ensure that PostgreSQL bin directory is in PATH"
-
-stereotype="gnu"

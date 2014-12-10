@@ -1,7 +1,0 @@
-version=1.7.4
-baseurl=http://www.lag.net/paramiko/download/paramiko-${version}.zip
-web=http://www.lag.net/paramiko/
-
-install() {
-    python_install
-}

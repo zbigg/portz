@@ -1,4 +1,0 @@
-version=1.2.7
-baseurl=http://www.libssh2.org/download/libssh2-${version}.tar.gz
-web=http://www.libssh2.org/
-stereotype=gnu

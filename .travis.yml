@@ -4,9 +4,7 @@
 #   for portz (https://github.com/zbigg/portz)
 #
 
-install: make autoconf aclocal wget
-
-language: c++
+language: cpp
 
 branches:
   only:

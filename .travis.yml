@@ -6,6 +6,8 @@
 
 install: make autoconf aclocal wget
 
+language: c++
+
 branches:
   only:
     - master

@@ -114,7 +114,7 @@ CHECK_PORTZ=$(CHECK_ROOT)${bindir}/portz
 
 check: check-install 
 
-EXTRA_DIST += repo/zlib.portz
+EXTRA_DIST += test/repo/zlib.portz
 EXTRA_DIST += aclocal.m4
 
 # defaults for tests
@@ -125,7 +125,7 @@ check-install:
 	$(MAKE) install prefix=$(CHECK_prefix)
 	$(CHECK_PORTZ) --help
 	
-	$(CHECK_PORTZ) --prefix $(CHECK_prefix) install $(srcdir)/repo/zlib.portz
+	$(CHECK_PORTZ) --prefix $(CHECK_prefix) install $(srcdir)/test/repo/zlib.portz
 	$(CHECK_PORTZ) --prefix $(CHECK_prefix) list
 	test -f $(CHECK_prefix)/lib/portz/zlib.PKGINFO
 	test -f $(CHECK_prefix)/lib/portz/zlib.MANIFEST

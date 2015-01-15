@@ -86,6 +86,8 @@ elif [ -n "${git_url}" ] ; then
         portz_invoke git checkout "$git_ref"
     )
 else
+    fetch_src_temp_list=`bashfoo.mktemp`
+    izip "$package_baseurl" "$sha1sum" > "$fetch_src_temp_list"
     while read url expected_sha1sum ; do
         archive_file="$(portz_fetch_url_with_cache $url)"
         inform archive_file="$archive_file"
@@ -104,7 +106,7 @@ else
         fi
         archive_files="$archive_files $archive_file"
         archive_sha1sums="$archive_sha1sums $archive_sha1sum"
-    done < <(izip "$package_baseurl" "$sha1sum")
+    done < $fetch_src_temp_list
     if [ -z "$sha1sum" ] ; then
         sha1sum="$(echo $archive_sha1sums)"
     fi

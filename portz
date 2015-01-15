@@ -93,6 +93,12 @@ while [ -n "$1" ] ; do
     fi
 
     case "$1" in
+        -s|--site)
+            [ -z "$2" ] && fail_on_bad_usage "$1, argument required"
+            site=$2
+            export site
+            shift ; shift
+            ;;
         -p|--prefix)
             [ -z "$2" ] && fail_on_bad_usage "$1, argument required"
             prefix=$2
@@ -166,6 +172,9 @@ done
 [ -z "$action" -a -z "$next_cmd" ] && fail_on_bad_usage "action required"
 
 export portz_libdir
+if [ -n "$site" ] ; then
+    log_info "using site=$site"
+fi
 
 log_debug "portz_libdir=$portz_libdir"
 log_debug "prefix=$prefix"

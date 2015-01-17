@@ -11,12 +11,9 @@ bashfoo_require assert
 # or before first run of config ?
 #
 case "$OSTYPE" in
-    *freebsd*|*FreeBSD*)
+    *freebsd*|*FreeBSD*|*darwin*|*msys*)
         SHA1SUM="shasum -a 1"
 	;;
-    *darwin*)
-        SHA1SUM="shasum -a 1"
-        ;;
     *)
         SHA1SUM="sha1sum"
     	;;

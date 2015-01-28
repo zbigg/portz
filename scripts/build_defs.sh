@@ -67,6 +67,22 @@ config_guess()
     sh ${portz_scripts}/config.guess
 }
 
+convert_path_to_msys()
+{
+    # converts now
+    #   D:/fofo   -> /d/foo
+    #   C:/blbala -> /c/blabla
+    sed -e 's#\([A-Za-z]\):/#/\1/#g'
+}
+
+convert_path_to_cygwin()
+{
+    # converts now
+    #   D:/fofo   -> /d/foo
+    #   C:/blbala -> /c/blabla
+    sed -e 's#\([A-Za-z]\):/#/cygdrive/\1/#g'
+}
+
 addpath() {
         local name=$1 ; shift
         eval "current=\"\$$name\""
@@ -76,6 +92,11 @@ addpath() {
                 D=":"
         fi
         for path in $* ; do
+                if   [ "$OSTYPE" == msys ] ; then
+                    path="$(echo $path | convert_path_to_msys)"
+                elif [ "$OSTYPE" == cygwin ] ; then
+                    path="$(echo $path | convert_path_to_cygwin)"
+                fi
                 if [ -d $path ] ; then
                         current="${path}${D}${current}"
                         D=":"
@@ -94,7 +115,7 @@ current_arch=$(config_guess)
 # site
 #
 if [ -n "$site" ] ; then
-	#echo "$0: using site settings from $site"
+	inform "using site settings from $site"
 	prefix="$site"
 	exec_prefix="${prefix}"
 
@@ -110,13 +131,17 @@ if [ -n "$site" ] ; then
 
 	PORTZ_SEPARATE_EXEC=0
 	if [ -f "$site/.portz.conf" ] ; then
-		. "$site/.portz.conf"
+	    inform "using site settings file $site/.portz.conf"
+            . "$site/.portz.conf"
 	fi
 
-	if [ -z "$arch" -o "$current_arch" = "$arch" ] ; then
-		addpath PATH $site/bin
-		addpath LD_LIBRARY_PATH $site/lib
-	fi
+        if [ -z "$arch" -o "$current_arch" = "$arch" ] ; then
+            addpath PATH $site/bin
+
+            if   [ "$OSTYPE" != msys -a "$OSTYPE" != cygwin ] ; then
+                addpath LD_LIBRARY_PATH $site/lib
+            fi
+        fi
 fi
 
 target_arch=${arch-$current_arch}

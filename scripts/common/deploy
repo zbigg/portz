@@ -37,6 +37,13 @@ freebsd_cp_deploy()
     )
 }
 
+gnu_cp_deploy()
+{
+    (
+        cd ${staging_dir}
+        portz_invoke cp -v --no-dereference --recursive --force --preserve * /
+    )
+}
 bsd_tar_deploy()
 {
     (
@@ -49,6 +56,9 @@ bsd_tar_deploy()
 }
 
 case "$OSTYPE" in
+msys)
+    gnu_cp_deploy
+    ;;
 *darwin*)
     bsd_tar_deploy
     ;;

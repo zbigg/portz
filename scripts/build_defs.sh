@@ -253,7 +253,9 @@ dist_suffix="-${dist_name}"
 # detect cpu count
 #   TODO: move to  separate script
 #
-if [ -f /proc/cpuinfo ] ; then
+if [ -n "$portz_parallel" ] ; then
+    cpus="${portz_parallel}"
+elif [ -f /proc/cpuinfo ] ; then
     cpus=$(cat /proc/cpuinfo | egrep "^processor" | wc -l)
 elif [ -n "$NUMBER_OF_PROCESSORS" ] ; then
     cpus=$NUMBER_OF_PROCESSORS
@@ -266,7 +268,7 @@ elif [ -n "$is_macosx" ] ; then
 else
     cpus=1
 fi
-log_info "detected cpu/core count: $cpus"
+log_info "using cpu/core parallel jobs: $cpus"
 
 portz_make_parallel()
 {

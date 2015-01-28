@@ -279,7 +279,7 @@ portz_download()
         portz_invoke_always curl --location --output $1 $2
     else
         inform "using bundled wget"
-        portz_invoke_always ${portz_tools}/wget/wget -O $1 $*
+        portz_invoke_always ${portz_tools}/wget/wget -O $1 $2
     fi
 }
 

@@ -28,6 +28,15 @@ gnu_tar_deploy()
     )
 }
 
+gnu_cp_deploy()
+{
+    (
+        CP_FLAGS="--recursive --preserve --verbose --force"
+        cd ${staging_dir}
+        portz_invoke cp $CP_FLAGS * /
+    )
+}
+
 freebsd_cp_deploy()
 {
     (
@@ -67,6 +76,9 @@ msys)
     ;;
 *linux*|*Linux*)
     gnu_tar_deploy
+    ;;
+*msys*)
+    gnu_cp_deploy
     ;;
 *)
     if [ -f gtar ] ; then

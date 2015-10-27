@@ -22,7 +22,9 @@ fi
 
 # support autoconf-based packages without compiled configure script
 if [ ! -f configure ] ; then
-    if [ -f configure.ac -o -f configure.in ] ; then
+    if [ -f autogen.sh ] ; then
+        portz_invoke sh ./autogen.sh
+    elif [ -f configure.ac -o -f configure.in ] ; then
         portz_invoke autoreconf -i
     fi
 fi

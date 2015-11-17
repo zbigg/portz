@@ -17,7 +17,14 @@ It's aimed for developers.
 
 Author:
 Zbigniew Zagorski <z.zagorski@gmail.com>
-    
+
+Prerequisite
+------------
+
+You need to have bashfoo inside portz
+
+    git clone https://github.com/zbigg/bashfoo.git
+
 How to use
 ----------
 

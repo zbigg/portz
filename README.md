@@ -1,6 +1,9 @@
 PORTZ - local port system
 ===================
 
+[![Build status](https://travis-ci.org/zbigg/portz.svg)](https://travis-ci.org/zbigg/portz)
+
+
 Well, next tool like mingw-port, homebrew, easy_install, macportz, FreeBSD portz. That is just tailored to my needs:
 
  - works on MSys/Mingw32, Linux, OSX and FreeBSD

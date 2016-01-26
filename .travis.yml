@@ -14,6 +14,7 @@ before_script:
   - env
   - autoreconf --version
   - find . -type f | xargs ls -ald
+  - aclocal
   - autoreconf -i
   - autoconf
   - ./configure

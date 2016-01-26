@@ -4,7 +4,8 @@
 # build/ci.sh
 #
 #   script that does various CI (Continous Integration) tasks for portz
-###
+#
+
 # by default, it 
 #  - boostraps environment
 #  - configures
@@ -24,21 +25,13 @@ header()
 
 set -e
 
-header "makefoo"
-if [ ! -d makefoo-master ] ; then
-    git clone https://github.com/zbigg/makefoo.git makefoo-master
-else
-    ( cd makefoo-master; git pull )
-fi
-
-header "aclocal"
-aclocal -I makefoo-master
+git submodule update --init
 
 header "autoreconf"
-autoreconf -i -f
+autoreconf -i
 
 header "configure"
-./configure --with-makefoo-dir=makefoo-master
+./configure
 
 source makefoo_configured_defs.mk
 

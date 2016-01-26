@@ -8,7 +8,7 @@ Well, next tool like mingw-port, homebrew, easy_install, macportz, FreeBSD portz
 
  - works on MSys/Mingw32, Linux, OSX and FreeBSD
  - is designed to target private trees ($HOME/usr, $HOME/project-sdk etc)
- - have ports for packages i use :)
+ - have ports for packages i use: https://github.com/zbigg/portz-repo
  - supports basic cross compilation env (work in progress)
 
 It's dirty hack allowing to automagically install developer 
@@ -16,7 +16,6 @@ soft on windows machines just like FreeBSD ports do or apt
 on Debian.
 
 It's aimed for developers.
-
 
 Author:
 Zbigniew Zagorski <z.zagorski@gmail.com>

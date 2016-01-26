@@ -3,8 +3,8 @@
 
 AC_PREREQ([2.59])
 AC_INIT([portz],[0.0.1],[z.zagorski@gmail.com])
+m4_include([autoconf_helpers/m4/makefoo.m4])
 
-AC_CONFIG_MACRO_DIR([autoconf_helpers/m4])
 AC_CONFIG_AUX_DIR([autoconf_helpers/])
 AC_CONFIG_SRCDIR([Makefile.in])
 # Checks for programs.

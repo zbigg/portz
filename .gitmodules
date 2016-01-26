@@ -1,0 +1,6 @@
+[submodule "bashfoo"]
+	path = bashfoo
+	url = https://github.com/zbigg/bashfoo
+[submodule "makefoo"]
+	path = makefoo
+	url = https://github.com/zbigg/makefoo

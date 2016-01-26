@@ -1,0 +1,7 @@
+makefoo_configured_defs.mk
+aclocal.m4
+configure
+autom4te.cache
+config.log
+Makefile
+_portz-check/

@@ -13,5 +13,11 @@ for archive_file in $* ; do
     portz_unarchive "$archive_file"
 done
 
+
+log_info "equalizing all source timestamps (fix automake/autoconf rebuild of scripts)"
+touch .dummy
+find . -type f -print0 | xargs -0 touch -r .dummy
+rm -rf .dummy
+
 # jedit: :tabSize=8:indentSize=4:noTabs=true:mode=shellscript:
 

@@ -88,10 +88,6 @@ bashfoo_lib_FILES =\
 bashfoo_lib_INSTALL_DEST=$(libdir)/portz
 COMPONENTS += bashfoo_lib
 
-bashfoo_libdir := $(shell bashfoo --libdir)
-bashfoo/%: $(bashfoo_libdir)/%
-	@mkdir -p bashfoo
-	@cp -v $< $@
 #
 # makefoo documentation > docdir (prefix/share/doc/makefoo)
 #

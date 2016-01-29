@@ -115,7 +115,7 @@ CHECK_PORTZ=$(CHECK_ROOT)${bindir}/portz
 check: check-install 
 
 EXTRA_DIST += test/repo/zlib.portz
-EXTRA_DIST += aclocal.m4
+EXTRA_DIST += autoconf_helpers/m4
 
 # defaults for tests
 export PORTZ_SEPARATE_EXEC=0

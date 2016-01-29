@@ -6,6 +6,7 @@ mkdir -p ${staging_dir}${manifest_dir}
 
 (
     cd ${staging_dir}
+    touch ${staging_dir}${manifest_file} #ensure file is on place before find starts
     find . -type f | sed -e "sX^\.${prefix}/XX" > ${staging_dir}${manifest_file}
 )
 

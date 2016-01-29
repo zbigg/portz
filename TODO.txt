@@ -6,6 +6,9 @@ Accepted
 
 List of ideas clear and accepted for implementation:
 
+* (12) archive is in fact a cache by default in ~/.portz/cache
+* (13) archive shall be changeable by PORTZ_CACHE_DIR
+
 * (4) version override ./portz_install pcre version=8.29
   Will be done using autoconf like overrides, so def will be changed from:
   
@@ -32,7 +35,12 @@ Grooming / ideas
 
 * easy installable install script
   not sure how yet ...
-    
+
+* (14) repo shall be specified as PATH: PORTZ_PATH, default : ???
+    but i'd like to add github urls like:
+        https://github.com/zbigg/portz-repo or
+        git@github.com:zbigg/portz-repo.git
+
 * (6) renaming of steps, so they are easy "spellable" in invoke
   Currently fetch_src, patch, configure, ... build is not documented
   

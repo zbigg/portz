@@ -20,12 +20,30 @@ It's aimed for developers.
 Author:
 Zbigniew Zagorski <z.zagorski@gmail.com>
 
-Prerequisite
+Bootstrap & Install
 ------------
 
 You need to have bashfoo inside portz
 
-    git clone https://github.com/zbigg/bashfoo.git
+    $ git clone https://github.com/zbigg/portz.git
+    $ cd portz
+    $ git submodule update --init
+
+You can start using `portz` command from current folder without installation:
+
+    prefix=$HOME/foo ./portz easy_install name=pcre \
+       http://sourceforge.net/projects/pcre/files/pcre/8.38/pcre-8.38.tar.gz
+
+Install only for yourself:
+
+    $ ./configure --prefix=$HOME $ (ensure that $HOME/bin in PATH)
+    $ make install
+
+Install For all users:
+
+    $ ./configure
+    $ sudo make install
+
 
 How to use
 ----------

@@ -1,7 +1,7 @@
-version=1.2.8
+version=1.2.11
 baseurl="http://www.zlib.net/zlib-${version}.tar.gz"
-sha1sum=a4d316c404ff54ca545ea71a27af7dbc29817088
-description="zlib is designed to be a free, general-purpose, legally unencumbered, 
+sha1sum=e6d119755acdf9104d7ba236b1242696940ed6dd
+description="zlib is designed to be a free, general-purpose, legally unencumbered,
 lossless data-compression library for use on virtually any computer hardware and operating system."
 web="http://www.zlib.net"
 

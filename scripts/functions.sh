@@ -6,7 +6,7 @@ bashfoo_require path
 bashfoo_require assert
 
 #
-# TBD, it shall be autoconf like-test 
+# TBD, it shall be autoconf like-test
 # executed before in configure
 # or before first run of config ?
 #
@@ -64,7 +64,7 @@ portz_unzip()
         inform "using bundled unzip"
         portz_invoke_always $portz_tools/unzip/unzip $*
     fi
-} 
+}
 
 
 portz_unarchive() {
@@ -74,11 +74,11 @@ portz_unarchive() {
     case ${archive_file} in
         *.tar)     portz_invoke_always ${TAR} x ${TAR_COMMON_OPTIONS} -f ${archive_file} ;;
         *.tar.gz)  portz_invoke_always ${TAR} zx ${TAR_COMMON_OPTIONS} -f ${archive_file} ;;
-        *.tgz)     portz_invoke_always ${TAR} zx ${TAR_COMMON_OPTIONS} -f ${archive_file} ;; 
+        *.tgz)     portz_invoke_always ${TAR} zx ${TAR_COMMON_OPTIONS} -f ${archive_file} ;;
         *.tar.bz2) portz_invoke_always ${TAR} jx ${TAR_COMMON_OPTIONS} -f ${archive_file} ;;
         *.tbz)     portz_invoke_always ${TAR} jx ${TAR_COMMON_OPTIONS} -f ${archive_file} ;;
-        *.txz|*.tar.xz)     
-                   portz_invoke_always xz --decompress --stdout ${archive_file} | portz_invoke ${TAR} x ${TAR_COMMON_OPTIONS} -f - 
+        *.txz|*.tar.xz)
+                   portz_invoke_always xz --decompress --stdout ${archive_file} | portz_invoke ${TAR} x ${TAR_COMMON_OPTIONS} -f -
                    ;;
         *.zip)     portz_unzip ${archive_file} ;;
         *.tar.lzma) portz_invoke_always ${TAR} x --lzma -f ${archive_file} ;;
@@ -274,7 +274,7 @@ izip()
 portz_download()
 {
     if which wget > /dev/null; then
-        portz_invoke_always wget --no-check-certificate -O $1 $2
+        portz_invoke_always wget -O $1 $2
     elif which curl > /dev/null ; then
         portz_invoke_always curl --location --output $1 $2
     else

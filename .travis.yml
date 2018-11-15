@@ -1,14 +1,14 @@
 #
 # travis (http://travis-ci.org/)
-#  build description 
+#  build description
 #   for portz (https://github.com/zbigg/portz)
 #
 
-language: cpp
+os:
+  - linux
+  - osx
 
-branches:
-  only:
-    - master
+language: cpp
 
 before_script:
   - env

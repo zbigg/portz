@@ -1,14 +1,17 @@
 #
 # travis (http://travis-ci.org/)
-#  build description 
+#  build description
 #   for portz (https://github.com/zbigg/portz)
 #
 
+os:
+  - linux
+  - windows
+
 language: cpp
 
-branches:
-  only:
-    - master
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then choco install mingw ; fi
 
 before_script:
   - env

@@ -1,11 +1,11 @@
 #
 # build_defs.mk (current: defs.mk)
 #   functions use by steps !
-#     remove package_XXX detection and move to 'package_defs.mk' 
+#     remove package_XXX detection and move to 'package_defs.mk'
 
 if [ -z "$OSTYPE" ] ; then
     OSTYPE=`uname`
-fi 
+fi
 
 #
 # all defaults
@@ -40,7 +40,7 @@ case "$OSTYPE" in
         C_INCLUDE_PATH=$C_INCLUDE_PATH:/usr/local/include
         CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/usr/local/include
         LIBRARY_PATH=$LIBRARY_PATH:/usr/local/lib
-        LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib	
+        LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
         export C_INCLUDE_PATH CPLUS_INCLUDE_PATH
 	;;
     *msys*|MINGW*)
@@ -53,7 +53,7 @@ case "$OSTYPE" in
 esac
 
 #
-# 
+#
 #
 
 stereotype="${stereotype-auto}"
@@ -120,28 +120,28 @@ if [ -n "$site" ] ; then
 	exec_prefix="${prefix}"
 
 	# other defaults
-        addpath LIBRARY_PATH       $site/lib
-        addpath PKG_CONFIG_PATH    $site/lib/pkgconfig
-	
+    addpath LIBRARY_PATH       $site/lib
+    addpath PKG_CONFIG_PATH    $site/lib/pkgconfig
+
 	# noarch paths
-        addpath C_INCLUDE_PATH     $base/include
-        addpath CPLUS_INCLUDE_PATH $base/include
-        addpath MANPATH            $base/share/man
-        addpath PYTHONPATH         $base/lib/python{2.3,2.4,2.5,2.6,2.7,3.0}/site-packages
+    addpath C_INCLUDE_PATH     $base/include
+    addpath CPLUS_INCLUDE_PATH $base/include
+    addpath MANPATH            $base/share/man
+    addpath PYTHONPATH         $base/lib/python{2.3,2.4,2.5,2.6,2.7,3.0}/site-packages
 
 	PORTZ_SEPARATE_EXEC=0
 	if [ -f "$site/.portz.conf" ] ; then
 	    inform "using site settings file $site/.portz.conf"
-            . "$site/.portz.conf"
+        . "$site/.portz.conf"
 	fi
 
-        if [ -z "$arch" -o "$current_arch" = "$arch" ] ; then
-            addpath PATH $site/bin
+    if [ -z "$arch" -o "$current_arch" = "$arch" ] ; then
+        addpath PATH $site/bin
 
-            if   [ "$OSTYPE" != msys -a "$OSTYPE" != cygwin ] ; then
-                addpath LD_LIBRARY_PATH $site/lib
-            fi
+        if   [ "$OSTYPE" != msys -a "$OSTYPE" != cygwin ] ; then
+            addpath LD_LIBRARY_PATH $site/lib
         fi
+    fi
 fi
 
 target_arch=${arch-$current_arch}
@@ -151,8 +151,8 @@ if [ "$current_arch" != "$target_arch" ] ; then
 fi
 
 #
-# prefix and exec_prefix 
-# 
+# prefix and exec_prefix
+#
 prefix=${prefix-$def_prefix}
 
 if [ "${portz_deploy_mode}" = stow ] ; then
@@ -220,10 +220,10 @@ if [ "$current_arch" != "$target_arch" ] ; then
                 true
                 ;;
         esac
-        
+
         CROSS_CC=${target_arch}-cc
         CROSS_CXX=${target_arch}-c++
-        
+
         if which $CROSS_CC > /dev/null; then
             CC=$CROSS_CC
             export CC
@@ -231,7 +231,7 @@ if [ "$current_arch" != "$target_arch" ] ; then
         if which $CROSS_CXX > /dev/null ; then
             CXX=$CROSS_CXX
             export CXX
-        fi 
+        fi
 fi
 
 STD_CFLAGS="${CFLAGS--g -O2}"

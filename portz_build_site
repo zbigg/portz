@@ -2,18 +2,17 @@
 #
 # This file is part of 'portz'
 #
-# Copyright (C) Zbigniew Zagorski <z.zagorski@gmail.com> and others, 
+# Copyright (C) Zbigniew Zagorski <z.zagorski@gmail.com> and others,
 # licensed to the public under the terms of the GNU GPL (>= 2)
 # see the file COPYING for details
 #
-# I.e., do what you like, but keep copyright and there's NO WARRANTY. 
+# I.e., do what you like, but keep copyright and there's NO WARRANTY.
 #
 
 PNAME=portz_build_site
 export PNAME
 
 set -e
-#set -x
 
 portz_libdir=${portz_libdir-`pwd`}
 . ${portz_libdir}/scripts/runtime.sh
@@ -27,7 +26,7 @@ find_available_packages()
     local ddd=$1
     (
         shopt -s failglob
-        (cd $ddd ; ls -1 *.portz || true ) | sed -e 's/\.portz//' 
+        (cd $ddd ; ls -1 *.portz || true ) | sed -e 's/\.portz//'
         if [ -f "$1/portz_import_packages" ] ; then
             cat $1/portz_import_packages
         fi
@@ -58,25 +57,26 @@ analyze_package_list()
     touch "$packages_analyzed"
 
     #log_info "analyze_package_list: $packages"
-    
+
     local package=""
     for package in $packages ; do
-        #log_info "analyze_package_list: iter ---> $package"
+        #log_info "analyze_package_list: $package"
         if grep -qxF "$package" "$packages_analyzed" ; then
             continue
         fi
         log_quiet=1
+        unset name package_name
         if ! load_package "$package" ; then
             echo "$package" >> "$packages_unknown"
             continue
         fi
         log_quiet=0
-
         if [ -n "$depends" ] ; then
             (
                 local xdepends="$depends"
                 unset depends
                 dependency_of=" (dependency of $package)"
+                unset name package_name
                 analyze_package_list $xdepends
             )
         fi

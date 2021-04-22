@@ -118,19 +118,24 @@ check_command()
 
 portz_check_installed()
 {
-    local dep_pkginfo="$prefix/lib/portz/$1.PKGINFO"
+    #echo "XXX: $1"
+
+    local dep_pkginfo="${prefix-${site}}/lib/portz/$1.PKGINFO"
     if [ -f "$dep_pkginfo" ] ; then
+        #echo "XXX: $1 $prefix/lib/portz/$1.PKGINFO #1"
         return 0
     fi
     (
         load_package "$1"
         if function_exists check_presence_step ; then
+            #echo "XXX $1: check_presence_step #2"
             check_presence_step
         else
             exit 1
         fi
     )
     r=$?
+    #echo "XXX: $1: check_presence_step $r #3"
     if [ "$r" = 0 ] ; then
         return $r
     fi
